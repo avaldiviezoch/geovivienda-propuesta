@@ -14,7 +14,6 @@
       --brand:#c62a4b;     
       --brand-ink:#fff;    
       --glass: color-mix(in srgb, #ffffff 65%, transparent);
-      --cvp: 0;            
       --maxw: 1200px;
     }
 
@@ -26,9 +25,8 @@
     header.site{
       position:sticky; top:0; z-index:50;
       backdrop-filter:saturate(140%) blur(8px);
-      background: color-mix(in srgb, var(--glass) calc(var(--cvp)*100%), transparent);
-      border-bottom: 1px solid color-mix(in srgb, var(--stroke) 70%, transparent);
-      transition: background .25s ease, border-color .25s ease;
+      background: var(--glass);
+      border-bottom: 1px solid var(--stroke);
     }
 
     .navwrap{
@@ -58,7 +56,7 @@
 
     /* COVER */
     .cover{
-      position:relative; isolation:isolate;
+      position:relative;
       min-height: clamp(520px, 88dvh, 820px);
       background: var(--bg);
       overflow:hidden;
@@ -100,13 +98,23 @@
       height: auto;
       display: block;
       margin: auto;
-      animation: floaty 6s ease-in-out infinite;
-      filter: drop-shadow(0 12px 22px rgba(198,42,75,.25)) saturate(1.05);
-      transition: transform .3s ease, filter .3s ease;
+      /* Animación de entrada */
+      opacity: 0;
+      transform: scale(0.8) translateY(30px);
+      animation: fadeZoomIn 1.2s ease forwards;
+      animation-delay: .3s;
+      /* Animación flotante después de entrar */
+      animation-composition: add;
     }
-    .art img:hover{
-      transform: scale(1.04);
-      filter: drop-shadow(0 20px 40px rgba(198,42,75,.35)) saturate(1.1);
+
+    @keyframes fadeZoomIn {
+      0% { opacity:0; transform: scale(0.8) translateY(30px); }
+      100%{ opacity:1; transform: scale(1) translateY(0); }
+    }
+
+    /* Flotación continua */
+    .art img.floaty{
+      animation: fadeZoomIn 1.2s ease forwards, floaty 6s ease-in-out infinite 1.5s;
     }
 
     @keyframes floaty{
@@ -176,7 +184,7 @@
       </div>
 
       <div class="art">
-        <img src="https://lh3.googleusercontent.com/d/1yMPY_3miMHPYv6qXHp3013u3QHHf-0Ec=w1000" alt="Mapa Perú decorativo" />
+        <img class="floaty" src="https://lh3.googleusercontent.com/d/1yMPY_3miMHPYv6qXHp3013u3QHHf-0Ec=w1000" alt="Mapa Perú decorativo" />
       </div>
     </div>
 
