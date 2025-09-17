@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GeoVivienda — Propuesta (menu + carátula)</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root{
+      --bg:#fff6f3;        /* fondo de carátula */
+      --ink:#1d212a;       /* texto principal */
+      --muted:#5e6472;     /* texto secundario */
+      --stroke:#e6e0de;    /* bordes suaves */
+      --brand:#c62a4b;     /* botón / acentos (similar a Wix) */
+      --brand-ink:#fff;    /* texto sobre brand */
+      --glass: color-mix(in srgb, #ffffff 65%, transparent);
+      --cvp: 0;            /* cover progress 0..1 (se actualiza con scroll) */
+      --maxw: 1200px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;scroll-behavior:smooth}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:#fff;color:var(--ink)}
+
+    /* =============  HEADER  ============= */
+    header.site{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(140%) blur(8px);
+      background: color-mix(in srgb, var(--glass) calc(var(--cvp)*100%), transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--stroke) 70%, transparent);
+      transition: background .25s ease, border-color .25s ease, transform .25s ease;
+    }
+
+    .navwrap{
+      max-width:var(--maxw);
+      margin-inline:auto;
+      padding: clamp(8px,2.4vw,14px) clamp(12px,3.6vw,24px);
+      display:flex; align-items:center; gap:14px; justify-content:space-between;
+    }
+
+    .logo{
+      display:flex; align-items:center; gap:.6rem; text-decoration:none; color:inherit;
+      min-width: 180px;
+    }
+    .logo img{
+      height:36px; width:auto; border-radius:10px; border:1px solid var(--stroke); background:#fff;
+    }
+    .logo span{ font-weight:800; letter-spacing:.2px }
+
+    nav ul{ list-style:none; display:flex; gap:clamp(10px,2.4vw,20px); margin:0; padding:0; flex-wrap:wrap }
+    nav a{
+      text-decoration:none; color:inherit; font-weight:600; opacity:.85;
+      padding:.45rem .7rem; border-radius:10px; border:1px solid transparent;
+    }
+    nav a:hover{ border-color:var(--stroke); background:#fff6; opacity:1 }
+    nav a.active{ color:var(--brand) }
+
+    .cta{
+      margin-left:auto;
+    }
+    .btn{
+      display:inline-flex; align-items:center; gap:.5rem; font-weight:700;
+      padding:.6rem 1rem; border-radius:999px; border:1px solid var(--brand);
+      background:var(--brand); color:var(--brand-ink); text-decoration:none;
+      box-shadow: 0 8px 20px rgba(198,42,75,.18);
+    }
+    .btn:hover{ transform:translateY(-1px) }
+
+    /* =============  COVER / CARÁTULA  ============= */
+    .cover{
+      position:relative; isolation:isolate;
+      min-height: clamp(520px, 88dvh, 820px);
+      background: var(--bg);
+      overflow:hidden;
+      border-bottom:1px solid var(--stroke);
+    }
+    .cover .container{
+      max-width:var(--maxw);
+      margin-inline:auto;
+      padding: clamp(20px,5vw,40px) clamp(12px,3.6vw,24px);
+      display:grid; align-items:center; gap:clamp(16px,4vw,28px);
+      grid-template-columns: 1.2fr .9fr;
+    }
+    @media (max-width: 980px){
+      .cover .container{ grid-template-columns: 1fr }
+    }
+
+    .title{
+      font-size: clamp(28px, 5vw, 64px);
+      line-height: 1.04;
+      letter-spacing:.2px;
+      margin: .2rem 0 .6rem;
+      font-weight: 800;
+      transform: translateY(calc(var(--cvp)*-16px)) scale(calc(1 - var(--cvp)*.04));
+      opacity: calc(1 - var(--cvp)*1.05);
+      transition: transform .12s linear, opacity .12s linear;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size: clamp(14px, 1.3vw, 18px);
+      max-width: 68ch;
+      transform: translateY(calc(var(--cvp)*-8px));
+      opacity: calc(1 - var(--cvp)*1.1);
+      transition: transform .12s linear, opacity .12s linear;
+    }
+    .actions{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px }
+    .btn.ghost{
+      background:#fff; color:var(--ink); border-color:var(--stroke);
+    }
+
+    /* === Ilustración derecha reemplazada por TU IMAGEN (con mismo efecto) === */
+    .art{
+      aspect-ratio: 1/1;
+      width: min(520px, 90%);
+      margin-left: auto;
+      border-radius: 28px;
+      border:1px solid var(--stroke);
+      overflow:hidden;
+      position:relative;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      transform: translateY(calc(var(--cvp)*8px)) scale(calc(1 - var(--cvp)*.02));
+      opacity: calc(1 - var(--cvp)*.35);
+      transition: transform .12s linear, opacity .12s linear;
+      background: transparent;
+    }
+    .art img{
+      width:100%; height:100%; display:block; object-fit: cover;
+    }
+    .art::after{
+      content:""; position:absolute; inset:0;
+      background: radial-gradient(60% 60% at 75% -10%, #ffffffcc, transparent 70%);
+      mix-blend-mode: overlay; pointer-events:none;
+    }
+
+    /* Separador curvo inferior (solo decoración) */
+    .wave{
+      position:absolute; left:0; right:0; bottom:-1px; height:120px; pointer-events:none;
+      background:
+        radial-gradient(100% 160px at 20% 0, #ffd5dc, transparent 70%),
+        radial-gradient(100% 160px at 60% 0, #ffc5d1, transparent 70%),
+        radial-gradient(100% 160px at 100% 0, #ffb8c7, transparent 70%);
+      opacity: calc(1 - var(--cvp)*.9);
+      transition: opacity .12s linear;
+    }
+
+    /* ====== Ejemplo de sección siguiente (placeholder) ====== */
+    section.next{
+      min-height: 70vh;
+      display:grid; place-items:center;
+      font-size:clamp(18px,2.2vw,28px);
+      color:#7b8291;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site" role="banner">
+    <div class="navwrap">
+      <a class="logo" href="#inicio">
+        <img src="https://lh3.googleusercontent.com/d/109rN8IqcM3AyWK6NRWNhouL-tqI03QXR=w1000" alt="Logo GeoVivienda">
+        <span>GeoVivienda</span>
+      </a>
+
+      <nav aria-label="Principal">
+        <ul>
+          <li><a class="active" href="#inicio">Inicio</a></li>
+          <li><a href="#geovisor">Geovisor</a></li>
+          <li><a href="#vmvu">VMVU</a></li>
+          <li><a href="#mvcs">VMCS</a></li>
+          <li><a href="#sg">SG</a></li>
+          <li><a href="#analisis">Análisis SIG</a></li>
+        </ul>
+      </nav>
+
+      <div class="cta">
+        <a class="btn" href="#ingresar">Ingresar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Carátula -->
+  <section id="inicio" class="cover">
+    <div class="container">
+      <div>
+        <h1 class="title">Plataforma GIS del Ministerio de Vivienda, Construcción y Saneamiento</h1>
+        <p class="subtitle">
+          Accede a datos geográficos y estadísticos actualizados sobre vivienda, agua, saneamiento,
+          titulación y planificación urbana. Una herramienta del MVCS al servicio de la ciudadanía
+          y los gobiernos locales.
+        </p>
+        <div class="actions">
+          <a class="btn" href="#geovisor">Geovisor</a>
+          <a class="btn ghost" href="#datos">Datos abiertos</a>
+        </div>
+      </div>
+
+      <!-- Tu imagen (transparente) con el mismo efecto -->
+      <div class="art" aria-hidden="true" title="Ilustración GeoVivienda">
+        <img src="https://lh3.googleusercontent.com/d/1yMPY_3miMHPYv6qXHp3013u3QHHf-0Ec=w1000" alt="Mapa puntilleo GeoVivienda">
+      </div>
+    </div>
+
+    <div class="wave" aria-hidden="true"></div>
+  </section>
+
+  <!-- Placeholder de la siguiente sección (solo para ver el efecto al hacer scroll) -->
+  <section class="next" id="geovisor">
+    <div>Contenido siguiente… (aquí irá tu geovisor / módulos).</div>
+  </section>
+
+  <script>
+    // Efecto: la carátula se desvanece y el header gana “vidrio” al hacer scroll.
+    (function(){
+      const root = document.documentElement;
+      const cover = document.querySelector('.cover');
+      function onScroll(){
+        const h = cover?.offsetHeight || 1;
+        const y = window.scrollY || window.pageYOffset || 0;
+        // Progreso limitado entre 0..1 (0 = arriba; 1 = al final de la carátula)
+        const p = Math.max(0, Math.min(1, y / (h * 0.9)));
+        root.style.setProperty('--cvp', p.toFixed(3));
+      }
+      window.addEventListener('scroll', onScroll, {passive:true});
+      onScroll();
+    })();
+  </script>
+</body>
+</html>
