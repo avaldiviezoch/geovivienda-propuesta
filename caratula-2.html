@@ -1,142 +1,275 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📊 Carátula — GeoVivienda</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GeoVivienda — Propuesta (menu + carátula)</title>
+  <meta name="color-scheme" content="light dark" />
   <style>
     :root{
-      --bg:#fef9f9;
-      --ink:#111;
-    }
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      background:var(--bg);
-      color:var(--ink);
-    }
-
-    .hero{
-      display:grid;
-      grid-template-columns: 1.2fr .9fr;
-      gap:36px;
-      align-items:center;
-      padding: clamp(32px, 6vw, 72px) 8%;
+      --bg:#fff6f3;        /* fondo de carátula */
+      --ink:#1d212a;       /* texto principal */
+      --muted:#5e6472;     /* texto secundario */
+      --stroke:#e6e0de;    /* bordes suaves */
+      --brand:#c62a4b;     /* botón / acentos (similar a Wix) */
+      --brand-ink:#fff;    /* texto sobre brand */
+      --glass: color-mix(in srgb, #ffffff 65%, transparent);
+      --cvp: 0;            /* cover progress 0..1 (se actualiza con scroll) */
+      --maxw: 1200px;
     }
 
-    .hero h1{
-      font-size: clamp(32px, 5.2vw, 64px);
-      line-height:1.05;
-      margin:0 0 18px;
-      font-weight:900;
-    }
-    .hero p{
-      font-size: clamp(15px, 1.6vw, 18px);
-      color:#555;
-      margin:0 0 22px;
-    }
-    .cta{display:flex; gap:14px; flex-wrap:wrap;}
-    .btn{
-      appearance:none; border:0; cursor:pointer;
-      padding:12px 20px;
-      border-radius:999px;
-      font-weight:700;
-      text-decoration:none;
-      box-shadow:0 10px 20px rgba(0,0,0,.08);
-      transition:.2s ease;
-    }
-    .btn.primary{ background:#ef3e5d; color:#fff; }
-    .btn.ghost{ background:#fff; color:#111; box-shadow:0 6px 16px rgba(239,62,93,.15); }
-    .btn:hover{ transform:translateY(-2px); }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;scroll-behavior:smooth}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:#fff;color:var(--ink)}
 
-    /* Imagen sin marco + glow */
-    .hero-ill{
-      position:relative;
-      aspect-ratio:1/1;
-      max-width:520px;
+    /* =============  HEADER  ============= */
+    header.site{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:saturate(140%) blur(8px);
+      background: color-mix(in srgb, var(--glass) calc(var(--cvp)*100%), transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--stroke) 70%, transparent);
+      transition: background .25s ease, border-color .25s ease, transform .25s ease;
+    }
+
+    .navwrap{
+      max-width:var(--maxw);
       margin-inline:auto;
-      border-radius:30px;
-      overflow:hidden;
-      box-shadow:
-        0 25px 60px rgba(255,85,130,.18),
-        0 8px 20px rgba(0,0,0,.05);
-      isolation:isolate;
-    }
-    .hero-ill img{
-      width:110%; height:110%;
-      object-fit:cover;
-      transform:translate(-5%,-5%);
-      /* máscara radial para difuminar bordes */
-      -webkit-mask-image: radial-gradient(120% 120% at 50% 50%, #000 65%, transparent 88%);
-      mask-image: radial-gradient(120% 120% at 50% 50%, #000 65%, transparent 88%);
-      filter:saturate(1.05) contrast(1.02);
-    }
-    .hero-ill::after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        radial-gradient(120% 80% at 80% 20%, rgba(255,255,255,.25), transparent 55%),
-        radial-gradient(120% 80% at 10% 90%, rgba(255,0,80,.08), transparent 60%);
-      mix-blend-mode:soft-light;
-      pointer-events:none;
+      padding: clamp(8px,2.4vw,14px) clamp(12px,3.6vw,24px);
+      display:flex; align-items:center; gap:14px; justify-content:space-between;
     }
 
-    /* Animación de flotación */
-    .hero-ill.anim{ animation:floaty 6s ease-in-out infinite; }
+    .logo{
+      display:flex; align-items:center; gap:.6rem; text-decoration:none; color:inherit;
+      min-width: 180px;
+    }
+    .logo img{
+      height:36px; width:auto; border-radius:10px; border:1px solid var(--stroke); background:#fff;
+    }
+    .logo span{ font-weight:800; letter-spacing:.2px }
+
+    nav ul{ list-style:none; display:flex; gap:clamp(10px,2.4vw,20px); margin:0; padding:0; flex-wrap:wrap }
+    nav a{
+      text-decoration:none; color:inherit; font-weight:600; opacity:.85;
+      padding:.45rem .7rem; border-radius:10px; border:1px solid transparent;
+    }
+    nav a:hover{ border-color:var(--stroke); background:#fff6; opacity:1 }
+    nav a.active{ color:var(--brand) }
+
+    .cta{ margin-left:auto; }
+    .btn{
+      display:inline-flex; align-items:center; gap:.5rem; font-weight:700;
+      padding:.6rem 1rem; border-radius:999px; border:1px solid var(--brand);
+      background:var(--brand); color:var(--brand-ink); text-decoration:none;
+      box-shadow: 0 8px 20px rgba(198,42,75,.18);
+      transition: transform .2s ease;
+    }
+    .btn:hover{ transform:translateY(-1px) }
+
+    /* =============  COVER / CARÁTULA  ============= */
+    .cover{
+      position:relative; isolation:isolate;
+      min-height: clamp(520px, 88dvh, 820px);
+      background: var(--bg);
+      overflow:hidden;
+      border-bottom:1px solid var(--stroke);
+    }
+    .cover .container{
+      max-width:var(--maxw);
+      margin-inline:auto;
+      padding: clamp(20px,5vw,40px) clamp(12px,3.6vw,24px);
+      display:grid; align-items:center; gap:clamp(16px,4vw,28px);
+      grid-template-columns: 1.2fr .9fr;
+    }
+    @media (max-width: 980px){
+      .cover .container{ grid-template-columns: 1fr }
+    }
+
+    .title{
+      font-size: clamp(28px, 5vw, 64px);
+      line-height: 1.04;
+      letter-spacing:.2px;
+      margin: .2rem 0 .6rem;
+      font-weight: 800;
+      transform: translateY(calc(var(--cvp)*-16px)) scale(calc(1 - var(--cvp)*.04));
+      opacity: calc(1 - var(--cvp)*1.05);
+      transition: transform .12s linear, opacity .12s linear;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size: clamp(14px, 1.3vw, 18px);
+      max-width: 68ch;
+      transform: translateY(calc(var(--cvp)*-8px));
+      opacity: calc(1 - var(--cvp)*1.1);
+      transition: transform .12s linear, opacity .12s linear;
+    }
+    .actions{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px }
+    .btn.ghost{
+      background:#fff; color:var(--ink); border-color:var(--stroke);
+    }
+
+    /* === Ilustración a la derecha: MISMO DIV .art, ahora con imagen + fade + animación === */
+    .art{
+      aspect-ratio: 1/1;
+      width: min(520px, 90%);
+      margin-left: auto;
+      border-radius: 28px;
+      overflow:hidden;             /* oculta cualquier borde duro */
+      border: 0;                   /* sin borde para que no se vea marco */
+      background: transparent;     /* sin patrón, nos fundimos con el fondo */
+      position:relative;
+      box-shadow:
+        0 25px 60px rgba(255, 85, 130, .18),
+        0 8px 20px rgba(0,0,0,.06);
+      transform: translateY(calc(var(--cvp)*8px)) scale(calc(1 - var(--cvp)*.02));
+      opacity: calc(1 - var(--cvp)*.35);
+      transition: transform .12s linear, opacity .12s linear;
+      will-change: transform;
+    }
+    /* Pseudo-elemento con la imagen de Google */
+    .art::before{
+      content:"";
+      position:absolute; inset:-4% -4%;     /* 108% para evitar bordes */
+      background-image:url('https://lh3.googleusercontent.com/d/1yMPY_3miMHPYv6qXHp3013u3QHHf-0Ec=w1000');
+      background-size:cover; background-position:center;
+      /* Desvanecido radial del borde (se “pierde” en el fondo) */
+      -webkit-mask-image: radial-gradient(120% 120% at 50% 50%, #000 64%, transparent 88%);
+      mask-image: radial-gradient(120% 120% at 50% 50%, #000 64%, transparent 88%);
+      filter: saturate(1.06) contrast(1.02);
+      display:block;
+      transition: transform .2s ease;
+    }
+    /* Brillos sutiles para integrarse al fondo */
+    .art::after{
+      content:""; position:absolute; inset:0;
+      background:
+        radial-gradient(120% 80% at 80% 20%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(120% 80% at 10% 90%, rgba(255,0,80,.07), transparent 60%);
+      mix-blend-mode:soft-light; pointer-events:none;
+    }
+    /* Flotación suave */
+    .art.anim{ animation: floaty 6s ease-in-out infinite; }
     @keyframes floaty{
-      0%,100%{ transform:translate3d(0,0,0); }
-      50%{ transform:translate3d(0,-8px,0); }
+      0%,100%{ transform: translateY(calc(var(--cvp)*8px)) scale(calc(1 - var(--cvp)*.02)); }
+      50%{    transform: translateY(calc(var(--cvp)*8px - 8px)) scale(calc(1 - var(--cvp)*.02)); }
     }
-    @media (max-width:900px){
-      .hero{ grid-template-columns:1fr; gap:28px; }
+    @media (prefers-reduced-motion: reduce){
+      .art.anim{ animation: none; }
     }
-    @media(prefers-reduced-motion:reduce){
-      .hero-ill.anim{ animation:none; }
+
+    /* Separador curvo inferior (solo decoración) */
+    .wave{
+      position:absolute; left:0; right:0; bottom:-1px; height:120px; pointer-events:none;
+      background:
+        radial-gradient(100% 160px at 20% 0, #ffd5dc, transparent 70%),
+        radial-gradient(100% 160px at 60% 0, #ffc5d1, transparent 70%),
+        radial-gradient(100% 160px at 100% 0, #ffb8c7, transparent 70%);
+      opacity: calc(1 - var(--cvp)*.9);
+      transition: opacity .12s linear;
+    }
+
+    /* ====== Ejemplo de sección siguiente (placeholder) ====== */
+    section.next{
+      min-height: 70vh;
+      display:grid; place-items:center;
+      font-size:clamp(18px,2.2vw,28px);
+      color:#7b8291;
     }
   </style>
 </head>
 <body>
-  <section class="hero">
-    <div class="hero-copy">
-      <h1>Plataforma GIS del Ministerio de Vivienda, Construcción y Saneamiento</h1>
-      <p>
-        Accede a datos geográficos y estadísticos actualizados sobre vivienda, agua,
-        saneamiento, titulación y planificación urbana. Una herramienta del MVCS al
-        servicio de la ciudadanía y los gobiernos locales.
-      </p>
+
+  <!-- Header -->
+  <header class="site" role="banner">
+    <div class="navwrap">
+      <a class="logo" href="#inicio">
+        <img src="https://lh3.googleusercontent.com/d/109rN8IqcM3AyWK6NRWNhouL-tqI03QXR=w1000" alt="Logo GeoVivienda">
+        <span>GeoVivienda</span>
+      </a>
+
+      <nav aria-label="Principal">
+        <ul>
+          <li><a class="active" href="#inicio">Inicio</a></li>
+          <li><a href="#geovisor">Geovisor</a></li>
+          <li><a href="#vmvu">VMVU</a></li>
+          <li><a href="#mvcs">VMCS</a></li>
+          <li><a href="#sg">SG</a></li>
+          <li><a href="#analisis">Análisis SIG</a></li>
+        </ul>
+      </nav>
+
       <div class="cta">
-        <a class="btn primary" href="#">Geovisor</a>
-        <a class="btn ghost" href="#">Datos abiertos</a>
+        <a class="btn" href="#ingresar">Ingresar</a>
       </div>
     </div>
+  </header>
 
-    <figure class="hero-ill anim">
-      <img src="ruta/imagen-peru.png" alt="Mapa estilizado del Perú">
-    </figure>
+  <!-- Carátula -->
+  <section id="inicio" class="cover">
+    <div class="container">
+      <div>
+        <h1 class="title">Plataforma GIS del Ministerio de Vivienda, Construcción y Saneamiento</h1>
+        <p class="subtitle">
+          Accede a datos geográficos y estadísticos actualizados sobre vivienda, agua, saneamiento,
+          titulación y planificación urbana. Una herramienta del MVCS al servicio de la ciudadanía
+          y los gobiernos locales.
+        </p>
+        <div class="actions">
+          <a class="btn" href="#geovisor">Geovisor</a>
+          <a class="btn ghost" href="#datos">Datos abiertos</a>
+        </div>
+      </div>
+
+      <!-- MISMO contenedor .art, ahora con imagen + efecto -->
+      <div class="art anim" aria-hidden="true" title="Ilustración del Perú"></div>
+    </div>
+
+    <div class="wave" aria-hidden="true"></div>
   </section>
 
-  <!-- Movimiento con parallax -->
+  <!-- Placeholder de la siguiente sección (solo para ver el efecto al hacer scroll) -->
+  <section class="next" id="geovisor">
+    <div>Contenido siguiente… (aquí irá tu geovisor / módulos).</div>
+  </section>
+
   <script>
+    // Efecto: la carátula se desvanece y el header gana “vidrio” al hacer scroll.
     (function(){
-      const el=document.querySelector('.hero-ill.anim');
-      if(!el) return;
-      let raf,tx=0,ty=0;
+      const root = document.documentElement;
+      const cover = document.querySelector('.cover');
+      function onScroll(){
+        const h = cover?.offsetHeight || 1;
+        const y = window.scrollY || window.pageYOffset || 0;
+        const p = Math.max(0, Math.min(1, y / (h * 0.9)));
+        root.style.setProperty('--cvp', p.toFixed(3));
+      }
+      window.addEventListener('scroll', onScroll, {passive:true});
+      onScroll();
+    })();
+
+    // Parallax sutil al mouse/touch sobre la ilustración (mantiene todo lo demás igual)
+    (function(){
+      const art = document.querySelector('.art.anim');
+      if(!art || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let raf, tx=0, ty=0;
       function onMove(e){
-        const r=el.getBoundingClientRect();
-        const cx=r.left+r.width/2, cy=r.top+r.height/2;
-        const x=(('touches'in e)?e.touches[0].clientX:e.clientX)-cx;
-        const y=(('touches'in e)?e.touches[0].clientY:e.clientY)-cy;
-        tx=Math.max(-1,Math.min(1,x/(r.width/2)));
-        ty=Math.max(-1,Math.min(1,y/(r.height/2)));
-        if(!raf) raf=requestAnimationFrame(update);
+        const r = art.getBoundingClientRect();
+        const cx = r.left + r.width/2, cy = r.top + r.height/2;
+        const p = 'touches' in e ? e.touches[0] : e;
+        tx = Math.max(-1, Math.min(1, (p.clientX - cx) / (r.width/2)));
+        ty = Math.max(-1, Math.min(1, (p.clientY - cy) / (r.height/2)));
+        if(!raf) raf = requestAnimationFrame(update);
       }
       function update(){
-        raf=null;
-        el.style.transform=`translate3d(${tx*8}px,${ty* -6}px,0) rotateX(${ty*-2}deg) rotateY(${tx*2}deg)`;
+        raf = null;
+        art.style.setProperty('--tiltX', ty*-2);
+        art.style.setProperty('--tiltY', tx*2);
+        art.style.transform += ` rotateX(${ty*-2}deg) rotateY(${tx*2}deg)`;
+        art.style.transition = 'transform .05s linear';
       }
-      window.addEventListener('mousemove',onMove,{passive:true});
-      window.addEventListener('touchmove',onMove,{passive:true});
+      window.addEventListener('mousemove', onMove, {passive:true});
+      window.addEventListener('touchmove', onMove, {passive:true});
     })();
   </script>
 </body>
 </html>
+
