@@ -101,5 +101,210 @@
     <!-- Sección: Página Principal -->
     <details open>
       <summary>
-        <svg class="chev" width="18" height
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        🏠 Página Principal
+      </summary>
+      <div class="section">
+        <div class="grid">
+          <a class="btn" href="caratula-1.html" target="_blank">Carátula 1</a>
+        </div>
+        <div class="note">Pasa el mouse para ver la mini-preview. Si alguna página bloquea la incrustación, puedes definir <code>data-thumb="ruta/a/miniatura.jpg"</code> en el botón.</div>
+      </div>
+    </details>
 
+    <!-- Sección: Extras (vacío por ahora) -->
+    <details>
+      <summary>
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        ✨ Extras
+      </summary>
+      <div class="section">
+        <div class="grid">
+          <!-- Agrega aquí tus botones cuando los tengas -->
+        </div>
+        <div class="note">Aún sin contenidos. Aquí irán utilidades y componentes adicionales.</div>
+      </div>
+    </details>
+
+    <!-- Sección: Páginas Secundarias (vacío por ahora) -->
+    <details>
+      <summary>
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        📄 Páginas Secundarias
+      </summary>
+      <div class="section">
+        <div class="grid">
+          <!-- Agrega aquí tus botones cuando los tengas -->
+        </div>
+        <div class="note">Aún sin contenidos. Aquí podrás enlazar secciones de detalle.</div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Popup de vista previa -->
+  <div id="preview" class="preview" role="dialog" aria-modal="false" aria-live="polite" aria-hidden="true">
+    <div class="pv-hdr">
+      <div id="pvtitle" class="pv-title">Vista previa</div>
+      <button id="pvlock" class="pv-btn" type="button" title="Fijar (bloquear) la vista">Fijar</button>
+      <a id="pvopen" class="pv-btn" href="#" target="_blank" rel="noopener" title="Abrir en nueva pestaña">Abrir</a>
+      <button id="pvclose" class="pv-btn" type="button" title="Cerrar (Esc)">Cerrar</button>
+    </div>
+    <div class="pv-wrap">
+      <iframe id="pvframe" class="pv-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+      <img id="pvthumb" class="pv-thumb" alt="Miniatura" />
+      <div id="pvover" class="pv-overlay">Cargando vista previa…</div>
+    </div>
+    <div id="pvcap" class="pv-cap"></div>
+  </div>
+
+  <script>
+    // ==== Config y utilidades ====
+    const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches; // móviles
+    const $ = (q)=>document.querySelector(q);
+    const preview = $('#preview');
+    const pvframe = $('#pvframe');
+    const pvthumb = $('#pvthumb');
+    const pvover  = $('#pvover');
+    const pvtitle = $('#pvtitle');
+    const pvopen  = $('#pvopen');
+    const pvclose = $('#pvclose');
+    const pvlock  = $('#pvlock');
+    const pvcap   = $('#pvcap');
+
+    let hoverTimer = null, blockTimer = null, currentURL = '';
+    let locked = false;
+
+    const cssVar = (name)=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name));
+
+    function applyScale(){
+      const wrap = preview.querySelector('.pv-wrap');
+      if(!wrap) return;
+      const wrapW = wrap.clientWidth;
+      const wrapH = wrap.clientHeight;
+      const baseW = cssVar('--base-w');
+      const baseH = cssVar('--base-h');
+      const scale = Math.min(wrapW/baseW, wrapH/baseH);
+      pvframe.style.transform = `scale(${scale})`;
+    }
+    window.addEventListener('resize', applyScale);
+
+    function positionPopup(x, y){
+      const pad = 14;
+      const w = preview.offsetWidth || cssVar('--pv-w');
+      const h = preview.offsetHeight || cssVar('--pv-h');
+      const vw = window.scrollX + window.innerWidth;
+      const vh = window.scrollY + window.innerHeight;
+      let left = x + pad, top = y + pad;
+      if(left + w > vw - 8) left = x - w - pad;
+      if(top + h > vh - 8) top = y - h - pad;
+      left = Math.max(window.scrollX + 8, left);
+      top  = Math.max(window.scrollY + 8, top);
+      preview.style.left = left + 'px';
+      preview.style.top  = top  + 'px';
+    }
+
+    function showPreview(anchor, ev){
+      if(isCoarse || (locked && preview.style.display==='none')) return;
+      const href = anchor.getAttribute('href');
+      const theLabel = anchor.textContent.trim();
+      const thumb = anchor.getAttribute('data-thumb');
+
+      pvtitle.textContent = theLabel;
+      pvcap.textContent   = href;
+      pvopen.href         = href;
+
+      let x, y;
+      if(ev && 'clientX' in ev){
+        x = ev.clientX + window.scrollX; y = ev.clientY + window.scrollY;
+      } else {
+        const r = anchor.getBoundingClientRect();
+        x = r.left + r.width/2 + window.scrollX;
+        y = r.bottom + window.scrollY;
+      }
+      preview.style.display = 'block';
+      preview.setAttribute('aria-hidden','false');
+      positionPopup(x, y);
+
+      preview.classList.add('loading');
+      preview.classList.remove('blocked');
+      pvthumb.style.display = 'none';
+      if(thumb){ pvthumb.src = thumb; } else { pvthumb.removeAttribute('src'); }
+
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(()=>{
+        if(currentURL !== href || pvframe.src !== href){
+          currentURL = href;
+          pvover.textContent = 'Cargando vista previa…';
+          pvframe.src = href;
+        }
+      }, 130);
+
+      clearTimeout(blockTimer);
+      blockTimer = setTimeout(()=>{
+        if(preview.classList.contains('loading')){
+          preview.classList.remove('loading');
+          preview.classList.add('blocked');
+          pvover.textContent = 'Vista previa no disponible (el sitio restringe incrustación).';
+          if(pvthumb.src) pvthumb.style.display = 'block';
+        }
+      }, 1500);
+
+      applyScale();
+    }
+
+    function hidePreview(force=false){
+      if(locked && !force) return;
+      preview.style.display = 'none';
+      preview.setAttribute('aria-hidden','true');
+      clearTimeout(hoverTimer);
+      clearTimeout(blockTimer);
+    }
+
+    pvframe.addEventListener('load', ()=>{
+      preview.classList.remove('loading');
+      pvover.textContent = ' ';
+    });
+
+    document.addEventListener('mouseover', (e)=>{
+      const a = e.target.closest('a.btn'); if(!a) return;
+      if(!locked) showPreview(a, e);
+    });
+    document.addEventListener('mousemove', (e)=>{
+      if(preview.style.display==='block' && !locked){
+        const a = e.target.closest('a.btn');
+        if(a) { positionPopup(e.clientX + window.scrollX, e.clientY + window.scrollY); }
+      }
+    });
+    document.addEventListener('mouseout', (e)=>{
+      const leavingBtn = e.target.closest && e.target.closest('a.btn');
+      if(leavingBtn && !(e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('#preview'))){
+        hidePreview();
+      }
+    });
+
+    document.addEventListener('focusin', e=>{
+      const a = e.target.closest && e.target.closest('a.btn'); if(a && !locked) showPreview(a, null);
+    });
+    document.addEventListener('focusout', e=>{
+      const a = e.target.closest && e.target.closest('a.btn'); if(a) hidePreview();
+    });
+
+    window.addEventListener('scroll', ()=>{ if(preview.style.display==='block' && !locked) hidePreview(); });
+
+    pvlock.addEventListener('click', ()=>{
+      locked = !locked;
+      pvlock.textContent = locked ? 'Desfijar' : 'Fijar';
+      preview.setAttribute('aria-modal', locked ? 'true' : 'false');
+    });
+    pvclose.addEventListener('click', ()=>{
+      locked = false; pvlock.textContent = 'Fijar'; hidePreview(true);
+    });
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        locked = false; pvlock.textContent = 'Fijar'; hidePreview(true);
+      }
+    });
+  </script>
+</body>
+</html>
