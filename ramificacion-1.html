@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Animación de líneas y unión inferior</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #faf6f5;
+    padding: 40px 0;
+  }
+  .conector {
+    width: 680px;
+    margin: auto;
+    position: relative;
+  }
+  .fila {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+  }
+  .nodo {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 16px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  }
+  .nodo img {
+    max-width: 70%;
+    max-height: 70%;
+  }
+  /* Línea horizontal superior animada */
+  .fila.superior::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: calc(60px);
+    right: calc(60px);
+    height: 2px;
+    background: #000;
+    transform-origin: center;
+    transform: scaleX(0);
+    animation: dibujarLineaSuperior 1s ease-out forwards;
+    z-index: 0;
+  }
+  /* Ramas superiores */
+  .nodo.rama::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 2px;
+    height: 80px;
+    background: #000;
+    transform-origin: top center;
+    transform: scaleY(0);
+    animation: dibujarRama 0.6s ease-out forwards 1s;
+  }
+  /* Fila inferior con unión y rama descendente */
+  .fila.inferior {
+    margin-top: 80px;
+    justify-content: space-between;
+  }
+  .fila.inferior::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: calc(60px);
+    right: calc(60px);
+    height: 2px;
+    background: #000;
+    transform-origin: center;
+    transform: scaleX(0);
+    animation: dibujarLineaInferior 0.6s ease-out forwards 1.6s;
+    z-index: 0;
+  }
+  .fila.inferior::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 80px;
+    background: #000;
+    transform-origin: top;
+    transform: scaleY(0);
+    animation: dibujarLineaAbajo 0.6s ease-out forwards 2.2s;
+    z-index: 0;
+  }
+  /* Animaciones de las líneas */
+  @keyframes dibujarLineaSuperior { to { transform: scaleX(1); } }
+  @keyframes dibujarRama { to { transform: scaleY(1); } }
+  @keyframes dibujarLineaInferior { to { transform: scaleX(1); } }
+  @keyframes dibujarLineaAbajo { to { transform: scaleY(1); } }
+</style>
+</head>
+<body>
+  <h2 style="text-align:center;">Unión inferior y rama descendente</h2>
+  <div class="conector">
+    <div class="fila superior">
+      <div class="nodo rama">
+        <img src="https://via.placeholder.com/80?text=A" alt="Icono A">
+      </div>
+      <div class="nodo">
+        <img src="https://via.placeholder.com/80?text=B" alt="Icono B">
+      </div>
+      <div class="nodo rama">
+        <img src="https://via.placeholder.com/80?text=C" alt="Icono C">
+      </div>
+    </div>
+    <div class="fila inferior">
+      <div class="nodo">
+        <img src="https://via.placeholder.com/80?text=D" alt="Icono D">
+      </div>
+      <div class="nodo">
+        <img src="https://via.placeholder.com/80?text=E" alt="Icono E">
+      </div>
+    </div>
+  </div>
+</body>
+</html>
