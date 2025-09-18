@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo — Ingresar solo con @vivienda.gob.pe</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root{ --brand:#c62a4b; --ink:#1d212a; --muted:#5c6472; --stroke:#e7e7ea; }
+    *{ box-sizing:border-box }
+    html,body{ margin:0 }
+    body{ font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial; color:var(--ink) }
+
+    .bar{ position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between; padding:10px 16px; border-bottom:1px solid var(--stroke); background:#fff; }
+    .brand{ font-weight:800; letter-spacing:.2px }
+    .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.56rem .96rem; border-radius:999px; border:1px solid var(--brand); background:var(--brand); color:#fff; text-decoration:none; font-weight:700; cursor:pointer }
+    .wrap{ max-width:1100px; margin:0 auto; padding:18px }
+    .card{ border:1px solid var(--stroke); border-radius:12px; padding:14px 16px; box-shadow:0 8px 28px rgba(0,0,0,.06); background:#fff; }
+    [data-protegido].hidden{ display:none !important; }
+
+    .alert{ margin-top:10px; padding:10px 12px; background:#fff1f2; color:#7f1d1d; border:1px solid #fecaca; border-radius:10px; font-weight:600; }
+    .badge{ display:inline-flex; align-items:center; gap:.4rem; padding:.28rem .6rem; border-radius:999px; background:#eef2ff; border:1px solid #dbe3ff; color:#353c5a; font-weight:700; font-size:.88rem; }
+    .row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="bar">
+    <div class="brand">GeoVivienda — Acceso institucional</div>
+    <div class="row">
+      <span id="sessionBadge" class="badge" style="display:none"></span>
+      <a id="btn-ingresar" class="btn" href="#">Ingresar</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h3>Contenido público</h3>
+      <p>La página es una sola cara. <b>Ingresar</b> abre el selector de cuentas de Google y solo
+        permite continuar si el correo es <b>@vivienda.gob.pe</b>.</p>
+      <div id="msg" class="alert" style="display:none"></div>
+    </section>
+
+    <section data-protegido class="hidden" style="margin-top:16px">
+      <div class="card">
+        <h3>Contenido protegido (interno)</h3>
+        <p>Solo visible tras iniciar sesión con un correo institucional <b>@vivienda.gob.pe</b>.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /************** CONFIGURA ESTO **************/
+    const CLIENT_ID   = 'TU_CLIENT_ID.apps.googleusercontent.com';  // <-- tu OAuth Client ID
+    const REDIRECT_URI = location.origin + location.pathname;       // puedes poner tu URL fija
+    /********************************************/
+
+    // Utilidades UI
+    const badge = document.getElementById('sessionBadge');
+    const msg   = document.getElementById('msg');
+    const showPrivate = () => document.querySelectorAll('[data-protegido]').forEach(el=>el.classList.remove('hidden'));
+    const hidePrivate = () => document.querySelectorAll('[data-protegido]').forEach(el=>el.classList.add('hidden'));
+    function setLogged(email){
+      badge.textContent = email; badge.style.display='inline-flex';
+      document.getElementById('btn-ingresar').textContent = 'Cerrar sesión';
+      document.getElementById('btn-ingresar').onclick = (e)=>{ e.preventDefault(); logout(); };
+      showPrivate(); msg.style.display='none';
+    }
+    function logout(){
+      sessionStorage.removeItem('id_token');
+      badge.style.display='none';
+      document.getElementById('btn-ingresar').textContent = 'Ingresar';
+      document.getElementById('btn-ingresar').onclick = onLoginClick;
+      hidePrivate();
+    }
+
+    // Construye URL de autorización (account chooser de Google)
+    function buildAuthUrl(){
+      const state = Math.random().toString(36).slice(2);
+      const nonce = Math.random().toString(36).slice(2);
+      sessionStorage.setItem('oauth_state', state);
+      sessionStorage.setItem('oauth_nonce', nonce);
+
+      const p = new URLSearchParams({
+        client_id: CLIENT_ID,
+        redirect_uri: REDIRECT_URI,
+        response_type: 'id_token',      // pedimos id_token directo de Google
+        scope: 'openid email profile',
+        state,
+        nonce,
+        hd: 'vivienda.gob.pe',          // <-- filtra por dominio en el chooser (pista visual)
+        prompt: 'select_account'        // fuerza el diálogo de elegir cuenta
+      });
+      return 'https://accounts.google.com/o/oauth2/v2/auth?' + p.toString();
+    }
+
+    // Botón Ingresar → redirecciona al chooser
+    function onLoginClick(e){
+      e.preventDefault();
+      if(CLIENT_ID.startsWith('TU_')){
+        alert('Configura CLIENT_ID para probar con Google.\nMientras tanto, solo se muestra la demo de UI.');
+        return;
+      }
+      location.assign(buildAuthUrl());
+    }
+    document.getElementById('btn-ingresar').onclick = onLoginClick;
+
+    // Decodifica el JWT (sin verificar firma; demo local)
+    function decodeJwt(jwt){
+      const [, payload] = jwt.split('.');
+      return JSON.parse(atob(payload.replace(/-/g,'+').replace(/_/g,'/')));
+    }
+
+    // Al volver del chooser, procesar el fragmento con id_token
+    (function handleOAuthRedirect(){
+      if(location.hash.includes('id_token=')){
+        const params = new URLSearchParams(location.hash.substring(1));
+        const returnedState = params.get('state');
+        if (returnedState !== sessionStorage.getItem('oauth_state')){
+          msg.textContent = 'Estado inválido. Intenta nuevamente.'; msg.style.display='block';
+          history.replaceState(null, '', location.pathname); // limpia el hash
+          return;
+        }
+        const id_token = params.get('id_token');
+        history.replaceState(null, '', location.pathname); // limpia el hash visible
+        sessionStorage.setItem('id_token', id_token);
+
+        try{
+          const payload = decodeJwt(id_token);
+          const email = payload.email || '';
+          const hd    = payload.hd || '';
+          // Aceptar solo correos institucionales
+          if (email.endsWith('@vivienda.gob.pe') || hd === 'vivienda.gob.pe'){
+            setLogged(email);
+          }else{
+            logout();
+            msg.innerHTML = 'Solo se permite el acceso con <b>@vivienda.gob.pe</b>.';
+            msg.style.display='block';
+          }
+        }catch(e){
+          msg.textContent = 'No se pudo validar la respuesta. Intenta nuevamente.';
+          msg.style.display='block';
+        }
+      }else{
+        // Si ya hay sesión guardada, rehidratar
+        const token = sessionStorage.getItem('id_token');
+        if(token){
+          try{
+            const p = decodeJwt(token);
+            const email = p.email || '';
+            if(email.endsWith('@vivienda.gob.pe')) setLogged(email);
+          }catch{}
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
