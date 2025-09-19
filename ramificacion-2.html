@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Unión de nodos con imágenes y líneas animadas</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #faf6f5;
+    padding: 40px 0;
+  }
+  .conector {
+    width: 680px;
+    margin: auto;
+    position: relative;
+  }
+  .fila {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+  }
+  /* Cada nodo es un recuadro 200x200 px que aloja la imagen */
+  .nodo {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 16px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  }
+  .nodo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  /* Línea horizontal superior que conecta los nodos A‑B‑C */
+  .fila.superior::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100px;  /* mitad del ancho del nodo (200 px) */
+    right: 100px;
+    height: 2px;
+    background: #000;
+    transform-origin: center;
+    transform: scaleX(0);
+    animation: dibujarLineaSuperior 1s ease-out forwards;
+    z-index: 0;
+  }
+  /* Ramas verticales que parten de los nodos A y C hacia la fila inferior */
+  .nodo.rama::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 2px;
+    height: 100px;
+    background: #000;
+    transform-origin: top center;
+    transform: scaleY(0);
+    animation: dibujarRama 0.6s ease-out forwards 1s;
+  }
+  /* Separación vertical entre la fila superior e inferior */
+  .fila.inferior {
+    margin-top: 100px;
+    justify-content: space-between;
+    overflow: visible;
+    position: relative;
+  }
+  /* Línea vertical descendente desde el punto de unión de los nodos D y E */
+  .fila.inferior::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 100px;
+    background: #000;
+    transform-origin: top;
+    transform: scaleY(0);
+    animation: dibujarLineaAbajo 0.6s ease-out forwards 2.2s;
+    z-index: 0;
+  }
+  /* Segmentos horizontales que salen desde los nodos inferiores hacia el centro */
+  .nodo.join-left::after,
+  .nodo.join-right::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    background: #000;
+    width: 240px;  /* distancia desde el centro del nodo (100 px) al centro del contenedor (340 px) */
+    transform: scaleX(0);
+    z-index: -1;
+  }
+  /* Línea desde el nodo D hacia la derecha */
+  .nodo.join-left::after {
+    left: 50%;
+    transform-origin: left;
+    animation: dibujarLineaIzq 1.2s ease-out forwards 1.6s;
+  }
+  /* Línea desde el nodo E hacia la izquierda */
+  .nodo.join-right::after {
+    right: 50%;
+    transform-origin: right;
+    animation: dibujarLineaDer 1.2s ease-out forwards 1.6s;
+  }
+  /* Definición de animaciones */
+  @keyframes dibujarLineaSuperior { to { transform: scaleX(1); } }
+  @keyframes dibujarRama         { to { transform: scaleY(1); } }
+  @keyframes dibujarLineaIzq    { to { transform: scaleX(1); } }
+  @keyframes dibujarLineaDer    { to { transform: scaleX(1); } }
+  @keyframes dibujarLineaAbajo  { to { transform: scaleY(1); } }
+</style>
+</head>
+<body>
+  <h2 style="text-align:center; font-weight:700;">Unión de nodos con imágenes y líneas animadas</h2>
+  <div class="conector">
+    <!-- Fila superior -->
+    <div class="fila superior">
+      <div class="nodo rama">
+        <img src="https://lh3.googleusercontent.com/d/1i8CwW-eOf-Pd2ANa6o7X6yaFOcP5KpC7=w1000" alt="Imagen A">
+      </div>
+      <div class="nodo">
+        <img src="https://lh3.googleusercontent.com/d/1Ht4cpFniu4yNOJ-M3A003PSEmo89fsVk=w1000" alt="Imagen B">
+      </div>
+      <div class="nodo rama">
+        <img src="https://lh3.googleusercontent.com/d/16PFDGwh-xesWMdmsq_SpXgwwqwUiKfBk=w1000" alt="Imagen C">
+      </div>
+    </div>
+    <!-- Fila inferior -->
+    <div class="fila inferior">
+      <div class="nodo join-left">
+        <img src="https://lh3.googleusercontent.com/d/1Yg8K4w6hDMz_EZ8n6otQNAmFIPB16xCG=w1000" alt="Imagen D">
+      </div>
+      <div class="nodo join-right">
+        <img src="https://lh3.googleusercontent.com/d/1y0YcBuWlZGH7ulNQEzgyGqvIk9IxH34a=w1000" alt="Imagen E">
+      </div>
+    </div>
+  </div>
+</body>
+</html>
