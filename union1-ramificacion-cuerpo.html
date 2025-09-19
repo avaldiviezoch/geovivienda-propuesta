@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Geovisor + Pilares (alineado y conectado)</title>
+<style>
+  :root{
+    --rojo:#e85564;
+    --rojo2:#ff847c;
+    --bg:#faf6f5;
+
+    /* tarjetas portal */
+    --card-h:260px; --hdr-h:72px; --gap:24px; --radius:12px;
+    --elev0:0 4px 8px rgba(0,0,0,.10); --elev1:0 10px 18px rgba(0,0,0,.18);
+
+    /* nodos/ramas */
+    --node:200px;   /* ancho/alto de cada nodo */
+    --line-w:3;     /* grosor de TODAS las líneas (px) */
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    background:var(--bg); color:#333; perspective:1200px;
+  }
+
+  /* ====== RAMIFICACIÓN ARRIBA ====== */
+  .conector-wrap{max-width:1100px;margin:26px auto 0;padding:0 20px;position:relative}
+  .conector-title{ text-align:center;font-weight:800;color:var(--rojo);font-size:28px;margin:0 0 16px; }
+
+  .conector{
+    width:680px; margin:0 auto; position:relative; z-index:1;
+    display:flex; flex-direction:column; gap:100px; /* separación entre filas */
+  }
+  .fila{ display:flex; justify-content:space-between; }
+  .nodo{
+    width:var(--node); height:var(--node); border-radius:16px;
+    border:2px solid #e8e5e5; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.08);
+    overflow:hidden; display:flex; align-items:center; justify-content:center;
+  }
+  .nodo img{width:100%;height:100%;object-fit:cover}
+
+  /* ====== PORTAL (tarjetas) ====== */
+  .wrapper{max-width:1100px;margin:0 auto;padding:8px 20px 36px}
+  .section{margin-bottom:36px}
+  .section-title{text-align:center;font-size:28px;font-weight:800;color:var(--rojo);margin:8px 0 20px}
+  .divider{height:2px;background:var(--rojo);opacity:.6;margin:28px 0}
+
+  .cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--gap)}
+  .cards-row.cols-3{grid-template-columns:repeat(3,minmax(280px,1fr))}
+  .cards-row.cols-3 .card:first-child{grid-column:2;justify-self:center}
+  @media (max-width:900px){
+    .cards-row.cols-3{grid-template-columns:repeat(2,minmax(260px,1fr))}
+    .cards-row.cols-3 .card:first-child{grid-column:1 / -1}
+  }
+  @media (max-width:560px){.cards-row.cols-3{grid-template-columns:1fr}}
+
+  .card{
+    position:relative;height:var(--card-h);background:#fff;border-radius:var(--radius);
+    border:1px solid #efe9e9;overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:var(--elev0);transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;
+    transform-style:preserve-3d;opacity:0;transform:translateZ(-300px) scale(.7)
+  }
+  .card:hover{box-shadow:var(--elev1);transform:scale(1.03)}
+  .card.in{opacity:1;transform:translateZ(0) scale(1)}
+
+  .card-header{
+    height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;background:var(--rojo);color:#fff;font-weight:700;letter-spacing:.2px;position:relative;
+  }
+  .card-header:hover{background:linear-gradient(90deg,var(--rojo) 0%,var(--rojo2) 100%)}
+  .card-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#fff}
+  .card-icon svg{width:100%;height:100%;fill:currentColor}
+  .card-body{flex:1;padding:12px 16px 16px;font-size:14px;line-height:1.45;color:#2f3845;overflow:hidden}
+
+  /* Highlight Geovisor cuando llega el puente */
+  .geovisor-card.on{
+    animation:pulseGlow 1100ms ease-out 2, liftOnce 600ms ease-out forwards;
+  }
+  .geovisor-card.on .card-header::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(120deg, rgba(255,255,255,0) 0%,
+                                         rgba(255,255,255,.9) 18%,
+                                         rgba(255,255,255,0) 36%);
+    transform:translateX(-130%);mix-blend-mode:screen;filter:blur(.5px);
+    animation:gleam 1100ms ease-out 2 80ms;
+  }
+  .geovisor-card.on::before{
+    content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:999px;
+    background:radial-gradient(circle, rgba(232,85,100,.45) 0%, rgba(232,85,100,0) 70%);
+    transform:translate(-50%,-50%) scale(0);
+    animation:ripple 900ms ease-out forwards 200ms; pointer-events:none;
+  }
+  @keyframes gleam{ to{ transform:translateX(130%); } }
+  @keyframes pulseGlow{
+    0%{ box-shadow:var(--elev0),0 0 0 rgba(232,85,100,0);}
+    50%{box-shadow:var(--elev1),0 0 24px rgba(232,85,100,.45),0 0 48px rgba(232,85,100,.25);}
+    100%{box-shadow:var(--elev0),0 0 0 rgba(232,85,100,0);}
+  }
+  @keyframes liftOnce{ from{transform:translateZ(0) scale(1);} to{transform:translateZ(0) scale(1.02);} }
+  @keyframes ripple{ to{ transform:translate(-50%,-50%) scale(18); opacity:0; } }
+
+  /* SVG global para TODAS las líneas */
+  #linesSVG{
+    position:absolute; inset:0; width:100%; height:100%;
+    pointer-events:none; z-index:0;
+  }
+  .ln{ fill:none; stroke:var(--rojo); stroke-width:var(--line-w); stroke-linecap:round; }
+</style>
+</head>
+<body>
+
+  <!-- ====== RAMIFICACIÓN ====== -->
+  <div class="conector-wrap" id="topZone">
+    <h2 class="conector-title">Pilares que encienden el Geovisor</h2>
+
+    <!-- SVG que dibuja TODAS las líneas (ramas + puente) -->
+    <svg id="linesSVG"></svg>
+
+    <div class="conector" id="conector">
+      <div class="fila superior">
+        <div class="nodo" data-id="A"><img src="https://lh3.googleusercontent.com/d/1i8CwW-eOf-Pd2ANa6o7X6yaFOcP5KpC7=w1000" alt="A"></div>
+        <div class="nodo" data-id="B"><img src="https://lh3.googleusercontent.com/d/1Ht4cpFniu4yNOJ-M3A003PSEmo89fsVk=w1000" alt="B"></div>
+        <div class="nodo" data-id="C"><img src="https://lh3.googleusercontent.com/d/16PFDGwh-xesWMdmsq_SpXgwwqwUiKfBk=w1000" alt="C"></div>
+      </div>
+      <div class="fila inferior">
+        <div class="nodo" data-id="D"><img src="https://lh3.googleusercontent.com/d/1Yg8K4w6hDMz_EZ8n6otQNAmFIPB16xCG=w1000" alt="D"></div>
+        <div class="nodo" data-id="E"><img src="https://lh3.googleusercontent.com/d/1y0YcBuWlZGH7ulNQEzgyGqvIk9IxH34a=w1000" alt="E"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== PORTAL ====== -->
+  <div class="wrapper">
+    <div class="section">
+      <h2 class="section-title">Geovisor</h2>
+      <div class="cards-row cols-3">
+        <div class="card geovisor-card" id="geovisorCard">
+          <div class="card-header">
+            <span>Visor Cartográfico</span>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+            </div>
+          </div>
+          <div class="card-body">
+            Síntesis de brechas e intervenciones en vivienda, titulación, acceso a servicios básicos y acceso a infraestructura y equipamiento urbano.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <!-- …aquí puedes pegar el resto de secciones… -->
+  </div>
+
+<script>
+(function(){
+  /* Entrada 3D de tarjetas */
+  const cards = Array.from(document.querySelectorAll('.card'));
+  if (!('IntersectionObserver' in window)){
+    cards.forEach(c => c.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    }, {threshold:0.15});
+    cards.forEach(c => io.observe(c));
+  }
+
+  const svg  = document.getElementById('linesSVG');
+  const wrap = document.getElementById('topZone');
+  const con  = document.getElementById('conector');
+  const geo  = document.getElementById('geovisorCard');
+
+  function center(el, box){
+    const r = el.getBoundingClientRect();
+    return {
+      x: r.left + r.width/2 - box.left,
+      y: r.top  + r.height/2 - box.top
+    };
+  }
+  function topOf(el, box){
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width/2 - box.left, y: r.top - box.top };
+  }
+  function bottomOf(el, box){
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width/2 - box.left, y: r.bottom - box.top };
+  }
+
+  function draw(){
+    const box = wrap.getBoundingClientRect();
+    svg.setAttribute('width', box.width);
+    svg.setAttribute('height', box.height + 10);
+    while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+    const A = document.querySelector('[data-id="A"]');
+    const B = document.querySelector('[data-id="B"]');
+    const C = document.querySelector('[data-id="C"]');
+    const D = document.querySelector('[data-id="D"]');
+    const E = document.querySelector('[data-id="E"]');
+
+    const pA = center(A, box), pB = center(B, box), pC = center(C, box);
+    const bA = bottomOf(A, box), bC = bottomOf(C, box);
+    const tD = topOf(D, box), tE = topOf(E, box);
+    const pD = center(D, box), pE = center(E, box);
+
+    const conRect = con.getBoundingClientRect();
+    const midX = conRect.left + conRect.width/2 - box.left;
+
+    // === joinY común: mitad entre el borde inferior de la fila superior y el borde superior de la fila inferior
+    const topRowBottom = Math.max(bottomOf(A, box).y, bottomOf(B, box).y, bottomOf(C, box).y);
+    const bottomRowTop = Math.min(tD.y, tE.y);
+    const joinY = Math.round((topRowBottom + bottomRowTop)/2);
+
+    const lineW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--line-w')) || 3;
+
+    const paths = [];
+    // 1) A–B–C (horizontal)
+    paths.push(`M ${pA.x} ${pA.y} L ${pC.x} ${pC.y}`);
+    // 2) Ramas desde A y C hasta joinY
+    paths.push(`M ${bA.x} ${bA.y} L ${bA.x} ${joinY}`);
+    paths.push(`M ${bC.x} ${bC.y} L ${bC.x} ${joinY}`);
+    // 3) D -> centro en joinY
+    paths.push(`M ${pD.x} ${joinY} L ${midX} ${joinY}`);
+    // 4) E -> centro en joinY
+    paths.push(`M ${pE.x} ${joinY} L ${midX} ${joinY}`);
+    // 5) Vertical central desde joinY hasta base del conector
+    const conBottomY = bottomOf(con, box).y;
+    paths.push(`M ${midX} ${joinY} L ${midX} ${conBottomY}`);
+    // 6) Puente al Geovisor (curva suave)
+    const geoTop = topOf(geo, box);
+    const startX = midX, startY = conBottomY - lineW/2;
+    const endX   = geoTop.x, endY = geoTop.y + lineW/2;
+    const dBridge = (Math.abs(endX-startX)<6)
+      ? `M ${startX} ${startY} L ${endX} ${endY}`
+      : `M ${startX} ${startY} C ${startX} ${startY+40}, ${endX} ${endY-40}, ${endX} ${endY}`;
+    paths.push(dBridge);
+
+    const delays = [0, 700, 700, 1200, 1200, 1700, 2200];
+    const durations = [700, 450, 450, 600, 600, 500, 900];
+
+    paths.forEach((d, i)=>{
+      const p = document.createElementNS('http://www.w3.org/2000/svg','path');
+      p.setAttribute('class','ln');
+      p.setAttribute('d', d);
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = String(len);
+      p.style.strokeDashoffset = String(len);
+      p.style.transition = `stroke-dashoffset ${durations[i]}ms ease-out ${delays[i]}ms`;
+      svg.appendChild(p);
+      requestAnimationFrame(()=>{ p.style.strokeDashoffset = '0'; });
+    });
+
+    // Enciende el Geovisor al final del puente
+    const total = Math.max(...delays) + durations[durations.length-1] + 120;
+    setTimeout(()=>{ geo.classList.add('on'); }, total);
+  }
+
+  window.addEventListener('load', draw);
+  window.addEventListener('resize', draw);
+  window.addEventListener('scroll', draw, {passive:true});
+})();
+</script>
+</body>
+</html>
