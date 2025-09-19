@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sección Geovisor con tarjetas diagonales</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #faf6f5;
+    margin: 0;
+    padding: 40px 0;
+  }
+  /* Contenedor principal de la sección */
+  .geovisor-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  /* Título principal */
+  .geovisor-section h2 {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #e85564;
+  }
+  /* Tarjeta genérica que agrupa cabecera y cuerpo */
+  .card {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+  /* Efecto de “sombra” desplazada que se muestra detrás de cada tarjeta */
+  .card::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    right: -8px;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: #e6e8f8;
+    z-index: -1;
+  }
+  /* Cabecera con borde diagonal */
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: #e85564;
+    color: #fff;
+    /* corte diagonal en el borde derecho */
+    clip-path: polygon(0 0, 85% 0, 100% 100%, 0% 100%);
+    transition: background 0.4s ease;
+  }
+  /* Ajustes de cabecera en tarjetas pequeñas */
+  .card.small .card-header {
+    padding: 16px 20px;
+  }
+  /* Degradado al pasar el mouse por la cabecera */
+  .card-header:hover {
+    background: linear-gradient(90deg, #e85564 0%, #ff847c 100%);
+  }
+  /* Contenedor del icono en la cabecera */
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 16px;
+  }
+  .card.small .card-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .card-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+  /* Cuerpo del texto */
+  .card-body {
+    padding: 16px 24px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+  }
+  .card.small .card-body {
+    font-size: 13px;
+  }
+  /* Dimensiones de las tarjetas */
+  .card.large {
+    max-width: 500px;
+    margin: 0 auto 64px;
+  }
+  .card.small {
+    flex: 1 1 calc(33.333% - 20px);
+    min-width: 250px;
+    margin-bottom: 40px;
+  }
+  /* Contenedor flexible para las tarjetas inferiores */
+  .cards-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: space-between;
+  }
+  /* Subtítulo para cada bloque de tarjetas */
+  .category-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 40px 0 24px;
+    color: #000;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="geovisor-section">
+    <h2>Geovisor</h2>
+    <!-- Tarjeta principal -->
+    <div class="card large">
+      <div class="card-header">
+        <span>Visor Cartográfico</span>
+        <div class="card-icon">
+          <!-- Icono de ubicación -->
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" />
+          </svg>
+        </div>
+      </div>
+      <div class="card-body">
+        Síntesis de brechas e intervenciones en vivienda, titulación, acceso a servicios básicos y acceso a infraestructura y equipamiento urbano.
+      </div>
+    </div>
+
+    <!-- Segunda sección -->
+    <div class="category-title">Construcción y Saneamiento</div>
+    <div class="cards-row">
+      <!-- Tarjeta pequeña 1 -->
+      <div class="card small">
+        <div class="card-header">
+          <span>Geovivienda Verde</span>
+          <div class="card-icon">
+            <!-- Icono de hoja -->
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C16 2 20 6 20 10c0 4-4 8-8 8s-8-4-8-8c0-4 4-8 8-8zm0 4c-2.21 0-4 1.79-4 4 0 2.21 1.79 4 4 4s4-1.79 4-4c0-2.21-1.79-4-4-4z" />
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          Plataforma integral diseñada para visualizar y gestionar información espacial relacionada con la gestión ambiental.
+        </div>
+      </div>
+      <!-- Tarjeta pequeña 2 -->
+      <div class="card small">
+        <div class="card-header">
+          <span>Visor de mapas DATASS</span>
+          <div class="card-icon">
+            <!-- Icono de capas/mapas -->
+            <svg viewBox="0 0 24 24">
+              <path d="M3 6l9 4 9-4-9-4-9 4zm9 6l-9-4v8l9 4 9-4V8l-9 4z" />
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          Información georreferenciada sobre abastecimiento de agua y saneamiento en el ámbito rural y la información de otras instituciones.
+        </div>
+      </div>
+      <!-- Tarjeta pequeña 3 -->
+      <div class="card small">
+        <div class="card-header">
+          <span>Tablero de control DATASS</span>
+          <div class="card-icon">
+            <!-- Icono de tablero/grafico -->
+            <svg viewBox="0 0 24 24">
+              <path d="M3 13h2v8H3v-8zm4-6h2v14H7V7zm4 4h2v10h-2V11zm4-2h2v12h-2V9zm4-4h2v16h-2V5z" />
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          Cuadros y gráficos dinámicos sobre acceso a servicios de saneamiento, prestadores y sistemas de agua.
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
