@@ -1,3 +1,4 @@
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -28,6 +29,7 @@
     details[open] .chev{ transform: rotate(180deg) }
     .section{ padding:14px 16px 18px; border-top:1px solid var(--stroke) }
 
+    .subhead{font-weight:900; margin:10px 0 8px; color:var(--muted); letter-spacing:.2px}
     .grid{ display:grid; gap:10px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
     .btn{
       display:block; text-decoration:none; color:inherit; font-weight:800;
@@ -72,7 +74,9 @@
       <div class="section">
         <div class="grid">
           <a class="btn" href="caratula-1.html" target="_blank">Carátula 1</a>
-          <a class="btn v2" href="caratula-2.html" target="_blank">Carátula 2</a>
+          <a class="btn" href="caratula-2.html" target="_blank">Carátula 2</a>
+          <!-- NUEVA -->
+          <a class="btn" href="caratula-3.html" target="_blank">Carátula 3</a>
         </div>
         <div class="note">Pasa el mouse para ver mini-preview. Si la página bloquea la incrustación, puedes usar <code>data-thumb="ruta/a/miniatura.jpg"</code> en el botón.</div>
       </div>
@@ -87,10 +91,11 @@
       <div class="section">
         <div class="grid">
           <a class="btn" href="login-usuario1.html" target="_blank">Login usuario 1</a>
-          <!-- NUEVO -->
           <a class="btn" href="botones1.html" target="_blank">Botones 1</a>
+          <!-- El archivo tiene un espacio en el nombre; se enlaza escapando el espacio -->
+          <a class="btn" href="botones%20-menu-1.html" target="_blank">Botones Menú 1</a>
         </div>
-        <div class="note">Aún sin contenidos.</div>
+        <div class="note">Componentes sueltos y utilitarios.</div>
       </div>
     </details>
 
@@ -101,16 +106,35 @@
         📄 Páginas Secundarias
       </summary>
       <div class="section">
+        <div class="subhead">Cuerpos</div>
         <div class="grid">
           <a class="btn" href="cuerpo-1.html" target="_blank">Cuerpo 1</a>
-          <!-- NUEVOS -->
+        </div>
+
+        <div class="subhead">Componentes / Botones</div>
+        <div class="grid">
           <a class="btn" href="botones-cuerpo-1.html" target="_blank">Botones Cuerpo 1</a>
           <a class="btn" href="botones-cuerpo-2.html" target="_blank">Botones Cuerpo 2</a>
           <a class="btn" href="botones-cuerpo-efecto.html" target="_blank">Botones Cuerpo Efecto</a>
+        </div>
+
+        <div class="subhead">Flujos / Ramificación</div>
+        <div class="grid">
           <a class="btn" href="ramificacion-1.html" target="_blank">Ramificación 1</a>
           <a class="btn" href="ramificacion-2.html" target="_blank">Ramificación 2</a>
+          <a class="btn" href="ramificacion-mas-botones.html" target="_blank">Ramificación + Botones</a>
         </div>
-        <div class="note">Aquí se listan páginas adicionales.</div>
+
+        <div class="subhead">Combinaciones / Unión</div>
+        <div class="grid">
+          <a class="btn" href="union-1-ramificacion-cuerpo.html" target="_blank">Unión 1 (Ramificación + Cuerpo)</a>
+          <a class="btn" href="union-2.html" target="_blank">Unión 2</a>
+          <a class="btn" href="union-3.html" target="_blank">Unión 3</a>
+          <a class="btn" href="union-4.html" target="_blank">Unión 4</a>
+          <a class="btn" href="union-5.html" target="_blank">Unión 5</a>
+        </div>
+
+        <div class="note">Organizado por tipo: cuerpos, componentes, flujos y combinaciones.</div>
       </div>
     </details>
   </div>
