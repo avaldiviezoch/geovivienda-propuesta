@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Pilares → Encienden Geovisor</title>
+<style>
+  /* ===== Base ===== */
+  body{
+    font-family:sans-serif;
+    background:#faf6f5;
+    margin:0;
+    color:#333;
+  }
+
+  /* ===== BLOQUE 1: Ramificación (líneas detrás) ===== */
+  .conector{width:680px;margin:40px auto 32px;position:relative;isolation:isolate;z-index:0}
+  .fila{display:flex;justify-content:space-between;position:relative}
+  .nodo{
+    position:relative;width:200px;height:200px;border-radius:16px;border:2px solid #e0e0e0;
+    background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1);z-index:1
+  }
+  .nodo img{width:100%;height:100%;object-fit:cover;object-position:center;border-radius:14px;position:relative;z-index:2}
+
+  /* Línea superior: dos mitades DESDE LOS BORDES */
+  .fila.superior::before,
+  .fila.superior::after{
+    content:"";position:absolute;top:50%;height:2px;background:#000;transform:scaleX(0);z-index:-1
+  }
+  .fila.superior::before{left:200px;width:140px;transform-origin:left;animation:dibujarLineaSupIzq 1s ease-out forwards}
+  .fila.superior::after {left:340px;width:140px;transform-origin:right;animation:dibujarLineaSupDer 1s ease-out forwards}
+
+  /* Ramas y línea inferior (detrás) */
+  .nodo.rama::after{
+    content:"";position:absolute;top:100%;left:50%;width:2px;height:100px;background:#000;
+    transform-origin:top center;transform:scaleY(0);animation:dibujarRama .6s ease-out forwards 1s;z-index:-1
+  }
+  .fila.inferior{margin-top:100px;justify-content:space-between;overflow:visible;position:relative}
+  .fila.inferior::after{
+    content:"";position:absolute;top:50%;left:50%;width:4px;height:100px;
+    background:linear-gradient(to bottom, #e85564, #ff847c, transparent);
+    transform-origin:top;transform:scaleY(0);animation:dibujarLineaAbajo .8s ease-out forwards 2.2s;
+    z-index:-1;box-shadow:0 0 10px rgba(232,85,100,.5)
+  }
+  .fila.inferior::after::before{
+    content:"";position:absolute;top:0;left:50%;width:8px;height:8px;border-radius:50%;
+    background:#e85564;transform:translateX(-50%);animation:brilloLinea 1s ease-in-out infinite 2.2s
+  }
+  .nodo.join-left::after,.nodo.join-right::after{
+    content:"";position:absolute;top:50%;height:2px;background:#000;width:140px;transform:scaleX(0);z-index:-2
+  }
+  .nodo.join-left::after{left:100%;transform-origin:left;animation:dibujarLineaIzq 1.2s ease-out forwards 1.6s}
+  .nodo.join-right::after{right:100%;transform-origin:right;animation:dibujarLineaDer 1.2s ease-out forwards 1.6s}
+
+  /* Animaciones de líneas */
+  @keyframes dibujarLineaSupIzq {to{transform:scaleX(1)}} @keyframes dibujarLineaSupDer {to{transform:scaleX(1)}}
+  @keyframes dibujarRama {to{transform:scaleY(1)}}        @keyframes dibujarLineaIzq {to{transform:scaleX(1)}}
+  @keyframes dibujarLineaDer {to{transform:scaleX(1)}}    @keyframes dibujarLineaAbajo {to{transform:scaleY(1)}}
+  @keyframes brilloLinea{
+    0%,100%{transform:translateX(-50%) translateY(0);opacity:1}
+    50%{transform:translateX(-50%) translateY(100px);opacity:0.3}
+  }
+
+  /* ===== BLOQUE 2: Geovisor ===== */
+  :root{
+    --rojo:#e85564; --rojo2:#ff847c; --bg:#faf6f5;
+    --card-h:260px; --hdr-h:72px; --gap:24px; --radius:12px;
+    --elev0:0 4px 8px rgba(0,0,0,.10); --elev1:0 10px 18px rgba(0,0,0,.18);
+  }
+  *{box-sizing:border-box}
+  .wrapper{max-width:1100px;margin:0 auto;padding:36px 20px;perspective:1200px}
+  .section{margin-bottom:36px}
+  .section-title{text-align:center;font-size:28px;font-weight:800;color:var(--rojo);margin:8px 0 20px}
+  .cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--gap)}
+  .cards-row.cols-3{grid-template-columns:repeat(3,minmax(280px,1fr))}
+  .cards-row.cols-3 .card:first-child{grid-column:2;justify-self:center}
+  @media (max-width:900px){.cards-row.cols-3{grid-template-columns:repeat(2,minmax(260px,1fr))}.cards-row.cols-3 .card:first-child{grid-column:1 / -1}}
+  @media (max-width:560px){.cards-row.cols-3{grid-template-columns:1fr}}
+  .card{
+    position:relative;height:var(--card-h);background:#fff;border-radius:var(--radius);
+    border:1px solid #efe9e9;overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:var(--elev0);transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;
+    transform-style:preserve-3d;opacity:0;transform:translateZ(-300px) scale(.7)
+  }
+  .card:hover{box-shadow:var(--elev1);transform:scale(1.03)}
+  .card.in{opacity:1;transform:translateZ(0) scale(1)}
+  .card-header{
+    height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;background:var(--rojo);color:#fff;font-weight:700;letter-spacing:.2px
+  }
+  .card-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#fff}
+  .card-icon svg{width:100%;height:100%;fill:currentColor}
+  .card-body{flex:1;padding:12px 16px 16px;font-size:14px;line-height:1.45;color:#2f3845;overflow:hidden;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical}
+
+  /* ===== EFECTO “encender el Geovisor” ===== */
+  .geovisor-stage{position:relative}
+  .geovisor-stage::before{
+    content:"";position:absolute;top:-80px;left:50%;transform:translateX(-50%) scale(.7);
+    width:min(1000px,95vw);height:600px;pointer-events:none;z-index:0;
+    background:radial-gradient(ellipse at 50% 0%, rgba(232,85,100,.4) 0%, rgba(232,85,100,.25) 40%, rgba(232,85,100,.1) 60%, rgba(232,85,100,0) 80%);
+    opacity:0;filter:blur(4px);animation:aura 1.8s ease-out forwards
+  }
+  .geovisor-stage.active::before{animation:aura 1.8s ease-out forwards}
+  @keyframes aura{
+    0%{opacity:0;transform:translateX(-50%) scale(.65);filter:blur(4px)}
+    30%{opacity:1;filter:blur(2px)}
+    100%{opacity:0;transform:translateX(-50%) scale(1.1);filter:blur(6px)}
+  }
+
+  /* Efecto de partículas */
+  .geovisor-stage::after{
+    content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:100px;height:100px;pointer-events:none;z-index:1;
+    background:radial-gradient(circle, rgba(255,255,255,.8) 0%, rgba(232,85,100,.5) 50%, transparent 70%);
+    opacity:0;animation:particulas 1.5s ease-out forwards 2.8s
+  }
+  @keyframes particulas{
+    0%{opacity:0;transform:translateX(-50%) scale(0)}
+    20%{opacity:0.8}
+    100%{opacity:0;transform:translateX(-50%) scale(2)}
+  }
+
+  /* Glow + anillo de expansión + vibración */
+  .card.glow{
+    box-shadow:0 16px 32px rgba(232,85,100,.5), 0 0 0 0 rgba(232,85,100,.4);
+    animation:bump 0.5s ease-out, ring 1.2s ease-out 0.1s, vibrate 0.3s ease-in-out 0.5s 2
+  }
+  @keyframes bump{
+    0%{transform:translateZ(0) scale(1)}
+    40%{transform:translateZ(0) scale(1.05)}
+    100%{transform:translateZ(0) scale(1)}
+  }
+  @keyframes ring{
+    0%{box-shadow:0 16px 32px rgba(232,85,100,.5), 0 0 0 0 rgba(232,85,100,.4)}
+    100%{box-shadow:0 16px 32px rgba(232,85,100,.3), 0 0 0 40px rgba(232,85,100,0)}
+  }
+  @keyframes vibrate{
+    0%,100%{transform:translateZ(0) scale(1)}
+    50%{transform:translateZ(0) scale(1.01) translateX(2px)}
+  }
+
+  /* Destello (lens flare) opcional */
+  .card.glow::before{
+    content:"";position:absolute;top:-20px;left:50%;transform:translateX(-50%);
+    width:200px;height:200px;pointer-events:none;z-index:2;
+    background:radial-gradient(circle, rgba(255,255,255,.6) 0%, transparent 70%);
+    opacity:0;animation:flare 0.8s ease-out forwards 2.8s
+  }
+  @keyframes flare{
+    0%{opacity:0;transform:translateX(-50%) scale(0.5)}
+    50%{opacity:0.7}
+    100%{opacity:0;transform:translateX(-50%) scale(1.5)}
+  }
+
+  /* Respeta accesibilidad */
+  @media (prefers-reduced-motion:reduce){
+    .fila.superior::before,.fila.superior::after,.nodo.rama::after,.fila.inferior::after,
+    .nodo.join-left::after,.nodo.join-right::after,.geovisor-stage::before,.geovisor-stage::after,
+    .card,.card::before{
+      animation:none!important;transform:none!important;opacity:1!important
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- RAMIFICACIÓN -->
+  <div class="conector">
+    <div class="fila superior">
+      <div class="nodo rama">
+        <img src="https://lh3.googleusercontent.com/d/1i8CwW-eOf-Pd2ANa6o7X6yaFOcP5KpC7=w1000" alt="Imagen A">
+      </div>
+      <div class="nodo">
+        <img src="https://lh3.googleusercontent.com/d/1Ht4cpFniu4yNOJ-M3A003PSEmo89fsVk=w1000" alt="Imagen B">
+      </div>
+      <div class="nodo rama">
+        <img src="https://lh3.googleusercontent.com/d/16PFDGwh-xesWMdmsq_SpXgwwqwUiKfBk=w1000" alt="Imagen C">
+      </div>
+    </div>
+    <div class="fila inferior">
+      <div class="nodo join-left">
+        <img src="https://lh3.googleusercontent.com/d/1Yg8K4w6hDMz_EZ8n6otQNAmFIPB16xCG=w1000" alt="Imagen D">
+      </div>
+      <div class="nodo join-right">
+        <img src="https://lh3.googleusercontent.com/d/1y0YcBuWlZGH7ulNQEzgyGqvIk9IxH34a=w1000" alt="Imagen E">
+      </div>
+    </div>
+  </div>
+
+  <!-- GEOVISOR -->
+  <div class="wrapper">
+    <div class="section geovisor-stage" id="stage">
+      <h2 class="section-title">Geovisor</h2>
+      <div class="cards-row cols-3">
+        <div class="card" id="visor">
+          <div class="card-header">
+            <span>Visor Cartográfico</span>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="#fff"/></svg>
+            </div>
+          </div>
+          <div class="card-body">
+            Síntesis de brechas e intervenciones en vivienda, titulación, acceso a servicios básicos y acceso a infraestructura y equipamiento urbano.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const stage = document.getElementById('stage');
+    const visor = document.getElementById('visor');
+
+    // Entrada normal de las cards
+    const cards = Array.from(document.querySelectorAll('.card'));
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach(c => c.classList.add('in'));
+    } else {
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach((e)=>{
+          if(e.isIntersecting){
+            const idx = cards.indexOf(e.target);
+            e.target.style.transitionDelay = (idx % 8) * 100 + 'ms';
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      }, {threshold:0.15});
+      cards.forEach(c => io.observe(c));
+    }
+
+    // “Encender” el Geovisor cuando la línea central termina
+    setTimeout(() => {
+      stage.classList.add('active');
+      visor.classList.add('glow');
+      setTimeout(() => visor.classList.remove('glow'), 2000);
+    }, 3000); // Ajustado a 3s para sincronizar con la línea descendente
+  });
+</script>
+</body>
+</html>
