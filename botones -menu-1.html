@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inicio — Plantilla Pro UI/UX</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    /* ---------- Reset suave + tipografía ---------- */
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    :root{
+      /* ---------- Design tokens ---------- */
+      --brand:#c62a4b;         /* rojo MVCS-like */
+      --brand-2:#ef6a88;       /* acento */
+      --ink:#0b1020;           /* texto principal (claro) */
+      --muted:#5e6472;         /* texto secundario */
+      --bg:#fff6f3;            /* fondo claro */
+      --panel:#ffffff;         /* tarjetas y paneles */
+      --stroke:#e9e2df;        /* bordes suaves */
+      --radius:14px;
+      --shadow:0 10px 30px rgba(0,0,0,.12);
+      --container:1200px;      /* ancho max */
+      --space:8px;             /* base 8px */
+    }
+    [data-theme="dark"]{
+      --bg:#0b1020; --panel:#0f172a; --ink:#e5e7eb; --muted:#9aa4b2; --stroke:#1c2542;
+      --shadow:0 12px 30px rgba(0,0,0,.28);
+    }
+
+    body{background:var(--bg);color:var(--ink)}
+    .container{max-width:var(--container);margin:0 auto;padding:0 calc(var(--space)*2)}
+    .grid{display:grid;gap:calc(var(--space)*3)}
+    @media (min-width:768px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} }
+
+    /* ---------- Navbar pegajoso + progreso ---------- */
+    .nav-wrap{position:sticky;top:0;z-index:50;background:color-mix(in oklab, var(--bg) 90%, #fff 10%);backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--stroke)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px}
+    .brand{font-weight:700;letter-spacing:.3px}
+    .menu{display:flex;gap:18px;align-items:center}
+    .menu a{padding:8px 10px;border-radius:10px}
+    .menu a.active{background:color-mix(in oklab, var(--brand) 12%, transparent);color:var(--brand)}
+    .progress{height:3px;background:linear-gradient(90deg,var(--brand),var(--brand-2));width:0}
+
+    /* ---------- Secciones ---------- */
+    section{padding:calc(var(--space)*8) 0;border-bottom:1px solid var(--stroke)}
+    section:last-of-type{border-bottom:none}
+    h1{font-size:clamp(28px,4vw,40px);line-height:1.2;margin:0 0 8px}
+    h2{font-size:clamp(22px,3vw,28px);line-height:1.25;margin:0 0 12px}
+    p.lead{color:var(--muted);max-width:68ch}
+
+    /* ---------- Componentes ---------- */
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:1px solid var(--stroke);box-shadow:var(--shadow);background:var(--brand);color:#fff;font-weight:600;transition:transform .12s ease,filter .12s ease}
+    .btn:hover{transform:translateY(-1px);filter:saturate(1.05)}
+    .btn.ghost{background:transparent;color:var(--brand);border-color:color-mix(in oklab, var(--brand) 40%, var(--stroke) 60%);box-shadow:none}
+    .card{background:var(--panel);border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+    .badge{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid var(--stroke);font-size:12px;color:var(--muted)}
+    .muted{color:var(--muted)}
+    .hero{display:grid;gap:20px}
+    @media (min-width:900px){ .hero{grid-template-columns:1.2fr .8fr;align-items:center} }
+
+    /* ---------- Formularios ---------- */
+    .field{display:grid;gap:6px;margin-bottom:14px}
+    .input,.select,.textarea{width:100%;padding:12px 14px;border:1px solid var(--stroke);border-radius:12px;background:var(--panel);color:var(--ink)}
+    .input:focus,.select:focus,.textarea:focus{outline:3px solid color-mix(in oklab, var(--brand) 25%, transparent);border-color:var(--brand)}
+
+    /* ---------- Tablas ---------- */
+    .table{width:100%;border-collapse:collapse;border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
+    .table th,.table td{padding:12px 10px;border-bottom:1px solid var(--stroke);text-align:left}
+    .table thead th{background:color-mix(in oklab, var(--bg) 85%, var(--brand) 15%);color:var(--ink);font-weight:700}
+    .table tr:hover td{background:color-mix(in oklab, var(--bg) 90%, var(--brand) 10%);}
+
+    /* ---------- Utilidades ---------- */
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .center{display:grid;place-items:center}
+    .hide{display:none}
+    .mt-2{margin-top:16px}.mt-3{margin-top:24px}.mt-4{margin-top:32px}
+    .w-100{width:100%}
+    .sticky-cta{position:fixed;right:16px;bottom:16px}
+
+    /* ---------- Motion – respeta reduced motion ---------- */
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <div class="nav-wrap">
+    <div class="progress" id="progress"></div>
+    <nav class="nav container" aria-label="Principal">
+      <div class="brand">GeoVivienda • UI/UX Kit</div>
+      <div class="menu" id="menu">
+        <a href="#inicio">Inicio</a>
+        <a href="#features">Características</a>
+        <a href="#ejemplos">Ejemplos</a>
+        <a href="#contacto">Contacto</a>
+        <button id="theme" class="btn ghost" aria-label="Cambiar tema">🌓</button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- INICIO / HERO -->
+  <section id="inicio" class="container">
+    <div class="hero">
+      <div>
+        <span class="badge">Plantilla base • Accesible • Rápida</span>
+        <h1>Construye páginas limpias y profesionales en minutos</h1>
+        <p class="lead">Tokens de diseño, componentes consistentes y utilidades para que te enfoques en el contenido. Incluye scroll suave, scroll-spy, modo oscuro y barra de progreso.</p>
+        <div class="row mt-3">
+          <a class="btn" href="#features">Ver características</a>
+          <a class="btn ghost" href="#ejemplos">Ver ejemplos</a>
+        </div>
+      </div>
+      <div class="card">
+        <h2 class="mt-0">Checklist rápido</h2>
+        <ul class="muted">
+          <li>Jerarquía + espaciado 8px</li>
+          <li>Contraste AA</li>
+          <li>Estados y feedback</li>
+          <li>Responsive & performance</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="container">
+    <h2>Características clave</h2>
+    <div class="grid cols-3 mt-3">
+      <div class="card">
+        <strong>Tokens & Temas</strong>
+        <p class="muted">Variables CSS para marca, espaciado, sombras y radio. Alterna claro/oscuro sin reescribir estilos.</p>
+      </div>
+      <div class="card">
+        <strong>Navbar + Scrollspy</strong>
+        <p class="muted">Menú que resalta la sección activa y scroll suave. Barra de progreso indica lectura.</p>
+      </div>
+      <div class="card">
+        <strong>Componentes</strong>
+        <p class="muted">Botones, tarjetas, badges, formularios y tablas accesibles listos para reutilizar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EJEMPLOS -->
+  <section id="ejemplos" class="container">
+    <h2>Ejemplos rápidos</h2>
+    <div class="grid cols-3 mt-3">
+      <div class="card">
+        <strong>Formulario</strong>
+        <label class="field">
+          <span>Correo institucional</span>
+          <input class="input" type="email" placeholder="usuario@vivienda.gob.pe" aria-describedby="hint1"/>
+          <small id="hint1" class="muted">Usa tu correo @vivienda.gob.pe</small>
+        </label>
+        <label class="field">
+          <span>Mensaje</span>
+          <textarea class="textarea" rows="3" placeholder="Escribe tu mensaje…"></textarea>
+        </label>
+        <button class="btn w-100">Enviar</button>
+      </div>
+      <div class="card">
+        <strong>Tarjeta</strong>
+        <p class="muted">Un bloque para destacar KPI, anuncio o enlace importante.</p>
+        <a class="btn mt-2" href="#inicio">Acción</a>
+      </div>
+      <div class="card">
+        <strong>Tabla</strong>
+        <table class="table mt-2" role="table">
+          <thead><tr><th>Indicador</th><th>Valor</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>Déficit Urbano</td><td>18.2%</td><td><span class="badge">Estable</span></td></tr>
+            <tr><td>Déficit Rural</td><td>29.7%</td><td><span class="badge">Atención</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="container">
+    <h2>Contacto</h2>
+    <p class="lead">Integramos este kit con tus apps (GeoVivienda, StoryMaps, Dashboards, Power BI incrustado, etc.).</p>
+    <div class="row mt-2">
+      <a class="btn" href="#inicio">Volver arriba</a>
+      <a class="btn ghost" href="#features">Más detalles</a>
+    </div>
+  </section>
+
+  <!-- CTA flotante -->
+  <a class="btn sticky-cta" href="#contacto" aria-label="Ir a contacto">Contáctanos</a>
+
+  <script>
+    // ---------- Modo oscuro recordado ----------
+    const themeBtn = document.getElementById('theme');
+    const root = document.documentElement;
+    const saved = localStorage.getItem('theme');
+    if(saved){ document.documentElement.setAttribute('data-theme', saved); }
+    themeBtn.addEventListener('click', ()=>{
+      const cur = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', cur);
+      localStorage.setItem('theme', cur);
+    });
+
+    // ---------- Scroll suave (nativo si no hay reduced motion) ----------
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(!el) return;
+        if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+          e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      });
+    });
+
+    // ---------- Barra de progreso ----------
+    const prog = document.getElementById('progress');
+    const setProgress = ()=>{
+      const h = document.documentElement;
+      const scrolled = (h.scrollTop)/(h.scrollHeight - h.clientHeight);
+      prog.style.width = (scrolled*100).toFixed(2) + '%';
+    };
+    setProgress(); window.addEventListener('scroll', setProgress, {passive:true});
+
+    // ---------- Scrollspy ----------
+    const links = [...document.querySelectorAll('.menu a[href^="#"]')];
+    const ids = links.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+    const spy = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        const i = ids.indexOf(entry.target);
+        if(i>=0){
+          const link = links[i];
+          if(entry.isIntersecting){ links.forEach(l=>l.classList.remove('active')); link.classList.add('active'); }
+        }
+      });
+    }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+    ids.forEach(s=>spy.observe(s));
+  </script>
+</body>
+</html>
