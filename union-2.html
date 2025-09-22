@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Pilares y Geovisor</title>
+<style>
+  /* Estilo base */
+  body {
+    font-family: sans-serif;
+    background: #faf6f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  /* ====== BLOQUE DE RAMIFICACIÓN ====== */
+  .conector {
+    width: 680px;
+    margin: 40px auto;
+    position: relative;
+    isolation: isolate; /* aísla su propio contexto para el z-index */
+    z-index: 0;
+  }
+  .fila {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+  }
+  .nodo {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 16px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    z-index: 1;
+  }
+  .nodo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: relative;
+    z-index: 2;
+  }
+  .fila.superior::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    right: 100px;
+    height: 2px;
+    background: #000;
+    transform-origin: center;
+    transform: scaleX(0);
+    animation: dibujarLineaSuperior 1s ease-out forwards;
+    z-index: -1;
+  }
+  .nodo.rama::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 2px;
+    height: 100px;
+    background: #000;
+    transform-origin: top center;
+    transform: scaleY(0);
+    animation: dibujarRama 0.6s ease-out forwards 1s;
+    z-index: -1;
+  }
+  .fila.inferior {
+    margin-top: 100px;
+    justify-content: space-between;
+    overflow: visible;
+    position: relative;
+  }
+  .fila.inferior::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 100px;
+    background: linear-gradient(to bottom, #000, var(--rojo)); /* Gradient for glowing effect */
+    box-shadow: 0 0 10px var(--rojo), 0 0 20px var(--rojo2); /* Glowing effect */
+    transform-origin: top;
+    transform: scaleY(0);
+    animation: dibujarLineaAbajo 0.6s ease-out forwards 2.2s;
+    z-index: -1;
+  }
+  .nodo.join-left::after,
+  .nodo.join-right::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    background: #000;
+    width: 140px;
+    transform: scaleX(0);
+    z-index: -3;
+  }
+  .nodo.join-left::after {
+    left: 100%;
+    transform-origin: left;
+    animation: dibujarLineaIzq 1.2s ease-out forwards 1.6s;
+  }
+  .nodo.join-right::after {
+    right: 100%;
+    transform-origin: right;
+    animation: dibujarLineaDer 1.2s ease-out forwards 1.6s;
+  }
+  @keyframes dibujarLineaSuperior { to { transform: scaleX(1); } }
+  @keyframes dibujarRama { to { transform: scaleY(1); } }
+  @keyframes dibujarLineaIzq { to { transform: scaleX(1); } }
+  @keyframes dibujarLineaDer { to { transform: scaleX(1); } }
+  @keyframes dibujarLineaAbajo {
+    0% { transform: scaleY(0); box-shadow: 0 0 10px var(--rojo), 0 0 20px var(--rojo2); }
+    100% { transform: scaleY(1); box-shadow: 0 0 20px var(--rojo), 0 0 30px var(--rojo2); }
+  }
+  /* Glowing effect for Geovisor card */
+  @keyframes igniteGeovisor {
+    0% {
+      box-shadow: var(--elev0);
+      border-color: #efe9e9;
+      transform: translateZ(0) scale(1);
+      background: #fff;
+    }
+    50% {
+      box-shadow: 0 0 20px var(--rojo), 0 0 40px var(--rojo2);
+      border-color: var(--rojo);
+      transform: translateZ(0) scale(1.05);
+      background: linear-gradient(180deg, #fff, rgba(232, 85, 100, 0.1));
+    }
+    100% {
+      box-shadow: var(--elev1);
+      border-color: #efe9e9;
+      transform: translateZ(0) scale(1);
+      background: #fff;
+    }
+  }
+  /* ====== BLOQUE DE TARJETAS (GEOVISOR) ====== */
+  :root{
+    --rojo:#e85564;
+    --rojo2:#ff847c;
+    --bg:#faf6f5;
+    --card-h:260px;
+    --hdr-h:72px;
+    --gap:24px;
+    --radius:12px;
+    --elev0: 0 4px 8px rgba(0,0,0,.10);
+    --elev1: 0 10px 18px rgba(0,0,0,.18);
+  }
+  *{box-sizing:border-box}
+  .wrapper{max-width:1100px;margin:0 auto;padding:36px 20px; perspective:1200px;}
+  .section{margin-bottom:36px}
+  .section-title{text-align:center;font-size:28px;font-weight:800;color:var(--rojo);margin:8px 0 20px}
+  .divider{height:2px;background:var(--rojo);opacity:.6;margin:28px 0}
+  .cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--gap)}
+  .cards-row.cols-3{grid-template-columns:repeat(3,minmax(280px,1fr))}
+  .cards-row.cols-3 .card:first-child{grid-column:2;justify-self:center}
+  @media (max-width:900px){
+    .cards-row.cols-3{grid-template-columns:repeat(2,minmax(260px,1fr))}
+    .cards-row.cols-3 .card:first-child{grid-column:1 / -1}
+  }
+  @media (max-width:560px){.cards-row.cols-3{grid-template-columns:1fr}}
+  .card{
+    position:relative;height:var(--card-h);background:#fff;border-radius:var(--radius);
+    border:1px solid #efe9e9;overflow:hidden;display:flex;flex-direction:column;
+    box-shadow:var(--elev0);transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;
+    transform-style:preserve-3d;opacity:0;transform:translateZ(-300px) scale(.7)
+  }
+  .card:hover{box-shadow:var(--elev1);transform:scale(1.03)}
+  .card.in{opacity:1;transform:translateZ(0) scale(1)}
+  /* Apply ignite effect to Geovisor card only */
+  .section:first-child .card.in {
+    animation: igniteGeovisor 1s ease-out forwards 2.8s;
+  }
+  .card-header{
+    height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;
+    padding:0 16px;background:var(--rojo);color:#fff;font-weight:700;letter-spacing:.2px
+  }
+  .card-header:hover{background:linear-gradient(90deg,var(--rojo) 0%,var(--rojo2) 100%)}
+  .card-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#fff}
+  .card-icon svg{width:100%;height:100%;fill:currentColor}
+  .card-body{
+    flex:1;padding:12px 16px 16px;font-size:14px;line-height:1.45;color:#2f3845;
+    overflow:hidden;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical
+  }
+  @media (prefers-reduced-motion:reduce){
+    .card{opacity:1!important;transform:none!important;transition:none!important}
+    .section:first-child .card.in {animation: none !important;}
+  }
+  @media (max-width:640px){
+    :root{--card-h:280px;--hdr-h:70px;--gap:18px}
+    .section-title{font-size:24px}
+  }
+</style>
+</head>
+<body>
+  <!-- Título de la ramificación -->
+  <h2 style="text-align:center;font-weight:700;margin-top:40px;">Unión de nodos con imágenes y líneas animadas</h2>
+  <!-- Ramificación -->
+  <div class="conector">
+    <div class="fila superior">
+      <div class="nodo rama">
+        <img src="https://lh3.googleusercontent.com/d/1i8CwW-eOf-Pd2ANa6o7X6yaFOcP5KpC7" alt="Imagen A">
+      </div>
+      <div class="nodo">
+        <img src="https://lh3.googleusercontent.com/d/1Ht4cpFniu4yNOJ-M3A003PSEmo89fsVk" alt="Imagen B">
+      </div>
+      <div class="nodo rama">
+        <img src="https://lh3.googleusercontent.com/d/16PFDGwh-xesWMdmsq_SpXgwwqwUiKfBk" alt="Imagen C">
+      </div>
+    </div>
+    <div class="fila inferior">
+      <div class="nodo join-left">
+        <img src="https://lh3.googleusercontent.com/d/1Yg8K4w6hDMz_EZ8n6otQNAmFIPB16xCG" alt="Imagen D">
+      </div>
+      <div class="nodo join-right">
+        <img src="https://lh3.googleusercontent.com/d/1y0YcBuWlZGH7ulNQEzgyGqvIk9IxH34a" alt="Imagen E">
+      </div>
+    </div>
+  </div>
+  <!-- Contenido del Geovisor y secciones -->
+  <div class="wrapper">
+    <!-- GEOVISOR -->
+    <div class="section">
+      <h2 class="section-title">Geovisor</h2>
+      <div class="cards-row cols-3">
+        <div class="card">
+          <div class="card-header">
+            <span>Visor Cartográfico</span>
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+            </div>
+          </div>
+          <div class="card-body">
+            Síntesis de brechas e intervenciones en vivienda, titulación, acceso a servicios básicos y acceso a infraestructura y equipamiento urbano.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <!-- CONSTRUCCIÓN Y SANEAMIENTO -->
+    <div class="section">
+      <h2 class="section-title">Construcción y Saneamiento</h2>
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-header"><span>Geovivienda Verde</span><div class="card-icon">🌿</div></div>
+          <div class="card-body">Plataforma integral diseñada para visualizar y gestionar información espacial relacionada con la gestión ambiental.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Visor de mapas DATASS</span><div class="card-icon">🗺️</div></div>
+          <div class="card-body">Información georreferenciada sobre abastecimiento de agua y saneamiento en el ámbito rural y otra información institucional.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Tablero de control DATASS</span><div class="card-icon">📊</div></div>
+          <div class="card-body">Cuadros y gráficos dinámicos sobre acceso a servicios de saneamiento, prestadores y sistemas de agua.</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <!-- VIVIENDA Y URBANISMO -->
+    <div class="section">
+      <h2 class="section-title">Vivienda y Urbanismo</h2>
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-header"><span>Soluciones de vivienda</span><div class="card-icon">🏠</div></div>
+          <div class="card-body">Promueve el acceso a viviendas dignas y sostenibles para familias y comunidades.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Títulos inscritos</span><div class="card-icon">📬</div></div>
+          <div class="card-body">Información de los asuntos inscritos en el registro de catastro, titulación y registro inmobiliario.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Geoplan</span><div class="card-icon">🧭</div></div>
+          <div class="card-body">Instrumento que impulsa la planificación territorial con enfoques de desarrollo sostenible y prevención del riesgo de desastres.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Visor SICCEP</span><div class="card-icon">🗂️</div></div>
+          <div class="card-body">Información georreferenciada de proyectos de inversión en vivienda.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Bono familiar habitacional</span><div class="card-icon">🏡</div></div>
+          <div class="card-body">Subsidio que permite a las familias adquirir, construir o mejorar su vivienda.</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <!-- GESTIÓN DEL RIESGO DE DESASTRES -->
+    <div class="section">
+      <h2 class="section-title">Gestión del Riesgo de Desastres</h2>
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-header"><span>Zonas expuestas a peligro</span><div class="card-icon">⚠️</div></div>
+          <div class="card-body">Áreas expuestas a peligros naturales o ambientales mediante análisis geográficos e históricos.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Microzonificación sísmica</span><div class="card-icon">🌐</div></div>
+          <div class="card-body">Estudios geotécnicos y sismológicos que evalúan la respuesta del suelo ante eventos sísmicos.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Visor Georiesgo</span><div class="card-icon">🧱</div></div>
+          <div class="card-body">Visualiza y evalúa riesgos geológicos, deslizamientos y movimientos sísmicos.</div>
+        </div>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <!-- HERRAMIENTAS DE ANÁLISIS Y SEGUIMIENTO -->
+    <div class="section">
+      <h2 class="section-title">Herramientas de Análisis y Seguimiento</h2>
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-header"><span>Monitoreo de proyectos</span><div class="card-icon">📈</div></div>
+          <div class="card-body">Seguimiento y evaluación de proyectos de inversión para asegurar su correcta ejecución.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Proyectos en inversión</span><div class="card-icon">🔁</div></div>
+          <div class="card-body">Información georreferenciada sobre proyectos en ejecución y planificación.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Transferencias</span><div class="card-icon">⚙️</div></div>
+          <div class="card-body">Herramienta en desarrollo para gestionar transferencias y asignaciones de recursos (en mantenimiento).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Animación de entrada desde el fondo -->
+  <script>
+    (function(){
+      const cards = Array.from(document.querySelectorAll('.card'));
+      if (!('IntersectionObserver' in window)){
+        cards.forEach(c => c.classList.add('in'));
+        return;
+      }
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach((e)=>{
+          if(e.isIntersecting){
+            const idx = cards.indexOf(e.target);
+            e.target.style.transitionDelay = (idx % 8) * 100 + 'ms';
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
+        });
+      }, {threshold:0.15});
+      cards.forEach(c => io.observe(c));
+    })();
+  </script>
+</body>
+</html>
