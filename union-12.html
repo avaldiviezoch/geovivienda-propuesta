@@ -89,17 +89,14 @@
     }
     @media (max-width:980px){ .cover .container{ grid-template-columns:1fr } }
 
-    /* Título principal SIEMPRE con espacios (gap) */
+    /* Título con espacios (gap) */
     .title{
       display:flex; flex-wrap:wrap; gap:.35ch;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       font-size:clamp(28px,5vw,64px); line-height:1.04; margin:.2rem 0 .6rem; font-weight:800;
       opacity:0; animation:fadeInUp 1s ease forwards;
     }
-    .title span{
-      display:inline-block; opacity:0; transform:translateY(20px);
-      animation:letterPop .6s ease forwards; animation-delay:calc(.05s * var(--i));
-    }
+    .title span{ display:inline-block; opacity:0; transform:translateY(20px); animation:letterPop .6s ease forwards; animation-delay:calc(.05s * var(--i)); }
     @keyframes fadeInUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
     @keyframes letterPop{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
 
@@ -111,10 +108,7 @@
     .art img{ width:100%; max-width:520px; height:auto; display:block; margin:auto; opacity:0; transform:scale(.82) rotate(-5deg); animation:artPop 1.2s ease forwards .6s, floaty 6s ease-in-out infinite 1.8s; position:relative; z-index:1 }
     @keyframes artPop{0%{opacity:0;transform:scale(.82) rotate(-5deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
     @keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-12px) rotate(1deg)}}
-    .cover::before{
-      content:""; position:absolute; inset:0; background:radial-gradient(circle at 70% 20%, rgba(198,42,75,.2) 0%, transparent 50%);
-      opacity:0; animation:particleBurst 2s ease-out forwards 1s; pointer-events:none; z-index:0;
-    }
+    .cover::before{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 70% 20%, rgba(198,42,75,.2) 0%, transparent 50%); opacity:0; animation:particleBurst 2s ease-out forwards 1s; pointer-events:none; z-index:0; }
     @keyframes particleBurst{0%{opacity:0;transform:scale(.5)}50%{opacity:.4}100%{opacity:0;transform:scale(1.5)}}
 
     .info-apartado{
@@ -206,7 +200,7 @@
       position:relative; background:#fff; border:1px solid #efe9e9; border-radius:16px;
       box-shadow:0 6px 14px rgba(0,0,0,.08);
       display:flex; align-items:center; justify-content:center; padding:22px;
-      height:170px; overflow:hidden;  /* <- logos más grandes */
+      height:170px; overflow:hidden;
       opacity:0; transform:translateY(26px) scale(.92) rotate(var(--rot,0deg));
       filter:blur(6px);
       transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--delay,0ms),
@@ -240,11 +234,7 @@
     .plancha img{ width:100%; height:auto; display:block; border-radius:12px }
 
     /* ===== FOOTER ===== */
-    footer{
-      border-top:1px solid var(--stroke);
-      background:#fff;
-      padding:28px 16px 36px;
-    }
+    footer{ border-top:1px solid var(--stroke); background:#fff; padding:28px 16px 36px; }
     .footer-wrap{max-width:var(--maxw); margin:0 auto; text-align:center; color:var(--muted)}
     .chips{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:14px}
     .chip{padding:6px 10px; border:1px solid #e6e0de; border-radius:999px; font-weight:700; font-size:13px; background:#fff; color:#6b7280}
@@ -408,7 +398,28 @@
 
     <div class="divider"></div>
 
-    <!-- COOPERANTES (logos más grandes) -->
+    <!-- NUEVA/RESTABLECIDA: ANÁLISIS SIG (para que el menú se pinte correctamente) -->
+    <div class="section" id="analisis">
+      <h2 class="section-title">Análisis SIG</h2>
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-header"><span>Capas temáticas</span><div class="card-icon">🗺️</div></div>
+          <div class="card-body">Conjunto de capas integradas para análisis territorial: usos de suelo, cobertura vegetal, pendientes y restricciones.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Indicadores territoriales</span><div class="card-icon">📈</div></div>
+          <div class="card-body">Cálculo de indicadores por provincia/distrito: densidad, accesibilidad, equipamientos y brechas de servicios.</div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Descarga de datos</span><div class="card-icon">⬇️</div></div>
+          <div class="card-body">Exporta resultados en formatos GeoJSON, SHP y CSV para uso en otros sistemas.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- COOPERANTES -->
     <div class="section partners" id="cooperantes" aria-labelledby="titulo-cooperantes">
       <h2 class="section-title" id="titulo-cooperantes">Herramientas de instituciones adscritas y cooperantes</h2>
 
