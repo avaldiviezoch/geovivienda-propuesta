@@ -236,6 +236,7 @@
     /* ===== FOOTER ===== */
     footer{ border-top:1px solid var(--stroke); background:#fff; padding:28px 16px 36px; }
     .footer-wrap{max-width:var(--maxw); margin:0 auto; text-align:center; color:var(--muted)}
+    /* (Se dejan las clases .chips/.chip por compatibilidad, pero no se usan) */
     .chips{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:14px}
     .chip{padding:6px 10px; border:1px solid #e6e0de; border-radius:999px; font-weight:700; font-size:13px; background:#fff; color:#6b7280}
     .social{display:flex; gap:12px; justify-content:center; margin:8px 0 12px}
@@ -398,7 +399,7 @@
 
     <div class="divider"></div>
 
-    <!-- NUEVA/RESTABLECIDA: ANÁLISIS SIG (para que el menú se pinte correctamente) -->
+    <!-- ANÁLISIS SIG -->
     <div class="section" id="analisis">
       <h2 class="section-title">Análisis SIG</h2>
       <div class="cards-row">
@@ -449,13 +450,7 @@
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-wrap">
-      <div class="chips" aria-hidden="true">
-        <span class="chip">GeoVivienda</span>
-        <span class="chip">MVCS</span>
-        <span class="chip">Bicentenario Perú 2021</span>
-        <span class="chip">Embajada de Suiza</span>
-        <span class="chip">COSUDE</span>
-      </div>
+      <!-- Eliminado el bloque de chips -->
 
       <div class="social" aria-label="Redes sociales del MVCS">
         <a href="https://www.facebook.com/viviendaperu" target="_blank" rel="noopener noreferrer" aria-label="Facebook MVCS">
