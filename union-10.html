@@ -185,60 +185,63 @@
     .card-body{ flex:1;padding:12px 16px 16px;font-size:14px;line-height:1.45;color:#2f3845;
       overflow:hidden;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical }
 
-    /* ===== COOPERANTES ===== */
+    /* ===== COOPERANTES: stickers gigantes sin fondo ===== */
     .partners{ margin-top:18px }
     .partners .section-title{ color:var(--rojo); font-weight:900 }
 
-    .partners-grid{
-      display:grid; grid-template-columns:repeat(4, minmax(160px,1fr));
-      gap:22px; align-items:stretch;
+    .stickers{
+      max-width:var(--maxw); margin:0 auto 8px;
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:clamp(26px,3.6vw,44px);
     }
-    @media (max-width:980px){ .partners-grid{grid-template-columns:repeat(3, minmax(140px,1fr));} }
-    @media (max-width:640px){ .partners-grid{grid-template-columns:repeat(2, minmax(130px,1fr));} }
+    @media (max-width:980px){ .stickers{ grid-template-columns:repeat(2,1fr) } }
+    @media (max-width:640px){ .stickers{ grid-template-columns:1fr } }
 
-    .coop-card{
-      position:relative; background:#fff; border:1px solid #efe9e9; border-radius:16px;
-      box-shadow:0 6px 14px rgba(0,0,0,.08);
-      display:flex; align-items:center; justify-content:center; padding:22px;
-      height:170px; overflow:hidden;
-      opacity:0; transform:translateY(26px) scale(.92) rotate(var(--rot,0deg));
-      filter:blur(6px);
-      transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--delay,0ms),
-                 transform .7s cubic-bezier(.2,.7,.2,1) var(--delay,0ms),
-                 filter .7s cubic-bezier(.2,.7,.2,1) var(--delay,0ms),
-                 box-shadow .3s ease;
+    .sticker{
+      display:flex; align-items:center; justify-content:center;
+      min-height:clamp(200px,24vw,300px);
+      transform:translateY(50px) scale(.9);
+      opacity:0; filter:blur(10px);
+      transition:transform .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),
+                 opacity .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),
+                 filter .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms);
     }
-    .coop-card.show{ opacity:1; transform:translateY(0) scale(1) rotate(0deg); filter:blur(0) }
-    .coop-card:hover{ transform:translateY(-4px) scale(1.03); box-shadow:0 12px 26px rgba(0,0,0,.12) }
-    .coop-card img{ width:100%; height:100%; object-fit:contain; object-position:center; user-select:none; pointer-events:none }
+    .sticker.show{ transform:translateY(0) scale(1); opacity:1; filter:blur(0) }
+    .sticker img{
+      max-width:100%;
+      max-height:clamp(160px,22vw,260px);
+      object-fit:contain;
+      filter:drop-shadow(0 10px 26px rgba(0,0,0,.18));
+    }
 
-    .coop-card::after{
-      content:""; position:absolute; top:-120%; left:-120%;
-      width:240%; height:240%;
-      background:linear-gradient(60deg, transparent 45%, rgba(255,255,255,.6) 50%, transparent 55%);
-      transform:translateX(-60%) rotate(10deg); opacity:0; pointer-events:none;
+    /* ===== RECONOCIMIENTO: 4 logos como cinta ===== */
+    .ribbon{
+      max-width:var(--maxw); margin:0 auto;
+      display:grid; grid-template-columns:repeat(4,1fr);
+      gap:clamp(22px,3vw,38px); align-items:center;
     }
-    .coop-card.shine::after{ animation:shine 900ms ease-out forwards }
-    .coop-card:hover::after{ animation:shine 900ms ease-out forwards }
-    @keyframes shine{ 0%{opacity:0; transform:translateX(-70%) rotate(10deg)} 20%{opacity:.6} 100%{opacity:0; transform:translateX(60%) rotate(10deg)} }
+    @media (max-width:880px){ .ribbon{ grid-template-columns:repeat(2,1fr) } }
+    @media (max-width:520px){ .ribbon{ grid-template-columns:1fr } }
 
-    /* ===== PLANCHA ===== */
-    .plancha{
-      background:#fff; border:1px solid #efe9e9; border-radius:16px;
-      padding:14px; box-shadow:0 10px 22px rgba(0,0,0,.10);
-      max-width:1100px; margin:0 auto;
-      opacity:0; transform:translateY(20px) scale(.98);
-      transition:opacity .6s ease, transform .6s ease;
+    .r-item{
+      display:flex; align-items:center; justify-content:center;
+      min-height:clamp(160px,18vw,220px);
+      transform:translateY(40px); opacity:0; filter:blur(10px);
+      transition:transform .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),
+                 opacity .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),
+                 filter .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms);
     }
-    .plancha.show{ opacity:1; transform:translateY(0) scale(1) }
-    .plancha img{ width:100%; height:auto; display:block; border-radius:12px }
+    .r-item.show{ transform:translateY(0); opacity:1; filter:blur(0) }
+    .r-item img{
+      max-width:96%; max-height:clamp(120px,16vw,200px);
+      object-fit:contain;
+      filter:drop-shadow(0 8px 22px rgba(0,0,0,.14));
+    }
+    .r-item:first-child img{ transform:scale(1.12); } /* GeoVivienda un poco más grande */
 
     /* ===== FOOTER ===== */
     footer{ border-top:1px solid var(--stroke); background:#fff; padding:28px 16px 36px; }
     .footer-wrap{max-width:var(--maxw); margin:0 auto; text-align:center; color:var(--muted)}
-    /* (Se dejan las clases .chips/.chip por compatibilidad, pero no se usan) */
-    .chips{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:14px}
-    .chip{padding:6px 10px; border:1px solid #e6e0de; border-radius:999px; font-weight:700; font-size:13px; background:#fff; color:#6b7280}
     .social{display:flex; gap:12px; justify-content:center; margin:8px 0 12px}
     .social a{width:36px;height:36px;border-radius:999px;border:1px solid #e6e0de;display:grid;place-items:center;background:#fff;color:#334155;text-decoration:none;transition:transform .15s ease, box-shadow .2s}
     .social a:hover{transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.12)}
@@ -255,14 +258,7 @@
       .art img{max-width:440px}
     }
 
-    /* =====================================================
-       THEME INSTITUCIONAL (aplicado con body.theme-institucional)
-       Paleta:
-       - Rojo  PANTONE 485C  : #E30613
-       - Gris  PANTONE 179-15: #474747
-       - Azul  PANTONE 109-16: #1E6EB6
-       - Cian  PANTONE 118-13: #5EBAD6
-       ===================================================== */
+    /* ===== THEME INSTITUCIONAL ===== */
     body.theme-institucional{
       --page-bg: color-mix(in srgb, #5EBAD6 10%, #ffffff);
       --ink: #474747;
@@ -270,10 +266,10 @@
       --stroke: color-mix(in srgb, #1E6EB6 12%, #e6e0de);
       --glass: color-mix(in srgb, #ffffff 78%, transparent);
 
-      --brand: #E30613;     /* CTA primario */
+      --brand: #E30613;
       --brand-ink:#fff;
-      --accent:#1E6EB6;     /* navegación / headers tarjeta */
-      --accent-2:#5EBAD6;   /* degradé y realces */
+      --accent:#1E6EB6;
+      --accent-2:#5EBAD6;
       --accent-ink:#fff;
 
       --elev0: 0 4px 10px rgba(30,110,182,.10);
@@ -302,9 +298,7 @@
     }
     body.theme-institucional .section-title{ color: var(--accent); }
     body.theme-institucional .divider{ background: var(--accent); opacity:.35; }
-    body.theme-institucional .card-header{
-      background: var(--accent);
-    }
+    body.theme-institucional .card-header{ background: var(--accent); }
     body.theme-institucional .card-header:hover{
       background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
     }
@@ -475,29 +469,32 @@
 
     <div class="divider"></div>
 
-    <!-- COOPERANTES -->
+    <!-- COOPERANTES (stickers) -->
     <div class="section partners" id="cooperantes" aria-labelledby="titulo-cooperantes">
       <h2 class="section-title" id="titulo-cooperantes">Herramientas de instituciones adscritas y cooperantes</h2>
 
-      <div class="partners-grid" role="list" aria-label="Logos de instituciones cooperantes">
-        <div class="coop-card" role="listitem" style="--rot:-1.8deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1fSDP-b8qaQ_6JVjs4PFrez0HEW0eLhTd=w1000" alt="GOTASS - Visor Cartográfico Institucional"></div>
-        <div class="coop-card" role="listitem" style="--rot:1.2deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1cRMQs2IMc4EW0vQCfXAhfHgejW14IhoX=w1000" alt="GEO LLAQTA - Plataforma Única de Catastro Multipropósito"></div>
-        <div class="coop-card" role="listitem" style="--rot:-2.2deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1WNAspmCFqXlMZXHZacjCWl4kMBSYaDMT=w1000" alt="GeoSunass"></div>
-        <div class="coop-card" role="listitem" style="--rot:1.6deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1VC2TX6hvIUL5FixemMytckiK0DDFMzRY=w1000" alt="CENEPRED"></div>
-        <div class="coop-card" role="listitem" style="--rot:-1.4deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1SltYpzkaggYfKVecNevf81RH5eXnPEG-=w1000" alt="Geo Perú"></div>
-        <div class="coop-card" role="listitem" style="--rot:2.0deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1d9oBbYYTHV1WEBH7Mj6V30d-SfCb_MBE=w1000" alt="IDEP - Infraestructura de Datos Espaciales del Perú"></div>
-        <div class="coop-card" role="listitem" style="--rot:-1.1deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1IUCSUXtH0cjZeSsaJ5qx_icc6CW8iPVM=w1000" alt="Agencia Espacial del Perú - CONIDA"></div>
-        <div class="coop-card" role="listitem" style="--rot:1.9deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1rJr76UvCOTt5zxRcSv0kpMA0RmENrqeJ=w1000" alt="Fuerza Aérea del Perú - CEVAN"></div>
+      <div class="stickers" role="list" aria-label="Logos de instituciones cooperantes">
+        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1fSDP-b8qaQ_6JVjs4PFrez0HEW0eLhTd=w1000" alt="GOTASS"></figure>
+        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1WNAspmCFqXlMZXHZacjCWl4kMBSYaDMT=w1000" alt="GeoSunass"></figure>
+        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1SltYpzkaggYfKVecNevf81RH5eXnPEG-=w1000" alt="Geo Perú"></figure>
+        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1cRMQs2IMc4EW0vQCfXAhfHgejW14IhoX=w1000" alt="GEO LLAQTA"></figure>
+        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1VC2TX6hvIUL5FixemMytckiK0DDFMzRY=w1000" alt="CENEPRED"></figure>
+        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1d9oBbYYTHV1WEBH7Mj6V30d-SfCb_MBE=w1000" alt="IDEP"></figure>
+        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1IUCSUXtH0cjZeSsaJ5qx_icc6CW8iPVM=w1000" alt="Agencia Espacial del Perú - CONIDA"></figure>
+        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1rJr76UvCOTt5zxRcSv0kpMA0RmENrqeJ=w1000" alt="FAP - CEVAN"></figure>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- PLANCHA COMPLETA -->
+    <!-- RECONOCIMIENTO (4 logos) -->
     <div class="section" id="alianzas">
       <h2 class="section-title">Reconocimiento</h2>
-      <div class="plancha">
-        <img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1N0kJmgJc1pqYhZPqo6EPCjFz3L0-eYH4=w1000" alt="Plancha de aliados: GeoVivienda, MVCS, Bicentenario Perú y cooperantes">
+      <div class="ribbon" aria-label="Instituciones que respaldan la plataforma">
+        <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1EWbpli3V4J5vPgA09DyrAEt4-uiTEw_b=w1000" alt="GeoVivienda"></div>
+        <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1N0kJmgJc1pqYhZPqo6EPCjFz3L0-eYH4=w1000" alt="MVCS"></div>
+        <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1zs32a4h9D8xzs0PGGeFljx0j4Z9kRxbd=w1000" alt="Proyecto Bicentenario"></div>
+        <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1k10xz-9uW2Qf160FjjnA1xZLvHwKjWaF=w1000" alt="COSUDE"></div>
       </div>
     </div>
   </div><!-- /wrapper -->
@@ -505,8 +502,6 @@
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-wrap">
-      <!-- Bloque chips no usado -->
-
       <div class="social" aria-label="Redes sociales del MVCS">
         <a href="https://www.facebook.com/viviendaperu" target="_blank" rel="noopener noreferrer" aria-label="Facebook MVCS">
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07c0 4.99 3.64 9.13 8.4 9.93v-7.02H7.9v-2.9h2.36V9.41c0-2.33 1.39-3.62 3.52-3.62 1.02 0 2.1.18 2.1.18v2.31h-1.18c-1.16 0-1.52.72-1.52 1.46v1.76h2.59l-.41 2.9h-2.18V22c4.76-.8 8.4-4.94 8.4-9.93Z"/></svg>
@@ -649,39 +644,26 @@
     }
   });
 
-  /* ===== Cooperantes: entrada + brillo en cascada ===== */
+  /* ===== Cooperantes + Reconocimiento: entrada en cascada ===== */
   (function(){
-    const items = Array.from(document.querySelectorAll('.coop-card'));
+    const items = [
+      ...document.querySelectorAll('.sticker'),
+      ...document.querySelectorAll('.r-item')
+    ];
     if(!items.length) return;
-    items.forEach((el, i)=>{ el.style.setProperty('--delay', (i*90)+'ms'); });
+    items.forEach((el, i)=> el.style.setProperty('--delay', (i*110)+'ms'));
     if('IntersectionObserver' in window){
       const io = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
           if(e.isIntersecting){
             e.target.classList.add('show');
-            e.target.classList.add('shine');
-            setTimeout(()=> e.target.classList.remove('shine'), 1000);
             io.unobserve(e.target);
           }
         });
-      }, {threshold:.25});
-      items.forEach(el=>io.observe(el));
-    }else{
-      items.forEach(el=>el.classList.add('show'));
-    }
-  })();
-
-  /* ===== Plancha: fade-in ===== */
-  (function(){
-    const el = document.querySelector('.plancha');
-    if(!el) return;
-    if('IntersectionObserver' in window){
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{ if(e.isIntersecting){ el.classList.add('show'); io.unobserve(el); } });
       }, {threshold:.2});
-      io.observe(el);
+      items.forEach(el=> io.observe(el));
     }else{
-      el.classList.add('show');
+      items.forEach(el=> el.classList.add('show'));
     }
   })();
   </script>
