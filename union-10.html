@@ -27,7 +27,7 @@
     }
 
     /* ===== BANNER ===== */
-    .banner{width:100%;margin:0;line-height:0;overflow:hidden;aspect-ratio:1920/655;background:#0000000d}
+    .banner{width:100%;margin:0;line-height:0;overflow:hidden;aspect-ratio:1920/464;background:#0000000d}
     .banner img{width:100%;height:100%;object-fit:cover;display:block}
     @supports not (aspect-ratio: 1){.banner img{width:100%;height:auto}}
 
@@ -100,58 +100,25 @@
     .sep{font-weight:800;font-size:clamp(28px,5vw,48px);margin:0 .14em;line-height:1;display:inline-flex;align-items:center;justify-content:center;text-shadow:0 1px 2px rgba(0,0,0,.12)}
     .label{font-size:clamp(12px,1.6vw,15px);opacity:.95}.footnote{margin-top:clamp(18px,3vw,26px);font-size:11px;opacity:.9}
 
-    /* ===== Bloque con imágenes conectadas — AHORA EN AZUL ===== */
+    /* ===== Bloque con imágenes conectadas — AZUL ===== */
     .conector{width:720px;margin:40px auto 32px;position:relative;isolation:isolate;z-index:0}
     .fila{display:flex;justify-content:space-between;position:relative}
-    .nodo{
-      position:relative;width:210px;height:210px;border-radius:16px;border:2px solid #e0e0e0;
-      /* degradado azul suave en la tarjeta */
-      background:linear-gradient(to bottom,#fff,color-mix(in srgb,#fff 80%,var(--accent) 20%));
-      display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1);z-index:1
-    }
+    .nodo{position:relative;width:210px;height:210px;border-radius:16px;border:2px solid #e0e0e0;background:linear-gradient(to bottom,#fff,color-mix(in srgb,#fff 80%,var(--accent) 20%));display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1);z-index:1}
     .nodo img{width:100%;height:100%;object-fit:cover;object-position:center;border-radius:14px}
-
-    /* líneas superiores */
-    .fila.superior::before,.fila.superior::after{
-      content:"";position:absolute;top:50%;height:4px;
-      background:linear-gradient(to right,transparent,var(--accent),transparent);
-      transform:scaleX(0);z-index:-1
-    }
+    .fila.superior::before,.fila.superior::after{content:"";position:absolute;top:50%;height:4px;background:linear-gradient(to right,transparent,var(--accent),transparent);transform:scaleX(0);z-index:-1}
     .conector.visible .fila.superior::before{left:210px;width:150px;transform-origin:left;animation:dibujarLineaSupIzq 2s ease-out forwards}
     .conector.visible .fila.superior::after{left:360px;width:150px;transform-origin:right;animation:dibujarLineaSupDer 2s ease-out forwards}
-
-    /* ramas verticales */
-    .nodo.rama::after{
-      content:"";position:absolute;top:100%;left:50%;width:4px;height:100px;
-      background:linear-gradient(to bottom,var(--accent),transparent);
-      transform-origin:top center;transform:scaleY(0);z-index:-1
-    }
+    .nodo.rama::after{content:"";position:absolute;top:100%;left:50%;width:4px;height:100px;background:linear-gradient(to bottom,var(--accent),transparent);transform-origin:top center;transform:scaleY(0);z-index:-1}
     .conector.visible .nodo.rama::after{animation:dibujarRama 1.2s ease-out forwards 2s}
-
     .fila.inferior{margin-top:100px;justify-content:space-between;overflow:visible;position:relative}
-    .fila.inferior::after{
-      content:"";position:absolute;top:50%;left:50%;width:6px;height:100px;
-      background:linear-gradient(to bottom,var(--accent),var(--accent-2),transparent);
-      transform-origin:top;transform:scaleY(0);z-index:-1;
-      box-shadow:0 0 10px rgba(30,110,182,.5) /* resplandor azul */
-    }
+    .fila.inferior::after{content:"";position:absolute;top:50%;left:50%;width:6px;height:100px;background:linear-gradient(to bottom,var(--accent),var(--accent-2),transparent);transform-origin:top;transform:scaleY(0);z-index:-1;box-shadow:0 0 10px rgba(30,110,182,.5)}
     .conector.visible .fila.inferior::after{animation:dibujarLineaAbajo 1.6s ease-out forwards 3.2s}
-
-    /* uniones horizontales inferiores */
-    .nodo.join-left::after,.nodo.join-right::after{
-      content:"";position:absolute;top:50%;height:4px;
-      background:linear-gradient(to right,transparent,var(--accent),transparent);
-      width:150px;transform:scaleX(0);z-index:-2
-    }
+    .nodo.join-left::after,.nodo.join-right::after{content:"";position:absolute;top:50%;height:4px;background:linear-gradient(to right,transparent,var(--accent),transparent);width:150px;transform:scaleX(0);z-index:-2}
     .conector.visible .nodo.join-left::after{left:100%;transform-origin:left;animation:dibujarLineaIzq 2.4s ease-out forwards 2.2s}
     .conector.visible .nodo.join-right::after{right:100%;transform-origin:right;animation:dibujarLineaDer 2.4s ease-out forwards 2.2s}
-
-    @keyframes dibujarLineaSupIzq {to{transform:scaleX(1)}}
-    @keyframes dibujarLineaSupDer {to{transform:scaleX(1)}}
-    @keyframes dibujarRama {to{transform:scaleY(1)}}
-    @keyframes dibujarLineaIzq {to{transform:scaleX(1)}}
-    @keyframes dibujarLineaDer {to{transform:scaleX(1)}}
-    @keyframes dibujarLineaAbajo {to{transform:scaleY(1)}}
+    @keyframes dibujarLineaSupIzq {to{transform:scaleX(1)}} @keyframes dibujarLineaSupDer {to{transform:scaleX(1)}}
+    @keyframes dibujarRama {to{transform:scaleY(1)}} @keyframes dibujarLineaIzq {to{transform:scaleX(1)}}
+    @keyframes dibujarLineaDer {to{transform:scaleX(1)}} @keyframes dibujarLineaAbajo {to{transform:scaleY(1)}}
 
     /* ===== CONTENIDO PRINCIPAL ===== */
     .wrapper{max-width:1100px;margin:0 auto;padding:36px 20px;perspective:1200px}
@@ -219,8 +186,8 @@
       --glass: color-mix(in srgb, #ffffff 78%, transparent);
 
       --brand:#E30613; --brand-ink:#fff;
-      --accent:#1E6EB6;         /* azul principal */
-      --accent-2:#5EBAD6;       /* azul claro */
+      --accent:#1E6EB6;
+      --accent-2:#5EBAD6;
       --accent-ink:#fff;
 
       --elev0:0 4px 10px rgba(30,110,182,.10);
@@ -242,7 +209,7 @@
 
   <!-- ===== BANNER ===== -->
   <div class="banner">
-    <img src="https://lh3.googleusercontent.com/d/1GWgjw49YxEXcohvuRh4rPncI5HU4abBR=w1920-h655" alt="Banner superior GeoVivienda">
+    <img src="https://lh3.googleusercontent.com/d/19XqvFTVM5LclbniAOdJjU5768OXRMwIE=w1920-h464" alt="Banner superior GeoVivienda">
   </div>
 
   <!-- Header sticky -->
