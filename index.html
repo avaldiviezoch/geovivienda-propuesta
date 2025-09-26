@@ -4,103 +4,335 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>📊 Geovivienda Pruebas de Pagina Principal</title>
-  <meta name="color-scheme" content="light dark" />
+  <meta name="color-scheme" content="dark" />
   <style>
-    :root{
-      --bg:#0b1020; --panel:#0f172a; --ink:#e5e7eb; --muted:#9aa4b2; --stroke:#1c2542; --accent:#334155;
-      --btn1:#60a5fa; --btn2:#34d399; --btn3:#f59e0b; --btn4:#a78bfa;
-      --shadow: 0 12px 30px rgba(0,0,0,.28); --shadow-hover: 0 16px 40px rgba(0,0,0,.4);
-      --pv-w: 560px; --pv-h: 360px; --base-w: 1280px; --base-h: 800px; --hdr-h: 40px; --radius: 14px; --radius-sm:10px;
-    }
-    @media (prefers-color-scheme: light){
-      :root{ --bg:#f6f8fc; --panel:#ffffff; --ink:#0f172a; --muted:#5b6472; --stroke:#e6eaf0; --shadow: 0 16px 36px rgba(16,24,40,.10); }
-    }
+    :root {
+      /* Paleta oscura (igual al primer formato) */
+      --bg: #0a0e1a;
+      --panel: #111827;
+      --ink: #f1f5f9;
+      --muted: #94a3b8;
+      --stroke: #1e293b;
+      --accent: #334155;
 
-    html,body{height:100%}
-    body{
-      margin:0; background: linear-gradient(135deg, var(--bg) 0%, #0f172a 100%);
-      color:var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      min-height:100vh;
-    }
+      /* Botones con contraste */
+      --btn1: #3b82f6;
+      --btn2: #10b981;
+      --btn3: #f59e0b;
+      --btn4: #8b5cf6;
 
-    .wrap{max-width:1100px; margin:0 auto; padding:18px}
-    /* TÍTULO AZUL estilo del primero */
-    h1{margin:0 0 8px; font-size:1.6rem; font-weight:900; color:#60a5fa; text-shadow:0 0 10px rgba(96,165,250,.2)}
-    .sub{color:var(--muted); margin-bottom:14px}
+      /* Efectos */
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.45);
+      --glow: 0 0 15px rgba(59, 130, 246, 0.2);
 
-    details{
-      background: color-mix(in oklab, var(--panel) 96%, transparent);
-      border:1px solid var(--stroke); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; margin:12px 0;
-      transition:.25s ease box-shadow, .25s ease border-color;
-    }
-    details:hover{ box-shadow: var(--shadow-hover); border-color: var(--accent); }
-    summary{ cursor:pointer; list-style:none; padding:14px 16px; display:flex; gap:10px; align-items:center; font-weight:800 }
-    summary::-webkit-details-marker{ display:none }
-    .chev{transition: transform .2s ease; opacity:.9}
-    details[open] .chev{ transform: rotate(180deg) }
-    .section{ padding:14px 16px 18px; border-top:1px solid var(--stroke) }
-
-    .grid{ display:grid; gap:10px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
-    .btn{
-      display:block; text-decoration:none; color:inherit; font-weight:800; font-size:.95rem;
-      padding:14px 16px; border-radius:var(--radius-sm); border:1px solid var(--stroke);
-      background: linear-gradient(135deg, color-mix(in oklab, var(--btn1) 38%, transparent), color-mix(in oklab, var(--panel) 88%, transparent));
-      box-shadow: var(--shadow); transition: transform .12s ease, filter .12s ease, border-color .2s;
-      position:relative; overflow:hidden;
-    }
-    .btn:hover{ transform: translateY(-2px); filter: brightness(1.05); border-color: color-mix(in oklab, var(--btn1) 55%, transparent); }
-    .btn:focus-visible{ outline:3px solid color-mix(in oklab, var(--btn1) 55%, transparent) }
-
-    .note{ color:var(--muted); font-size:.9rem; margin-top:12px }
-    /* partículas de fondo como el primero */
-    .particles{ position:fixed; inset:0; pointer-events:none; z-index:-1 }
-    .particle{ position:absolute; background:rgba(96,165,250,.12); border-radius:50%; animation: float 15s infinite linear }
-    @keyframes float{
-      0%{ transform: translateY(0) translateX(0); opacity:0 }
-      10%{ opacity:.35 }
-      90%{ opacity:.35 }
-      100%{ transform: translateY(-100vh) translateX(100px); opacity:0 }
+      /* Dimensiones */
+      --pv-w: 480px;
+      --pv-h: 320px;
+      --base-w: 1280px;
+      --base-h: 800px;
+      --hdr-h: 36px;
+      --radius: 12px;
+      --radius-small: 8px;
     }
 
-    /* Popup de vista previa con pill de estado (igual al primero) */
-    .preview { position: fixed; z-index: 1000; display: none; width: var(--pv-w); height: var(--pv-h); background: var(--panel); color: var(--ink); border: 1px solid var(--stroke); border-radius: var(--radius); box-shadow: var(--shadow-hover), 0 0 0 1px rgba(255,255,255,.05); pointer-events: auto; user-select: none; backdrop-filter: blur(10px); }
-    .pv-hdr{ height: var(--hdr-h); display:flex; align-items:center; gap:10px; padding:0 10px; border-bottom:1px solid var(--stroke); background: linear-gradient(to bottom, color-mix(in oklab, var(--panel) 95%, transparent), color-mix(in oklab, var(--panel) 85%, transparent)); border-radius: var(--radius) var(--radius) 0 0; }
-    .pv-title{ flex:1; font-size:.95rem; font-weight:800; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .pv-btn{ appearance:none; border:1px solid var(--stroke); background: color-mix(in oklab, var(--panel) 90%, transparent); color:inherit; border-radius:8px; padding:6px 10px; font-weight:800; cursor:pointer; transition:.2s }
-    .pv-btn:hover{ background: color-mix(in oklab, var(--panel) 82%, transparent); border-color: var(--accent) }
-    .pv-wrap{ position: relative; width: calc(100% - 20px); height: calc(100% - var(--hdr-h) - 22px); margin: 10px; border-radius: 10px; overflow: hidden; background: #00000012; border: 1px solid var(--stroke); }
-    .pv-frame{ position:absolute; top:0; left:0; border:0; width: var(--base-w); height: var(--base-h); transform-origin: 0 0; pointer-events: none; background:var(--bg) }
-    /* pill de estado no intrusivo */
-    .pv-overlay{
-      position:absolute; right:8px; bottom:8px; padding:6px 10px; font-size:12px; line-height:1; color:var(--ink);
-      background: rgba(17,24,39,.75); border:1px solid var(--stroke); border-radius:999px; box-shadow: var(--shadow);
-      opacity:0; transition:opacity .2s ease; pointer-events:none; display:inline-flex; align-items:center; gap:6px;
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
     }
-    .pv-overlay::before{ content:"•"; font-weight:900; color:#60a5fa }
-    .preview.loading .pv-overlay{ opacity:1 }
-    .preview.blocked .pv-overlay{ opacity:1; color:#fecaca; border-color:#7f1d1d; background:rgba(127,29,29,.7) }
-    .preview.ready   .pv-overlay{ opacity:1; color:#bbf7d0; border-color:#14532d; background:rgba(20,83,45,.65) }
 
-    .pv-thumb{ position:absolute; inset:0; object-fit:cover; width:100%; height:100%; display:none }
-    .preview.blocked .pv-thumb{ display:block }
-    .pv-cap{ height: 18px; line-height:18px; font-size:.82rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding:0 12px 8px; }
-
-    @media (max-width:700px){
-      :root{ --pv-w: 92vw; --pv-h: 56vw; }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, var(--bg) 0%, #0f172a 100%);
+      min-height: 100vh;
     }
-    /* scrollbar */
-    ::-webkit-scrollbar{ width:8px } ::-webkit-scrollbar-track{ background:var(--bg) } ::-webkit-scrollbar-thumb{ background:var(--stroke); border-radius:4px } ::-webkit-scrollbar-thumb:hover{ background:#2a3755 }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* ===== TÍTULO AZUL (igual al primero) ===== */
+    h1 {
+      margin: 0 0 10px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #60a5fa;
+      text-shadow: 0 0 10px rgba(96,165,250,.2);
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+
+    /* Acordeones */
+    details {
+      background: color-mix(in oklab, var(--panel) 98%, transparent);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin: 16px 0;
+      transition: all 0.3s ease;
+    }
+
+    details:hover {
+      box-shadow: var(--shadow-hover);
+      border-color: var(--accent);
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 16px 18px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-weight: 700;
+      transition: background-color 0.2s ease;
+    }
+
+    summary:hover {
+      background: color-mix(in oklab, var(--panel) 95%, var(--btn1) 5%);
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    .chev {
+      transition: transform 0.3s ease;
+      opacity: 0.9;
+    }
+
+    details[open] .chev { transform: rotate(180deg); }
+
+    .section {
+      padding: 18px 18px 22px;
+      border-top: 1px solid var(--stroke);
+    }
+
+    /* Grid de botones */
+    .grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+
+    .btn {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 14px 16px;
+      border-radius: var(--radius-small);
+      border: 1px solid var(--stroke);
+      background: linear-gradient(135deg,
+        color-mix(in oklab, var(--btn1) 40%, transparent),
+        color-mix(in oklab, var(--panel) 90%, transparent));
+      box-shadow: var(--shadow);
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+      border-color: color-mix(in oklab, var(--btn1) 60%, transparent);
+    }
+
+    .btn:hover::before { left: 100%; }
+
+    .btn:focus-visible {
+      outline: 2px solid color-mix(in oklab, var(--btn1) 70%, transparent);
+      outline-offset: 2px;
+    }
+
+    .v2 { background: linear-gradient(135deg, color-mix(in oklab, var(--btn2) 40%, transparent), color-mix(in oklab, var(--panel) 90%, transparent)); }
+    .v3 { background: linear-gradient(135deg, color-mix(in oklab, var(--btn3) 40%, transparent), color-mix(in oklab, var(--panel) 90%, transparent)); }
+    .v4 { background: linear-gradient(135deg, color-mix(in oklab, var(--btn4) 40%, transparent), color-mix(in oklab, var(--panel) 90%, transparent)); }
+
+    .note {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 16px;
+      padding: 12px;
+      background: color-mix(in oklab, var(--panel) 95%, transparent);
+      border-radius: var(--radius-small);
+      border-left: 3px solid var(--btn1);
+    }
+    .note code {
+      background: color-mix(in oklab, var(--bg) 60%, transparent);
+      padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.8rem;
+    }
+
+    /* ===== Popup de vista previa con pill de estado (igual al primero) ===== */
+    .preview {
+      position: fixed;
+      z-index: 1000;
+      display: none;
+      width: var(--pv-w);
+      height: var(--pv-h);
+      background: var(--panel);
+      color: var(--ink);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-hover), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      pointer-events: auto;
+      user-select: none;
+      backdrop-filter: blur(10px);
+    }
+
+    .pv-hdr {
+      height: var(--hdr-h);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--stroke);
+      background: linear-gradient(to bottom,
+        color-mix(in oklab, var(--panel) 98%, transparent),
+        color-mix(in oklab, var(--panel) 92%, transparent));
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .pv-title {
+      flex: 1;
+      font-size: 0.9rem;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pv-btn {
+      appearance: none;
+      border: 1px solid var(--stroke);
+      background: color-mix(in oklab, var(--panel) 90%, transparent);
+      color: inherit;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s ease;
+    }
+
+    .pv-btn:hover {
+      background: color-mix(in oklab, var(--panel) 80%, transparent);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .pv-wrap {
+      position: relative;
+      width: calc(100% - 20px);
+      height: calc(100% - var(--hdr-h) - 30px);
+      margin: 10px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #00000015;
+      border: 1px solid var(--stroke);
+    }
+
+    .pv-frame {
+      position: absolute;
+      top: 0; left: 0;
+      border: 0;
+      width: var(--base-w);
+      height: var(--base-h);
+      transform-origin: 0 0;
+      pointer-events: none; /* se habilita en modo fijado */
+      background: var(--bg);
+    }
+
+    /* Pill de estado */
+    .pv-overlay {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      line-height: 1;
+      color: var(--ink);
+      background: rgba(17,24,39,.75);
+      border: 1px solid var(--stroke);
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: opacity .2s ease;
+      pointer-events: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pv-overlay::before { content: "•"; font-weight: 900; color: #60a5fa; }
+
+    .preview.loading .pv-overlay { opacity: 1; }
+    .preview.blocked .pv-overlay {
+      opacity: 1; color: #fecaca; border-color: #7f1d1d; background: rgba(127,29,29,.7);
+    }
+    .preview.ready .pv-overlay {
+      opacity: 1; color: #bbf7d0; border-color: #14532d; background: rgba(20,83,45,.65);
+    }
+
+    .pv-thumb { position: absolute; inset: 0; object-fit: cover; width: 100%; height: 100%; display: none; }
+    .preview.blocked .pv-thumb { display: block; }
+
+    .pv-cap {
+      height: 16px; line-height: 16px; font-size: 0.75rem; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 12px 8px;
+    }
+
+    /* Partículas de fondo */
+    .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+    .particle { position: absolute; background: rgba(59,130,246,.1); border-radius: 50%; animation: float 15s infinite linear; }
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+    }
+
+    @media (max-width: 700px) {
+      :root { --pv-w: 94vw; --pv-h: 60vw; }
+      .grid { grid-template-columns: 1fr; }
+      .wrap { padding: 15px; }
+      .preview { left: 3vw !important; top: 20vh !important; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--stroke); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
   </style>
 </head>
 <body>
-  <!-- partículas -->
+  <!-- Partículas de fondo -->
   <div class="particles" id="particles"></div>
 
   <div class="wrap">
     <h1>📊 Geovivienda — Productos en HTML y Python</h1>
     <div class="sub">Interfaz de visualizaciones para Storymaps (con previsualización real en miniatura).</div>
 
-    <!-- 🏠 Página Principal (con carátulas) -->
+    <!-- 🏠 Página Principal -->
     <details open>
       <summary>
         <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -112,7 +344,7 @@
           <a class="btn" href="caratula-2.html" target="_blank">Carátula 2</a>
           <a class="btn" href="caratula-3.html" target="_blank">Carátula 3</a>
         </div>
-        <div class="note">Pasa el mouse para ver mini-preview. Si la página bloquea la incrustación, puedes usar <code>data-thumb="ruta/a/miniatura.jpg"</code> en el botón.</div>
+        <div class="note">Pasa el mouse para ver mini-preview. Si la página bloquea la incrustación, agrega <code>data-thumb="ruta/a/miniatura.jpg"</code> al botón.</div>
       </div>
     </details>
 
@@ -168,7 +400,7 @@
     </details>
   </div>
 
-  <!-- Popup de vista previa (igual al primero) -->
+  <!-- Popup de vista previa -->
   <div id="preview" class="preview" role="dialog" aria-modal="false" aria-live="polite" aria-hidden="true">
     <div class="pv-hdr">
       <div id="pvtitle" class="pv-title">Vista previa</div>
@@ -185,117 +417,218 @@
   </div>
 
   <script>
-    // utilidades
-    const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-    const $ = (q)=>document.querySelector(q);
-    const preview = $('#preview'), pvframe = $('#pvframe'), pvthumb = $('#pvthumb'),
-          pvover = $('#pvover'), pvtitle = $('#pvtitle'), pvopen = $('#pvopen'),
-          pvclose = $('#pvclose'), pvlock = $('#pvlock'), pvcap = $('#pvcap');
+    // ==== Config y utilidades (igual al primero) ====
+    const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches; // móviles
+    const $ = (q) => document.querySelector(q);
+    const preview = $('#preview');
+    const pvframe = $('#pvframe');
+    const pvthumb = $('#pvthumb');
+    const pvover  = $('#pvover');
+    const pvtitle = $('#pvtitle');
+    const pvopen  = $('#pvopen');
+    const pvclose = $('#pvclose');
+    const pvlock  = $('#pvlock');
+    const pvcap   = $('#pvcap');
 
-    let hoverTimer=null, blockTimer=null, currentURL='', locked=false, isVisible=false;
+    let hoverTimer = null, blockTimer = null, currentURL = '';
+    let locked = false;
+    let isPreviewVisible = false;
 
-    // partículas (como en el primero)
-    function createParticles(){
-      const container = $('#particles'); if(!container) return;
-      const n = 20;
-      for(let i=0;i<n;i++){
-        const d=document.createElement('div'); d.className='particle';
-        const size = Math.random()*4+1, left=Math.random()*100, delay=Math.random()*15, dur=Math.random()*10+15;
-        d.style.width=`${size}px`; d.style.height=`${size}px`; d.style.left=`${left}%`;
-        d.style.top = `${Math.random()*100+100}%`; d.style.animationDelay=`${delay}s`; d.style.animationDuration=`${dur}s`;
-        container.appendChild(d);
+    // Partículas
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 20;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        const size = Math.random() * 4 + 1;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 15;
+        const duration = Math.random() * 10 + 15;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${left}%`;
+        particle.style.top = `${Math.random() * 100 + 100}%`;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        particlesContainer.appendChild(particle);
       }
     }
 
-    const cssVar = (n)=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue(n));
-    function applyScale(){
-      const wrap = preview.querySelector('.pv-wrap'); if(!wrap) return;
-      const scale = Math.min(wrap.clientWidth/cssVar('--base-w'), wrap.clientHeight/cssVar('--base-h'));
+    const cssVar = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name));
+
+    function applyScale() {
+      const wrap = preview.querySelector('.pv-wrap');
+      if (!wrap) return;
+      const wrapW = wrap.clientWidth;
+      const wrapH = wrap.clientHeight;
+      const baseW = cssVar('--base-w');
+      const baseH = cssVar('--base-h');
+      const scale = Math.min(wrapW / baseW, wrapH / baseH);
       pvframe.style.transform = `scale(${scale})`;
     }
+
     window.addEventListener('resize', applyScale);
 
-    function positionPopup(x,y){
-      const pad=14, w=preview.offsetWidth||cssVar('--pv-w'), h=preview.offsetHeight||cssVar('--pv-h');
-      const vw=window.scrollX+window.innerWidth, vh=window.scrollY+window.innerHeight;
-      let left=x+pad, top=y+pad; if(left+w>vw-8) left=x-w-pad; if(top+h>vh-8) top=y-h-pad;
-      left=Math.max(window.scrollX+8,left); top=Math.max(window.scrollY+8,top);
-      preview.style.left=left+'px'; preview.style.top=top+'px';
+    function positionPopup(x, y) {
+      const pad = 14;
+      const w = preview.offsetWidth || cssVar('--pv-w');
+      const h = preview.offsetHeight || cssVar('--pv-h');
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      let left = x + pad;
+      let top = y + pad;
+
+      if (left + w > vw - 8) left = x - w - pad;
+      if (top + h > vh - 8) top = y - h - pad;
+
+      left = Math.max(8, left);
+      top  = Math.max(8, top);
+
+      preview.style.left = left + 'px';
+      preview.style.top  = top  + 'px';
     }
 
     function setOverlay(state, text){
       preview.classList.remove('loading','blocked','ready');
       preview.classList.add(state);
       pvover.textContent = text || (state==='loading' ? 'Cargando vista previa…' :
-                                    state==='ready'   ? 'Vista previa lista' :
+                                    state==='ready'   ? 'Vista previa lista'     :
                                     'Vista previa no disponible');
     }
 
-    function showPreview(anchor,ev){
-      if(isCoarse || (locked && isVisible)) return;
-      const href=anchor.getAttribute('href'), label=anchor.textContent.trim(), thumb=anchor.getAttribute('data-thumb');
-      pvtitle.textContent=label; pvcap.textContent=href; pvopen.href=href;
+    function showPreview(anchor, ev) {
+      if (isCoarse || (locked && isPreviewVisible)) return;
 
-      let x,y; if(ev&&'clientX'in ev){ x=ev.clientX+window.scrollX; y=ev.clientY+window.scrollY; }
-      else { const r=anchor.getBoundingClientRect(); x=r.left+r.width/2+window.scrollX; y=r.bottom+window.scrollY; }
+      const href = anchor.getAttribute('href');
+      const theLabel = anchor.textContent.trim();
+      const thumb = anchor.getAttribute('data-thumb');
 
-      preview.style.display='block'; isVisible=true; preview.setAttribute('aria-hidden','false'); positionPopup(x,y);
+      pvtitle.textContent = theLabel;
+      pvcap.textContent = href;
+      pvopen.href = href;
 
-      setOverlay('loading','Cargando vista previa…');
-      pvthumb.style.display='none';
-      if(thumb){ pvthumb.src=thumb } else { pvthumb.removeAttribute('src') }
+      let x, y;
+      if (ev && 'clientX' in ev) { x = ev.clientX; y = ev.clientY; }
+      else {
+        const r = anchor.getBoundingClientRect();
+        x = r.left + r.width / 2; y = r.bottom;
+      }
+
+      preview.style.display = 'block';
+      isPreviewVisible = true;
+      preview.setAttribute('aria-hidden', 'false');
+      positionPopup(x, y);
+
+      setOverlay('loading', 'Cargando vista previa…');
+      pvthumb.style.display = 'none';
+      if (thumb) pvthumb.src = thumb; else pvthumb.removeAttribute('src');
 
       clearTimeout(hoverTimer);
-      hoverTimer=setTimeout(()=>{
-        if(currentURL!==href || pvframe.src!==href){ currentURL=href; pvframe.src=href; }
-        else { setOverlay('ready','Vista previa lista'); }
+      hoverTimer = setTimeout(() => {
+        if (currentURL !== href || pvframe.src !== href) {
+          currentURL = href;
+          pvframe.src = href;
+        } else {
+          setOverlay('ready', 'Vista previa lista');
+        }
       }, 150);
 
       clearTimeout(blockTimer);
-      blockTimer=setTimeout(()=>{
-        if(preview.classList.contains('loading')){
-          setOverlay('blocked','Vista previa no disponible (el sitio restringe incrustación).');
-          if(pvthumb.src) pvthumb.style.display='block';
+      blockTimer = setTimeout(() => {
+        if (preview.classList.contains('loading')) {
+          setOverlay('blocked', 'Vista previa no disponible (el sitio restringe incrustación).');
+          if (pvthumb.src) pvthumb.style.display = 'block';
         }
       }, 3000);
 
       applyScale();
     }
 
-    function hidePreview(force=false){
-      if(locked && !force) return;
-      preview.style.display='none'; isVisible=false; preview.setAttribute('aria-hidden','true');
-      clearTimeout(hoverTimer); clearTimeout(blockTimer);
+    function hidePreview(force = false) {
+      if (locked && !force) return;
+      preview.style.display = 'none';
+      isPreviewVisible = false;
+      preview.setAttribute('aria-hidden', 'true');
+      clearTimeout(hoverTimer);
+      clearTimeout(blockTimer);
     }
 
-    pvframe.addEventListener('load', ()=>{ setOverlay('ready','Vista previa lista'); });
-    pvframe.addEventListener('error',()=>{ setOverlay('blocked','Error al cargar la vista previa.'); });
+    // Carga OK / error
+    pvframe.addEventListener('load', () => setOverlay('ready', 'Vista previa lista'));
+    pvframe.addEventListener('error', () => setOverlay('blocked', 'Error al cargar la vista previa.'));
 
-    // Interacciones
-    document.addEventListener('mouseover', e=>{ const a=e.target.closest('a.btn'); if(!a) return; if(!locked) showPreview(a,e); });
-    document.addEventListener('mousemove', e=>{ if(isVisible && !locked){ const a=e.target.closest('a.btn'); if(a) positionPopup(e.clientX+window.scrollX,e.clientY+window.scrollY); }});
-    document.addEventListener('mouseout', e=>{
-      const leaving=e.target.closest&&e.target.closest('a.btn');
-      const entering = e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('#preview');
-      if(leaving && !entering) hidePreview();
+    // Interacciones (hover / foco)
+    document.addEventListener('mouseover', (e) => {
+      const a = e.target.closest('a.btn');
+      if (!a) return;
+      if (!locked) showPreview(a, e);
     });
 
-    document.addEventListener('focusin', e=>{ const a=e.target.closest&&e.target.closest('a.btn'); if(a && !locked) showPreview(a,null); });
-    document.addEventListener('focusout', e=>{ const a=e.target.closest&&e.target.closest('a.btn'); if(a) hidePreview(); });
-    window.addEventListener('scroll', ()=>{ if(isVisible && !locked) hidePreview(); });
+    document.addEventListener('mousemove', (e) => {
+      if (isPreviewVisible && !locked) {
+        const a = e.target.closest('a.btn');
+        if (a) positionPopup(e.clientX, e.clientY);
+      }
+    });
 
-    // Fijar/desfijar + cerrar
-    pvlock.addEventListener('click', ()=>{
-      locked=!locked; pvlock.textContent=locked?'Desfijar':'Fijar';
-      preview.setAttribute('aria-modal', locked?'true':'false');
+    document.addEventListener('mouseout', (e) => {
+      const leavingBtn = e.target.closest('a.btn');
+      const enteringPreview = e.relatedTarget && e.relatedTarget.closest('#preview');
+      if (leavingBtn && !enteringPreview) hidePreview();
+    });
+
+    // Mantener visible si entras al popup
+    preview.addEventListener('mouseenter', () => {});
+    preview.addEventListener('mouseleave', () => { if (!locked) hidePreview(); });
+
+    document.addEventListener('focusin', e => {
+      const a = e.target.closest('a.btn');
+      if (a && !locked) showPreview(a, null);
+    });
+
+    document.addEventListener('focusout', e => {
+      const a = e.target.closest('a.btn');
+      if (a) hidePreview();
+    });
+
+    window.addEventListener('scroll', () => {
+      if (isPreviewVisible && !locked) hidePreview();
+    });
+
+    // Fijar/desfijar
+    pvlock.addEventListener('click', () => {
+      locked = !locked;
+      pvlock.textContent = locked ? 'Desfijar' : 'Fijar';
+      preview.setAttribute('aria-modal', locked ? 'true' : 'false');
       pvframe.style.pointerEvents = locked ? 'auto' : 'none'; // permitir interacción al fijar
-      preview.style.boxShadow = locked ? 'var(--shadow-hover), 0 0 20px rgba(96,165,250,.30)'
-                                       : 'var(--shadow-hover), 0 0 0 1px rgba(255,255,255,.05)';
+      preview.style.boxShadow = locked
+        ? 'var(--shadow-hover), 0 0 20px rgba(59, 130, 246, 0.3)'
+        : 'var(--shadow-hover), 0 0 0 1px rgba(255, 255, 255, 0.05)';
     });
-    pvclose.addEventListener('click', ()=>{ locked=false; pvlock.textContent='Fijar'; pvframe.style.pointerEvents='none'; hidePreview(true); });
-    document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ locked=false; pvlock.textContent='Fijar'; pvframe.style.pointerEvents='none'; hidePreview(true); }});
 
-    // init
+    // Cerrar
+    pvclose.addEventListener('click', () => {
+      locked = false;
+      pvlock.textContent = 'Fijar';
+      pvframe.style.pointerEvents = 'none';
+      preview.style.boxShadow = 'var(--shadow-hover), 0 0 0 1px rgba(255, 255, 255, 0.05)';
+      hidePreview(true);
+    });
+
+    // Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        locked = false;
+        pvlock.textContent = 'Fijar';
+        pvframe.style.pointerEvents = 'none';
+        preview.style.boxShadow = 'var(--shadow-hover), 0 0 0 1px rgba(255, 255, 255, 0.05)';
+        hidePreview(true);
+      }
+    });
+
+    // Init partículas
     document.addEventListener('DOMContentLoaded', createParticles);
   </script>
 </body>
