@@ -38,6 +38,7 @@
       background:var(--glass); border-bottom:1px solid var(--stroke);
       box-shadow:0 2px 8px rgba(0,0,0,.05);
       transition:box-shadow .25s ease, background-color .25s ease, border-color .25s ease;
+      touch-action: pan-y;
     }
     header.site.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.12);background:color-mix(in srgb,#ffffff 78%,transparent);border-color:color-mix(in srgb,var(--stroke) 80%, #000 20%)}
     header.site.fixed{position:fixed;top:0;left:0;right:0;background:color-mix(in srgb,#ffffff 84%,transparent);box-shadow:0 10px 24px rgba(0,0,0,.12);border-color:color-mix(in srgb,var(--stroke) 80%, #000 20%)}
@@ -48,7 +49,7 @@
     .logo:hover{transform:scale(1.05)}
     .logo img{height:36px;width:auto;border-radius:10px;border:1px solid var(--stroke);background:#fff;transition:box-shadow .3s}
     .logo:hover img{box-shadow:0 0 12px rgba(198,42,75,.3)}
-    .logo span{font-weight:800}
+    /* .logo span eliminado a petición */
 
     nav{justify-self:center}
     nav ul{list-style:none;display:flex;gap:clamp(8px,1.8vw,14px);margin:0;padding:0;flex-wrap:wrap;align-items:center;justify-content:center}
@@ -215,15 +216,19 @@
   <!-- Header sticky -->
   <header class="site" role="banner">
     <div class="navwrap">
+      <!-- LOGO actualizado: solo imagen proporcionada, sin texto -->
       <a class="logo" href="#inicio" aria-label="Ir al inicio">
-        <img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/109rN8IqcM3AyWK6NRWNhouL-tqI03QXR=w1000" alt="Logo GeoVivienda">
-        <span>GeoVivienda</span>
+        <img loading="lazy" decoding="async"
+             src="https://lh3.googleusercontent.com/d/1N0kJmgJc1pqYhZPqo6EPCjFz3L0-eYH4=w1000"
+             alt="Logo institucional">
       </a>
+
       <nav aria-label="Principal">
         <ul>
           <li><a class="active" href="#inicio">Inicio</a></li>
           <li><a href="#geovisor">Geovisor</a></li>
-          <li><a href="#mvcs">MVCS</a></li>
+          <!-- Etiqueta renombrada a VMCS, ancla se mantiene a #mvcs -->
+          <li><a href="#mvcs">VMCS</a></li>
           <li><a href="#vmvu">VMVU</a></li>
           <li><a href="#sg">Riesgos</a></li>
           <li><a href="#analisis">Análisis SIG</a></li>
