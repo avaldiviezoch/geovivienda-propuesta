@@ -126,11 +126,26 @@
     .section-title{text-align:center;font-size:28px;font-weight:800;color:var(--rojo);margin:8px 0 20px}
     .divider{height:2px;background:var(--rojo);opacity:.6;margin:28px 0}
 
-    .cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--gap)}
+    .cards-row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:var(--gap);
+      align-items:stretch; /* uniforma alturas */
+    }
+
+    /* 🔧 Uniformizar tamaño SOLO en Geovisor y Construcción/Saneamiento */
+    #geovisor .cards-row,
+    #mvcs .cards-row{
+      grid-template-columns:repeat(auto-fit, minmax(280px, 360px)); /* evita que se estiren a todo el ancho */
+      justify-content:center; /* centra cuando hay 1–2 tarjetas */
+    }
 
     /* ===== Tarjeta PILL ===== */
-    .card{position:relative;background:#fff;border-radius:16px;border:1px solid #efe9e9;box-shadow:var(--elev0);
-          transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;opacity:0;transform:translateZ(-300px) scale(.7)}
+    .card{
+      position:relative;background:#fff;border-radius:16px;border:1px solid #efe9e9;box-shadow:var(--elev0);
+      transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;opacity:0;transform:translateZ(-300px) scale(.7);
+      height:100%; /* que llene la celda del grid */
+    }
     .card.in{opacity:1;transform:translateZ(0) scale(1)}
     .card:hover{box-shadow:var(--elev1);transform:scale(1.02)}
 
