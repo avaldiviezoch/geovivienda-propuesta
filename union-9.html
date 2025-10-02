@@ -144,9 +144,10 @@
 
     /* ===== Tarjeta PILL ===== */
     .card{
+      display:block; /* para que <a class="card"> sea de bloque */
       position:relative;background:#fff;border-radius:16px;border:1px solid #efe9e9;box-shadow:var(--elev0);
       transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;opacity:0;transform:translateZ(-300px) scale(.7);
-      height:100%;
+      height:100%; color:inherit; text-decoration:none;
     }
     .card.in{opacity:1;transform:translateZ(0) scale(1)}
     .card:hover{box-shadow:var(--elev1);transform:scale(1.02)}
@@ -167,16 +168,41 @@
     .card.pill .pill-title{margin:26px 0 6px;font-weight:900;letter-spacing:.2px}
     .card.pill .pill-desc{margin:0;color:#2f3845;font-size:14px;line-height:1.45}
 
-    /* ===== STICKERS / RECONOCIMIENTO ===== */
+    /* ===== PARTNERS: carrusel en una fila ===== */
     .partners{margin-top:18px}
     .partners .section-title{color:var(--rojo);font-weight:900}
-    .stickers{max-width:var(--maxw);margin:0 auto 8px;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(26px,3.6vw,44px)}
-    @media (max-width:980px){.stickers{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.stickers{grid-template-columns:1fr}}
-    .sticker{display:flex;align-items:center;justify-content:center;min-height:clamp(200px,24vw,300px);transform:translateY(50px) scale(.9);opacity:0;filter:blur(10px);transition:transform .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),opacity .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),filter .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms)}
-    .sticker.show{transform:translateY(0) scale(1);opacity:1;filter:blur(0)}
-    .sticker img{max-width:100%;max-height:clamp(160px,22vw,260px);object-fit:contain;filter:drop-shadow(0 10px 26px rgba(0,0,0,.18))}
 
+    .partner-carousel{max-width:var(--maxw);margin:0 auto;position:relative;padding:8px 40px}
+    .pc-viewport{overflow:hidden;width:100%}
+    .pc-track{display:flex;align-items:center;gap:clamp(26px,3.6vw,44px)}
+    .pc-item{
+      flex:0 0 clamp(160px, 22vw, 260px); /* ancho fijo para asegurar overflow y movimiento */
+      display:flex;align-items:center;justify-content:center;
+      min-height:clamp(200px,24vw,300px);
+    }
+    .pc-item img{
+      max-height:clamp(160px,22vw,260px);
+      max-width:100%;object-fit:contain;
+      filter:drop-shadow(0 10px 26px rgba(0,0,0,.18));
+      transition:transform .25s ease;
+    }
+    .pc-item img:hover{transform:scale(1.03)}
+
+    .pc-arrow{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:28px;height:28px;border-radius:999px;border:1px solid #e6e0de;
+      display:grid;place-items:center;background:#fff;color:#334155;
+      box-shadow:0 4px 10px rgba(0,0,0,.10);
+      cursor:pointer;opacity:.9;
+      transition:transform .15s,box-shadow .2s,opacity .2s;
+      z-index:2;
+    }
+    .pc-arrow:hover{transform:translateY(-50%) scale(1.06);box-shadow:0 8px 16px rgba(0,0,0,.14)}
+    .pc-arrow.left{left:8px}
+    .pc-arrow.right{right:8px}
+    .pc-arrow svg{width:16px;height:16px}
+
+    /* ===== RIBBON (Reconocimiento) sin título ===== */
     .ribbon{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(22px,3vw,38px);align-items:center}
     @media (max-width:880px){.ribbon{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:520px){.ribbon{grid-template-columns:1fr}}
@@ -295,8 +321,8 @@
         </h1>
 
         <p class="subtitle">Accede a datos geográficos y estadísticos actualizados sobre vivienda, agua, saneamiento, titulación y planificación urbana. Una herramienta del MVCS al servicio de la ciudadanía y los gobiernos locales.</p>
-        <div class="actions>
-          <a class="btn" href="#geovisor">Geovisor</a>
+        <div class="actions">
+          <!-- Botón Geovisor eliminado: queda solo Datos abiertos -->
           <a class="btn ghost" href="#datos">Datos abiertos</a>
         </div>
       </div>
@@ -347,7 +373,7 @@
     <div class="section geovisor-stage" id="geovisor">
       <h2 class="section-title">Geovisor</h2>
       <div class="cards-row">
-        <div class="card pill" style="--tone:#E30613">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/geovisor.html" target="_blank" rel="noopener noreferrer" style="--tone:#E30613">
           <div class="icon-circle" aria-hidden="true">
             <img src="https://lh3.googleusercontent.com/d/1tpUjkorjJO7ZTWyIWgQWH1YkdgDebU5Q=w1000" alt="">
           </div>
@@ -355,7 +381,7 @@
             <div class="pill-title">Visor Cartográfico</div>
             <p class="pill-desc">Síntesis de brechas e intervenciones en vivienda, titulación, acceso a servicios básicos y equipamiento urbano.</p>
           </div>
-        </div>
+        </a>
       </div>
     </div>
 
@@ -365,21 +391,21 @@
     <div class="section" id="mvcs">
       <h2 class="section-title">Construcción y Saneamiento</h2>
       <div class="cards-row">
-        <div class="card pill" style="--tone:#1E6EB6">
+        <a class="card pill" href="https://geoviviendaverde.vivienda.gob.pe/" target="_blank" rel="noopener noreferrer" style="--tone:#1E6EB6">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1tpUjkorjJO7ZTWyIWgQWH1YkdgDebU5Q=w1000" alt="Icono Geovivienda Verde"></div>
           <div>
             <div class="pill-title">Geovivienda Verde</div>
             <p class="pill-desc">Plataforma para visualizar y gestionar información espacial vinculada a la gestión ambiental.</p>
           </div>
-        </div>
+        </a>
 
-        <div class="card pill" style="--tone:#1E6EB6">
+        <a class="card pill" href="https://app.powerbi.com/view?r=eyJrIjoiNjVhODE5NGUtZGI2ZS00YjlhLTk0YWQtNDQxNzkyYWZhN2E5IiwidCI6IjhhZmMxYzZhLThjOWYtNDA5My1iMDU1LWU0MTdiMjA5M2IwYyIsImMiOjR9" target="_blank" rel="noopener noreferrer" style="--tone:#1E6EB6">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1n_kcvVkTy1BxIdnIQGwq9SsJx2qi_2BU=w1000" alt="Icono DATASS"></div>
           <div>
             <div class="pill-title">Información DATASS</div>
             <p class="pill-desc">Información georreferenciada sobre abastecimiento de agua y saneamiento en el ámbito rural e información institucional.</p>
           </div>
-        </div>
+        </a>
       </div>
     </div>
 
@@ -389,46 +415,45 @@
     <div class="section" id="vmvu">
       <h2 class="section-title">Vivienda y Urbanismo</h2>
       <div class="cards-row">
-        <div class="card pill" style="--tone:#4CAF50">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/solucionesvivienda.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1fJdv8Kqc6XM0hCuL0mS0cD6pqtjhbkiy=w1000" alt="Icono Soluciones de vivienda"></div>
           <div>
             <div class="pill-title">Soluciones de vivienda</div>
             <p class="pill-desc">Promueve el acceso a viviendas dignas y sostenibles para familias y comunidades.</p>
           </div>
-        </div>
+        </a>
 
-        <div class="card pill" style="--tone:#4CAF50">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/titulos.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1U9BPYR6uzU8s7Tf_GHS1dy3AgLPxu_lr=w1000" alt="Icono Títulos inscritos"></div>
           <div>
             <div class="pill-title">Títulos inscritos</div>
             <p class="pill-desc">Información de asuntos inscritos en el registro de catastro, titulación y registro inmobiliario.</p>
           </div>
-        </div>
+        </a>
 
-        <div class="card pill" style="--tone:#4CAF50">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/tablero_bfh.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1H-x3Niq8uOAvwpI6MQvf9-yKPdndj4pu=w1000" alt="Icono Bono habitacional familiar"></div>
           <div>
             <div class="pill-title">Bono familiar habitacional</div>
             <p class="pill-desc">Subsidio que permite a las familias adquirir, construir o mejorar su vivienda.</p>
           </div>
-        </div>
+        </a>
 
-        <div class="card pill" style="--tone:#4CAF50">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/geoplan.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1Msd2Bv3UjO_XuM28qG2WjNAhjLZR4GBN=w1000" alt="Icono Geoplan"></div>
           <div>
             <div class="pill-title">Geoplan</div>
             <p class="pill-desc">Instrumento para la planificación territorial con enfoque de desarrollo sostenible y gestión del riesgo.</p>
           </div>
-        </div>
+        </a>
 
-        <div class="card pill" style="--tone:#4CAF50">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/siccep.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/18XQx5RMP-7nM1kHU2KR5fauL9hB93Ysi=w1000" alt="Icono Visor SICCEP"></div>
           <div>
             <div class="pill-title">Visor SICCEP</div>
             <p class="pill-desc">Información georreferenciada de proyectos de inversión en vivienda.</p>
           </div>
-        </div>
-
+        </a>
       </div>
     </div>
 
@@ -438,29 +463,29 @@
     <div class="section" id="sg">
       <h2 class="section-title">Gestión del Riesgo de Desastres</h2>
       <div class="cards-row">
-        <div class="card pill" style="--tone:#A23FA8">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/tablero_zep.html" target="_blank" rel="noopener noreferrer" style="--tone:#A23FA8">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/10FnoESqvFKC-Svy70nFpHYGw54t8yjTM=w1000" alt="Icono Zonas expuestas a peligro"></div>
           <div>
             <div class="pill-title">Zonas expuestas a peligro</div>
             <p class="pill-desc">Áreas expuestas a peligros naturales o ambientales mediante análisis geográficos e históricos.</p>
           </div>
-        </div>
+        </a>
 
-        <div class="card pill" style="--tone:#A23FA8">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/tablero_sismico.html" target="_blank" rel="noopener noreferrer" style="--tone:#A23FA8">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1vLiJXw7KNenJuHCSDSzrcEnnll36qmf_=w1000" alt="Icono Microzonificación sísmica"></div>
           <div>
             <div class="pill-title">Microzonificación sísmica</div>
             <p class="pill-desc">Estudios geotécnicos y sismológicos para evaluar la respuesta del suelo ante eventos sísmicos.</p>
           </div>
-        </div>
+        </a>
 
-        <div class="card pill" style="--tone:#A23FA8">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/georiesgo.html" target="_blank" rel="noopener noreferrer" style="--tone:#A23FA8">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1MeWc8dRbIz7cxUvrEbMBcRHW1clkf9oh=w1000" alt="Icono Visor Georiesgo"></div>
           <div>
             <div class="pill-title">Visor Georiesgo</div>
             <p class="pill-desc">Visualiza y evalúa riesgos geológicos, deslizamientos y movimientos sísmicos.</p>
           </div>
-        </div>
+        </a>
       </div>
     </div>
 
@@ -470,22 +495,23 @@
     <div class="section" id="analisis">
       <h2 class="section-title">Análisis SIG</h2>
       <div class="cards-row">
-        <div class="card pill" style="--tone:#F59E0B">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/visor_proyecto.html" target="_blank" rel="noopener noreferrer" style="--tone:#F59E0B">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1-DIPJk0r3bAgZrsRAvFsv-xSEkF9Ik9l=w1000" alt="Icono Monitoreo de proyectos"></div>
           <div>
             <div class="pill-title">Monitoreo de proyectos</div>
             <p class="pill-desc">Seguimiento geográfico de iniciativas de inversión y su estado de avance.</p>
           </div>
-        </div>
+        </a>
 
-        <div class="card pill" style="--tone:#F59E0B">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/proyectoseinversion.html" target="_blank" rel="noopener noreferrer" style="--tone:#F59E0B">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1Q5eA6ue2SGhYP8Io7NUOgtAvZfUCMrde=w1000" alt="Icono Proyectos de inversión"></div>
           <div>
             <div class="pill-title">Proyectos de inversión</div>
             <p class="pill-desc">Explora la cartera de proyectos priorizados y su localización territorial.</p>
           </div>
-        </div>
+        </a>
 
+        <!-- Transferencias: sin enlace -->
         <div class="card pill" style="--tone:#F59E0B">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1Et1gkn2UsykadRl9vAAHF0vrGS8fbFPD=w1000" alt="Icono Transferencias"></div>
           <div>
@@ -498,27 +524,39 @@
 
     <div class="divider"></div>
 
-    <!-- COOPERANTES -->
+    <!-- COOPERANTES (carrusel en una sola fila) -->
     <div class="section partners" id="cooperantes" aria-labelledby="titulo-cooperantes">
       <h2 class="section-title" id="titulo-cooperantes">Herramientas de instituciones adscritas y cooperantes</h2>
-      <div class="stickers" role="list" aria-label="Logos de instituciones cooperantes">
-        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1fSDP-b8qaQ_6JVjs4PFrez0HEW0eLhTd=w1000" alt="GOTASS"></figure>
-        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1WNAspmCFqXlMZXHZacjCWl4kMBSYaDMT=w1000" alt="GeoSunass"></figure>
-        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1SltYpzkaggYfKVecNevf81RH5eXnPEG-=w1000" alt="Geo Perú"></figure>
-        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1cRMQs2IMc4EW0vQCfXAhfHgejW14IhoX=w1000" alt="GEO LLAQTA"></figure>
-        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1VC2TX6hvIUL5FixemMytckiK0DDFMzRY=w1000" alt="CENEPRED"></figure>
-        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1d9oBbYYTHV1WEBH7Mj6V30d-SfCb_MBE=w1000" alt="IDEP"></figure>
-        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1IUCSUXtH0cjZeSsaJ5qx_icc6CW8iPVM=w1000" alt="Agencia Espacial del Perú - CONIDA"></figure>
-        <figure class="sticker" role="listitem"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1rJr76UvCOTt5zxRcSv0kpMA0RmENrqeJ=w1000" alt="FAP - CEVAN"></figure>
+
+      <div class="partner-carousel" role="region" aria-label="Logos de instituciones cooperantes">
+        <button class="pc-arrow left" aria-label="Desplazar a la izquierda">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+
+        <div class="pc-viewport" id="pcViewport" tabindex="0">
+          <div class="pc-track" id="pcTrack">
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1fSDP-b8qaQ_6JVjs4PFrez0HEW0eLhTd=w1000" alt="GOTASS"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1WNAspmCFqXlMZXHZacjCWl4kMBSYaDMT=w1000" alt="GeoSunass"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1SltYpzkaggYfKVecNevf81RH5eXnPEG-=w1000" alt="Geo Perú"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1cRMQs2IMc4EW0vQCfXAhfHgejW14IhoX=w1000" alt="GEO LLAQTA"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1VC2TX6hvIUL5FixemMytckiK0DDFMzRY=w1000" alt="CENEPRED"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1d9oBbYYTHV1WEBH7Mj6V30d-SfCb_MBE=w1000" alt="IDEP"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1IUCSUXtH0cjZeSsaJ5qx_icc6CW8iPVM=w1000" alt="Agencia Espacial del Perú - CONIDA"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1rJr76UvCOTt5zxRcSv0kpMA0RmENrqeJ=w1000" alt="FAP - CEVAN"></figure>
+          </div>
+        </div>
+
+        <button class="pc-arrow right" aria-label="Desplazar a la derecha">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m10 6 1.41 1.41L8.83 10H20v2H8.83l2.58 2.59L10 16l-6-6z"/></svg>
+        </button>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- RECONOCIMIENTO -->
-    <div class="section" id="alianzas">
-      <h2 class="section-title">Reconocimiento</h2>
-      <div class="ribbon" aria-label="Instituciones que respaldan la plataforma">
+    <!-- RECONOCIMIENTO (sin título) -->
+    <div class="section" id="alianzas" aria-label="Instituciones que respaldan la plataforma">
+      <div class="ribbon">
         <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1EWbpli3V4J5vPgA09DyrAEt4-uiTEw_b=w1000" alt="GeoVivienda"></div>
         <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1N0kJmgJc1pqYhZPqo6EPCjFz3L0-eYH4=w1000" alt="MVCS"></div>
         <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1zs32a4h9D8xzs0PGGeFljx0j4Z9kRxbd=w1000" alt="Proyecto Bicentenario"></div>
@@ -710,6 +748,59 @@
     }else{
       items.forEach(el=> el.classList.add('show'));
     }
+  })();
+
+  /* ===== Carrusel cooperantes: movimiento constante + flechas para acelerar ===== */
+  (function(){
+    const viewport = document.getElementById('pcViewport');
+    const track = document.getElementById('pcTrack');
+    if(!viewport || !track) return;
+
+    // Duplicamos el contenido para bucle infinito
+    track.innerHTML = track.innerHTML + track.innerHTML;
+
+    const baseSpeed = 0.45; // px por frame (constante y visible)
+    let speed = baseSpeed;
+
+    function step(){
+      viewport.scrollLeft += speed;
+
+      // Medimos cada frame en caso cambie por carga de imágenes o resize
+      const half = Math.max(1, Math.floor(track.scrollWidth / 2));
+
+      // Bucle continuo
+      if(speed >= 0 && viewport.scrollLeft >= half){ viewport.scrollLeft = 0; }
+      if(speed < 0 && viewport.scrollLeft <= 0){ viewport.scrollLeft = half; }
+
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+
+    // Flechas para acelerar mientras se mantenga presionado (sin pausar)
+    const leftBtn = document.querySelector('.pc-arrow.left');
+    const rightBtn = document.querySelector('.pc-arrow.right');
+
+    function press(dir){ speed = dir * 1.2; }   // acelera en el sentido indicado
+    function release(){ speed = baseSpeed; }    // vuelve a velocidad constante
+
+    ['pointerdown'].forEach(evt=>{
+      leftBtn.addEventListener(evt, ()=>press(-1));
+      rightBtn.addEventListener(evt, ()=>press(1));
+    });
+    ['pointerup','pointercancel','mouseleave'].forEach(evt=>{
+      leftBtn.addEventListener(evt, release);
+      rightBtn.addEventListener(evt, release);
+    });
+
+    // Accesibilidad con teclado cuando el viewport tiene foco
+    viewport.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowRight'){ speed = 1.2; }
+      if(e.key === 'ArrowLeft'){ speed = -1.2; }
+    });
+    viewport.addEventListener('keyup', ()=>{ speed = baseSpeed; });
+
+    // Recalcular al redimensionar
+    window.addEventListener('resize', ()=>{ /* half se recalcula en cada frame */ });
   })();
   </script>
 </body>
