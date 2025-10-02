@@ -15,9 +15,9 @@
       --card-h:260px; --hdr-h:82px; --gap:24px; --radius:12px;
       --elev0:0 4px 8px rgba(0,0,0,.10); --elev1:0 10px 18px rgba(0,0,0,.18);
       --page-bg: #F6E1DE;
-      --pill-h: 170px;              /* altura uniforme de las pastillas */
-      --pill-badge: 60px;           /* tamaño del círculo del icono    */
-      --pill-badge-offset: -22px;   /* cuánto “flota” sobre la tarjeta  */
+      --pill-h: 170px;
+      --pill-badge: 60px;
+      --pill-badge-offset: -22px;
     }
 
     *{box-sizing:border-box}
@@ -133,17 +133,16 @@
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
       gap:var(--gap);
-      align-items:stretch; /* mismas alturas en la fila */
+      align-items:stretch;
     }
 
-    /* Uniformizar ancho visual en geovisor y MVCS */
     #geovisor .cards-row,
     #mvcs .cards-row{
       grid-template-columns:repeat(auto-fit, minmax(280px, 360px));
       justify-content:center;
     }
 
-    /* ===== Tarjeta PILL (uniforme con ícono circular arriba) ===== */
+    /* ===== Tarjeta PILL ===== */
     .card{
       position:relative;background:#fff;border-radius:16px;border:1px solid #efe9e9;box-shadow:var(--elev0);
       transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;opacity:0;transform:translateZ(-300px) scale(.7);
@@ -155,18 +154,16 @@
     .card.pill{
       display:flex;flex-direction:column;justify-content:flex-start;
       padding:22px 16px 16px;
-      min-height:var(--pill-h); /* misma altura */
+      min-height:var(--pill-h);
     }
-    /* Círculo del icono como “badge” en la parte superior izquierda */
     .card.pill .icon-circle{
       --tone:#1E6EB6;
       position:absolute;top:var(--pill-badge-offset);left:16px;
       width:var(--pill-badge);height:var(--pill-badge);border-radius:999px;background:var(--tone);
       display:grid;place-items:center;
-      box-shadow:0 10px 22px color-mix(in srgb,var(--tone) 35%, transparent), 0 0 0 4px #fff; /* halo blanco como en la imagen */
+      box-shadow:0 10px 22px color-mix(in srgb,var(--tone) 35%, transparent), 0 0 0 4px #fff;
     }
     .card.pill .icon-circle img{width:58%;height:58%;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
-    /* Texto desplazado para no chocar con el badge */
     .card.pill .pill-title{margin:26px 0 6px;font-weight:900;letter-spacing:.2px}
     .card.pill .pill-desc{margin:0;color:#2f3845;font-size:14px;line-height:1.45}
 
@@ -203,7 +200,6 @@
       :root{--card-h:280px;--hdr-h:70px;--gap:18px}
       .section-title{font-size:24px}
       .art img{max-width:440px}
-      /* acomodo del badge en móvil */
       .card.pill{min-height:calc(var(--pill-h) + 6px)}
     }
 
@@ -230,6 +226,32 @@
     body.theme-institucional .stats{background:linear-gradient(to bottom, var(--accent) 0%, var(--accent-2) 100%);color:#fff}
     body.theme-institucional .section-title{color:var(--accent)}
     body.theme-institucional .divider{background:var(--accent);opacity:.35}
+
+    /* ===== COLORES POR APARTADO ===== */
+    /* Geovisor: #e30713 */
+    #geovisor .section-title{color:#e30713}
+    #geovisor .card.pill .pill-title{color:#e30713}
+    #geovisor .card.pill .icon-circle{background:#e30713;box-shadow:0 10px 22px rgba(227,7,19,.35), 0 0 0 4px #fff}
+
+    /* Construcción y Saneamiento (mantener azul actual #1E6EB6) */
+    #mvcs .section-title{color:#1E6EB6}
+    #mvcs .card.pill .pill-title{color:#1E6EB6}
+    #mvcs .card.pill .icon-circle{background:#1E6EB6;box-shadow:0 10px 22px rgba(30,110,182,.35), 0 0 0 4px #fff}
+
+    /* Vivienda y Urbanismo: #8fba22 */
+    #vmvu .section-title{color:#8fba22}
+    #vmvu .card.pill .pill-title{color:#8fba22}
+    #vmvu .card.pill .icon-circle{background:#8fba22;box-shadow:0 10px 22px rgba(143,186,34,.35), 0 0 0 4px #fff}
+
+    /* Gestión del Riesgo de Desastres: #b31c7d */
+    #sg .section-title{color:#b31c7d}
+    #sg .card.pill .pill-title{color:#b31c7d}
+    #sg .card.pill .icon-circle{background:#b31c7d;box-shadow:0 10px 22px rgba(179,28,125,.35), 0 0 0 4px #fff}
+
+    /* Análisis SIG: #faae00 */
+    #analisis .section-title{color:#faae00}
+    #analisis .card.pill .pill-title{color:#faae00}
+    #analisis .card.pill .icon-circle{background:#faae00;box-shadow:0 10px 22px rgba(250,174,0,.35), 0 0 0 4px #fff}
   </style>
 </head>
 <body class="theme-institucional">
@@ -273,7 +295,7 @@
         </h1>
 
         <p class="subtitle">Accede a datos geográficos y estadísticos actualizados sobre vivienda, agua, saneamiento, titulación y planificación urbana. Una herramienta del MVCS al servicio de la ciudadanía y los gobiernos locales.</p>
-        <div class="actions">
+        <div class="actions>
           <a class="btn" href="#geovisor">Geovisor</a>
           <a class="btn ghost" href="#datos">Datos abiertos</a>
         </div>
@@ -297,7 +319,7 @@
           <div class="kpi-sep">·</div>
           <div class="counter" data-value="14426"><div class="slot" aria-label="Proyectos Culminados"></div><div class="label">Proyectos Culminados</div></div>
           <div class="kpi-sep">·</div>
-          <div class="counter" data-value="427311"><div class="slot" aria-label="Conexiones de agua nuevas"></div><div class="label">Conexiones de agua nuevas</div></div>
+          <div class="counter" data-value="427311"><div class="slot" aria-label="Conexiones de agua nuevas"></div><div class="label">Conexiones de Agua nuevas</div></div>
           <div class="kpi-sep">·</div>
           <div class="counter" data-value="157499"><div class="slot" aria-label="Conexiones de Alcantarillado"></div><div class="label">Conexiones de Alcantarillado</div></div>
         </div>
@@ -305,7 +327,6 @@
       </div>
     </div>
 
-    <!-- Conector (azul) -->
     <div class="conector" aria-hidden="true">
       <div class="fila superior">
         <div class="nodo rama"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1i8CwW-eOf-Pd2ANa6o7X6yaFOcP5KpC7=w1000" alt=""></div>
@@ -368,7 +389,6 @@
     <div class="section" id="vmvu">
       <h2 class="section-title">Vivienda y Urbanismo</h2>
       <div class="cards-row">
-
         <div class="card pill" style="--tone:#4CAF50">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1fJdv8Kqc6XM0hCuL0mS0cD6pqtjhbkiy=w1000" alt="Icono Soluciones de vivienda"></div>
           <div>
@@ -418,7 +438,6 @@
     <div class="section" id="sg">
       <h2 class="section-title">Gestión del Riesgo de Desastres</h2>
       <div class="cards-row">
-
         <div class="card pill" style="--tone:#A23FA8">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/10FnoESqvFKC-Svy70nFpHYGw54t8yjTM=w1000" alt="Icono Zonas expuestas a peligro"></div>
           <div>
@@ -442,7 +461,6 @@
             <p class="pill-desc">Visualiza y evalúa riesgos geológicos, deslizamientos y movimientos sísmicos.</p>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -452,7 +470,6 @@
     <div class="section" id="analisis">
       <h2 class="section-title">Análisis SIG</h2>
       <div class="cards-row">
-
         <div class="card pill" style="--tone:#F59E0B">
           <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1-DIPJk0r3bAgZrsRAvFsv-xSEkF9Ik9l=w1000" alt="Icono Monitoreo de proyectos"></div>
           <div>
@@ -476,7 +493,6 @@
             <p class="pill-desc">Consulta transferencias y asignaciones vinculadas a intervenciones territoriales.</p>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -540,7 +556,6 @@
   </footer>
 
   <script>
-  /* ===== Contadores ===== */
   (function(){
     const SEP='.'; const duration=1400; const extraSpin=6; const easeOut=t=>1-Math.pow(1-t,3);
     const counters=document.querySelectorAll('.stats .counter');
@@ -568,10 +583,9 @@
     if(stats) io.observe(stats);
   })();
 
-  /* ===== Animación de tarjetas ===== */
   window.addEventListener('DOMContentLoaded', () => {
     const stage = document.querySelector('.geovisor-stage');
-    const visor = document.getElementById('visor'); // puede no existir, protegido abajo
+    const visor = document.getElementById('visor');
     const cards = Array.from(document.querySelectorAll('.card'));
     if (!('IntersectionObserver' in window)) {
       cards.forEach(c => c.classList.add('in'));
@@ -584,7 +598,6 @@
     if(stage && visor){ setTimeout(() => { stage?.classList.add('active'); visor.classList.add('glow'); setTimeout(() => visor.classList.remove('glow'), 2000); }, 4000); }
   });
 
-  /* ===== Menú activo + sombra ===== */
   (function(){
     const header = document.querySelector('header.site');
     const ids = ['inicio','geovisor','mvcs','vmvu','sg','analisis'];
@@ -650,7 +663,6 @@
     setActive('inicio');
   })();
 
-  /* ===== Fallback robusto para sticky ===== */
   (function(){
     const header = document.querySelector('header.site');
     if(!header) return;
@@ -673,7 +685,6 @@
     }
   })();
 
-  /* ===== Ramificación visible ===== */
   window.addEventListener('DOMContentLoaded', () => {
     const conector = document.querySelector('.conector');
     if (!conector) return;
@@ -687,7 +698,6 @@
     }
   });
 
-  /* ===== Cooperantes + Reconocimiento ===== */
   (function(){
     const items = [...document.querySelectorAll('.sticker'), ...document.querySelectorAll('.r-item')];
     if(!items.length) return;
