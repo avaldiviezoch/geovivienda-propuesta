@@ -749,7 +749,7 @@
     }
   })();
 
-  /* ===== Carrusel cooperantes: movimiento constante en bucle, pausa al hover, flechas aceleran ===== */
+  /* ===== Carrusel cooperantes: movimiento constante en bucle (hacia la DERECHA), pausa al hover, flechas aceleran ===== */
   (function(){
     const region = document.querySelector('.partner-carousel');
     const viewport = document.getElementById('pcViewport');
@@ -760,15 +760,23 @@
     track.innerHTML = track.innerHTML + track.innerHTML;
 
     // Estado
-    let x = 0;                      // posición en px (translateX)
-    const baseSpeed = 28;           // px/seg (velocidad suave por defecto)
-    const accelSpeed = 180;         // px/seg (al mantener flechas)
-    let vx = -baseSpeed;            // negativo = hacia la izquierda
+    const baseSpeed = 28;           // px/seg por defecto
+    const accelSpeed = 180;         // px/seg con flechas
+    let vx = +baseSpeed;            // POSITIVO = hacia la derecha (nuevo sentido)
+    let x = 0;                      // posición actual
     let paused = false;
     let hover = false;
     let pressing = false;
 
-    // Bucle rAF con delta time para ser suave en 60/120/144Hz
+    // Posición inicial cerca de -half para evitar "salto" inmediato al iniciar hacia la derecha
+    function setInitialX(){
+      const half = track.scrollWidth / 2;
+      x = -half + 1;
+      track.style.transform = `translateX(${x}px)`;
+    }
+    setInitialX();
+
+    // Bucle rAF con delta time
     function loop(ts){
       if(!loop.prev) loop.prev = ts;
       const dt = Math.min(50, ts - loop.prev) / 1000; // seg
@@ -790,14 +798,14 @@
     }
     requestAnimationFrame(loop);
 
-    // Hover: pausa solo cuando el cursor esté encima del carrusel
+    // Hover: pausa sólo cuando el cursor esté encima
     function setHover(on){
       hover = on;
       if(hover){
         paused = true;
       }else{
         paused = false;
-        if(!pressing) vx = -baseSpeed;
+        if(!pressing) vx = +baseSpeed; // retomar hacia la derecha
       }
     }
     region.addEventListener('mouseenter', ()=>setHover(true));
@@ -805,20 +813,20 @@
     region.addEventListener('touchstart', ()=>setHover(true), {passive:true});
     region.addEventListener('touchend', ()=>setHover(false));
 
-    // Flechas: aceleran mientras se mantenga presionado (anulan la pausa)
+    // Flechas: acelerar en la dirección correspondiente
     const leftBtn = region.querySelector('.pc-arrow.left');
     const rightBtn = region.querySelector('.pc-arrow.right');
 
     function pressLeft(){
-      pressing = true; paused = false; vx = +accelSpeed;  // mover a la derecha (contenido)
+      pressing = true; paused = false; vx = -accelSpeed;  // mover hacia la IZQUIERDA
     }
     function pressRight(){
-      pressing = true; paused = false; vx = -accelSpeed;  // mover a la izquierda (contenido)
+      pressing = true; paused = false; vx = +accelSpeed;  // mover hacia la DERECHA
     }
     function release(){
       pressing = false;
       if(hover){ paused = true; }
-      else { paused = false; vx = -baseSpeed; }
+      else { paused = false; vx = +baseSpeed; } // retomar derecha
     }
 
     ['pointerdown','mousedown','touchstart'].forEach(ev=>{
@@ -837,8 +845,8 @@
     });
     viewport.addEventListener('keyup', release);
 
-    // Recalcular en resize (no hace falta guardar nada, usamos scrollWidth cada frame)
-    window.addEventListener('resize', ()=>{ /* sin-op; half se deriva cada frame */ });
+    // Reposicionar al redimensionar para mantener continuidad
+    window.addEventListener('resize', setInitialX);
   })();
   </script>
 </body>
