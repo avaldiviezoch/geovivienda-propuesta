@@ -144,7 +144,7 @@
 
     /* ===== Tarjeta PILL ===== */
     .card{
-      display:block; /* para que <a class="card"> sea de bloque */
+      display:block;
       position:relative;background:#fff;border-radius:16px;border:1px solid #efe9e9;box-shadow:var(--elev0);
       transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;opacity:0;transform:translateZ(-300px) scale(.7);
       height:100%; color:inherit; text-decoration:none;
@@ -174,9 +174,9 @@
 
     .partner-carousel{max-width:var(--maxw);margin:0 auto;position:relative;padding:8px 40px}
     .pc-viewport{overflow:hidden;width:100%}
-    .pc-track{display:flex;align-items:center;gap:clamp(26px,3.6vw,44px)}
+    .pc-track{display:flex;align-items:center;gap:clamp(26px,3.6vw,44px);will-change:transform}
     .pc-item{
-      flex:0 0 clamp(160px, 22vw, 260px); /* ancho fijo para asegurar overflow y movimiento */
+      flex:0 0 clamp(160px, 22vw, 260px);
       display:flex;align-items:center;justify-content:center;
       min-height:clamp(200px,24vw,300px);
     }
@@ -221,7 +221,11 @@
     .copy a{color:#0ea5e9;text-decoration:none}
     .copy a:hover{text-decoration:underline}
 
-    @media (prefers-reduced-motion:reduce){*{animation:none!important;transform:none!important;opacity:1!important;filter:none!important}}
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transform:none!important;opacity:1!important;filter:none!important}
+      .pc-track{will-change:auto}
+    }
+
     @media (max-width:640px){
       :root{--card-h:280px;--hdr-h:70px;--gap:18px}
       .section-title{font-size:24px}
@@ -254,27 +258,22 @@
     body.theme-institucional .divider{background:var(--accent);opacity:.35}
 
     /* ===== COLORES POR APARTADO ===== */
-    /* Geovisor: #e30713 */
     #geovisor .section-title{color:#e30713}
     #geovisor .card.pill .pill-title{color:#e30713}
     #geovisor .card.pill .icon-circle{background:#e30713;box-shadow:0 10px 22px rgba(227,7,19,.35), 0 0 0 4px #fff}
 
-    /* Construcción y Saneamiento (mantener azul actual #1E6EB6) */
     #mvcs .section-title{color:#1E6EB6}
     #mvcs .card.pill .pill-title{color:#1E6EB6}
     #mvcs .card.pill .icon-circle{background:#1E6EB6;box-shadow:0 10px 22px rgba(30,110,182,.35), 0 0 0 4px #fff}
 
-    /* Vivienda y Urbanismo: #8fba22 */
     #vmvu .section-title{color:#8fba22}
     #vmvu .card.pill .pill-title{color:#8fba22}
     #vmvu .card.pill .icon-circle{background:#8fba22;box-shadow:0 10px 22px rgba(143,186,34,.35), 0 0 0 4px #fff}
 
-    /* Gestión del Riesgo de Desastres: #b31c7d */
     #sg .section-title{color:#b31c7d}
     #sg .card.pill .pill-title{color:#b31c7d}
     #sg .card.pill .icon-circle{background:#b31c7d;box-shadow:0 10px 22px rgba(179,28,125,.35), 0 0 0 4px #fff}
 
-    /* Análisis SIG: #faae00 */
     #analisis .section-title{color:#faae00}
     #analisis .card.pill .pill-title{color:#faae00}
     #analisis .card.pill .icon-circle{background:#faae00;box-shadow:0 10px 22px rgba(250,174,0,.35), 0 0 0 4px #fff}
@@ -322,7 +321,7 @@
 
         <p class="subtitle">Accede a datos geográficos y estadísticos actualizados sobre vivienda, agua, saneamiento, titulación y planificación urbana. Una herramienta del MVCS al servicio de la ciudadanía y los gobiernos locales.</p>
         <div class="actions">
-          <!-- Botón Geovisor eliminado: queda solo Datos abiertos -->
+          <!-- Botón Geovisor eliminado -->
           <a class="btn ghost" href="#datos">Datos abiertos</a>
         </div>
       </div>
@@ -633,7 +632,7 @@
       }, {threshold:0.15});
       cards.forEach(c => io.observe(c));
     }
-    if(stage && visor){ setTimeout(() => { stage?.classList.add('active'); visor.classList.add('glow'); setTimeout(() => visor.classList.remove('glow'), 2000); }, 4000); }
+    if(stage && visor){ setTimeout(() => { stage?.classList.add('active'); visor?.classList?.add('glow'); setTimeout(() => visor?.classList?.remove('glow'), 2000); }, 4000); }
   });
 
   (function(){
@@ -750,57 +749,96 @@
     }
   })();
 
-  /* ===== Carrusel cooperantes: movimiento constante + flechas para acelerar ===== */
+  /* ===== Carrusel cooperantes: movimiento constante en bucle, pausa al hover, flechas aceleran ===== */
   (function(){
+    const region = document.querySelector('.partner-carousel');
     const viewport = document.getElementById('pcViewport');
     const track = document.getElementById('pcTrack');
-    if(!viewport || !track) return;
+    if(!region || !viewport || !track) return;
 
-    // Duplicamos el contenido para bucle infinito
+    // Duplicamos el contenido para permitir bucle continuo
     track.innerHTML = track.innerHTML + track.innerHTML;
 
-    const baseSpeed = 0.45; // px por frame (constante y visible)
-    let speed = baseSpeed;
+    // Estado
+    let x = 0;                      // posición en px (translateX)
+    const baseSpeed = 28;           // px/seg (velocidad suave por defecto)
+    const accelSpeed = 180;         // px/seg (al mantener flechas)
+    let vx = -baseSpeed;            // negativo = hacia la izquierda
+    let paused = false;
+    let hover = false;
+    let pressing = false;
 
-    function step(){
-      viewport.scrollLeft += speed;
+    // Bucle rAF con delta time para ser suave en 60/120/144Hz
+    function loop(ts){
+      if(!loop.prev) loop.prev = ts;
+      const dt = Math.min(50, ts - loop.prev) / 1000; // seg
+      loop.prev = ts;
 
-      // Medimos cada frame en caso cambie por carga de imágenes o resize
-      const half = Math.max(1, Math.floor(track.scrollWidth / 2));
+      const half = track.scrollWidth / 2;
 
-      // Bucle continuo
-      if(speed >= 0 && viewport.scrollLeft >= half){ viewport.scrollLeft = 0; }
-      if(speed < 0 && viewport.scrollLeft <= 0){ viewport.scrollLeft = half; }
+      if(!paused){
+        x += vx * dt;
 
-      requestAnimationFrame(step);
+        // Mantener x en [-half, 0] para transiciones sin salto
+        if(x <= -half) x += half;
+        if(x > 0) x -= half;
+
+        track.style.transform = `translateX(${x}px)`;
+      }
+
+      requestAnimationFrame(loop);
     }
-    requestAnimationFrame(step);
+    requestAnimationFrame(loop);
 
-    // Flechas para acelerar mientras se mantenga presionado (sin pausar)
-    const leftBtn = document.querySelector('.pc-arrow.left');
-    const rightBtn = document.querySelector('.pc-arrow.right');
+    // Hover: pausa solo cuando el cursor esté encima del carrusel
+    function setHover(on){
+      hover = on;
+      if(hover){
+        paused = true;
+      }else{
+        paused = false;
+        if(!pressing) vx = -baseSpeed;
+      }
+    }
+    region.addEventListener('mouseenter', ()=>setHover(true));
+    region.addEventListener('mouseleave', ()=>setHover(false));
+    region.addEventListener('touchstart', ()=>setHover(true), {passive:true});
+    region.addEventListener('touchend', ()=>setHover(false));
 
-    function press(dir){ speed = dir * 1.2; }   // acelera en el sentido indicado
-    function release(){ speed = baseSpeed; }    // vuelve a velocidad constante
+    // Flechas: aceleran mientras se mantenga presionado (anulan la pausa)
+    const leftBtn = region.querySelector('.pc-arrow.left');
+    const rightBtn = region.querySelector('.pc-arrow.right');
 
-    ['pointerdown'].forEach(evt=>{
-      leftBtn.addEventListener(evt, ()=>press(-1));
-      rightBtn.addEventListener(evt, ()=>press(1));
+    function pressLeft(){
+      pressing = true; paused = false; vx = +accelSpeed;  // mover a la derecha (contenido)
+    }
+    function pressRight(){
+      pressing = true; paused = false; vx = -accelSpeed;  // mover a la izquierda (contenido)
+    }
+    function release(){
+      pressing = false;
+      if(hover){ paused = true; }
+      else { paused = false; vx = -baseSpeed; }
+    }
+
+    ['pointerdown','mousedown','touchstart'].forEach(ev=>{
+      leftBtn.addEventListener(ev, pressLeft);
+      rightBtn.addEventListener(ev, pressRight);
     });
-    ['pointerup','pointercancel','mouseleave'].forEach(evt=>{
-      leftBtn.addEventListener(evt, release);
-      rightBtn.addEventListener(evt, release);
+    ['pointerup','pointercancel','mouseup','mouseleave','touchend'].forEach(ev=>{
+      leftBtn.addEventListener(ev, release);
+      rightBtn.addEventListener(ev, release);
     });
 
-    // Accesibilidad con teclado cuando el viewport tiene foco
+    // Accesible por teclado cuando el viewport tiene foco
     viewport.addEventListener('keydown', (e)=>{
-      if(e.key === 'ArrowRight'){ speed = 1.2; }
-      if(e.key === 'ArrowLeft'){ speed = -1.2; }
+      if(e.key === 'ArrowRight'){ pressRight(); }
+      if(e.key === 'ArrowLeft'){ pressLeft(); }
     });
-    viewport.addEventListener('keyup', ()=>{ speed = baseSpeed; });
+    viewport.addEventListener('keyup', release);
 
-    // Recalcular al redimensionar
-    window.addEventListener('resize', ()=>{ /* half se recalcula en cada frame */ });
+    // Recalcular en resize (no hace falta guardar nada, usamos scrollWidth cada frame)
+    window.addEventListener('resize', ()=>{ /* sin-op; half se deriva cada frame */ });
   })();
   </script>
 </body>
