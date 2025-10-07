@@ -1,751 +1,456 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Itinerario · Lima – Madrid – París – Madrid – Lima (6–17 nov 2025)</title>
-  <meta name="color-scheme" content="light dark" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Itinerario · Lima – Madrid – París – Madrid – Lima (6–17 nov 2025)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<meta name="color-scheme" content="light dark"/>
+<style>
+  :root{
+    /* Oscuro por defecto */
+    --bg:#0b1220; --ink:#e9f2ff; --muted:#b7c3d6;
+    --glass: color-mix(in srgb, #ffffff 10%, transparent);
+    --card: color-mix(in srgb, #ffffff 6%, transparent);
+    --stroke: color-mix(in srgb, #99b1ff 22%, transparent);
+    --brand:#7aa2ff; --brand2:#b973ff;
+    --ok:#4ade80; --warn:#fbbf24; --danger:#fb7185;
+    --radius:16px; --maxw:1100px; --hdr:112px;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+    --bg-grad1: radial-gradient(1200px 1200px at 10% -10%, #1a2650 0, transparent 60%);
+    --bg-grad2: radial-gradient(1200px 1200px at 110% 10%, #381a50 0, transparent 55%);
+  }
+  :root[data-theme="light"]{
+    --bg:#f7f9ff; --ink:#0b1220; --muted:#4b587a;
+    --glass: color-mix(in srgb, #000 6%, transparent);
+    --card:#ffffffcc; --stroke:#d8e0ff;
+    --brand:#3b82f6; --brand2:#a855f7;
+    --shadow:0 10px 28px rgba(0,0,0,.08);
+    --bg-grad1: radial-gradient(1200px 1200px at 10% -10%, #e6eeff 0, transparent 60%);
+    --bg-grad2: radial-gradient(1200px 1200px at 110% 10%, #f1e7ff 0, transparent 55%);
+  }
 
-  <style>
-    :root{
-      --bg: #0b1220;                  /* fondo base (oscuro elegante) */
-      --ink: #e9f2ff;                 /* texto principal */
-      --muted: #b7c3d6;               /* texto secundario */
-      --glass: color-mix(in srgb, #ffffff 10%, transparent);
-      --card: color-mix(in srgb, #ffffff 6%, transparent);
-      --stroke: color-mix(in srgb, #99b1ff 22%, transparent);
-      --brand: #7aa2ff;               /* azul vibrante */
-      --brand-2: #b973ff;             /* violeta */
-      --ok: #4ade80;                  /* confirmado */
-      --warn: #fbbf24;                /* pendiente */
-      --info: #60a5fa;                /* info */
-      --danger:#fb7185;               /* vuelos */
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;height:100%;
+    font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+    background: var(--bg-grad1), var(--bg-grad2), var(--bg);
+    color:var(--ink);overflow-x:hidden
+  }
+  a{color:var(--brand);text-decoration:none}
+  a:hover{text-decoration:underline}
+  button{font:inherit;cursor:pointer}
 
-      --radius: 16px;
-      --gap: 16px;
-      --maxw: 1100px;
-      --hdr-h: 72px;
-      --chip-h: 30px;
-    }
+  /* COVER SECTION */
+  .cover{
+    width:min(100% - 24px, var(--maxw));
+    margin:40px auto 60px;
+    text-align:center;
+    display:grid;
+    gap:24px;
+  }
+  .cover__title{
+    font-size:36px;
+    font-weight:900;
+    letter-spacing:1px;
+    margin:0;
+    text-shadow:0 4px 12px rgba(0,0,0,.25);
+  }
+  .cover__faces{
+    display:flex;
+    justify-content:center;
+    gap:24px;
+    margin-top:20px;
+  }
+  .cover__head{
+    width:120px;
+    height:120px;
+    display:block;
+    object-fit:contain;
+    filter: drop-shadow(0 8px 20px rgba(0,0,0,.4));
+    transform-origin: bottom center;
+    animation: neck-tilt 3.2s ease-in-out infinite;
+  }
+  .cover__head--lag{ animation-delay: .9s }
+  @keyframes neck-tilt{
+    0%   { transform: rotate(0deg) }
+    25%  { transform: rotate(9deg) }
+    50%  { transform: rotate(0deg) }
+    75%  { transform: rotate(-9deg) }
+    100% { transform: rotate(0deg) }
+  }
 
-    *{ box-sizing: border-box }
-    html,body{ height:100%; margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial; color:var(--ink); background: radial-gradient(1200px 1200px at 10% -10%, #1a2650 0, transparent 60%), radial-gradient(1200px 1200px at 110% 10%, #381a50 0, transparent 55%), var(--bg); }
-    a{ color:var(--brand); text-decoration:none }
-    a:hover{ text-decoration:underline }
-    button{ font: inherit }
+  /* HEADER */
+  .hdr{
+    position:sticky;top:0;z-index:60;height:var(--hdr);
+    display:flex;align-items:center;justify-content:center;
+    backdrop-filter: blur(14px);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 70%, transparent), color-mix(in srgb, var(--bg) 30%, transparent));
+    border-bottom:1px solid var(--stroke)
+  }
+  .hdr__in{
+    width:min(100% - 24px, var(--maxw));
+    display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center
+  }
+  .logo{
+    width:84px;height:84px;border-radius:20px;
+    background:
+      radial-gradient(160px 80px at 50% 10%, rgba(255,255,255,.18), transparent 60%),
+      conic-gradient(from 210deg, var(--brand), var(--brand2));
+    display:grid;place-items:center;
+    box-shadow:inset 0 0 40px rgba(255,255,255,.18), 0 8px 24px rgba(0,0,0,.18)
+  }
+  .logo span{font-size:44px;filter:drop-shadow(0 3px 8px rgba(0,0,0,.25))}
 
-    /* Header */
-    .hdr{
-      position: sticky; top:0; z-index:50;
-      height: var(--hdr-h);
-      display:flex; align-items:center; justify-content:center;
-      backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(10,15,30,.66), rgba(10,15,30,.3));
-      border-bottom: 1px solid var(--stroke);
-    }
-    .hdr__in{ width: min(100% - 24px, var(--maxw)); display:flex; align-items:center; gap:12px; }
-    .logo{
-      width:44px; height:44px; border-radius:14px;
-      background: conic-gradient(from 210deg, var(--brand), var(--brand-2));
-      box-shadow: inset 0 0 30px rgba(255,255,255,.25);
-      display:grid; place-items:center; color:#0b1220; font-weight:900; letter-spacing:.5px;
-    }
-    .title{
-      display:grid; gap:4px;
-    }
-    .title h1{ font-size:18px; margin:0; font-weight:900; letter-spacing:.2px }
-    .title p{ margin:0; color:var(--muted); font-size:12px }
+  .title{display:flex;align-items:center;gap:14px;min-width:0}
+  .title__text{display:grid;gap:4px;min-width:0;flex:1 1 auto}
+  .title h1{margin:0;font-weight:900;font-size:18px;letter-spacing:.25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .title p{margin:0;color:var(--muted);font-size:12px}
 
-    .hdr__actions{ margin-left:auto; display:flex; gap:8px; align-items:center }
-    .btn{
-      height:36px; padding:0 14px; border:1px solid var(--stroke);
-      background: linear-gradient(180deg, color-mix(in srgb, var(--card) 50%, transparent), transparent);
-      color:var(--ink); border-radius:12px; cursor:pointer;
-      display:inline-flex; align-items:center; gap:8px;
-    }
-    .btn:hover{ border-color: color-mix(in srgb, var(--brand) 40%, var(--stroke)); }
-    .btn--brand{
-      border: none; background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      color:#0b1220; font-weight:700;
-    }
-    .btn--brand:hover{ filter: brightness(1.05) }
+  .hdr__actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .btn{height:38px;padding:0 14px;border:1px solid var(--stroke);border-radius:12px;color:var(--ink);
+       background:linear-gradient(180deg, color-mix(in srgb, var(--card) 60%, transparent), transparent)}
+  .btn:hover{border-color:color-mix(in srgb, var(--brand) 45%, var(--stroke))}
+  .btn--brand{border:none;background:linear-gradient(90deg, var(--brand), var(--brand2));color:#0b1220;font-weight:800}
+  .btn--ghost{border:1px solid var(--stroke);background:transparent}
 
-    /* Hero */
-    .hero{
-      width: min(100% - 24px, var(--maxw));
-      margin: 18px auto 0; display:grid; gap:16px;
-      grid-template-columns: 1.2fr .8fr;
-    }
-    @media (max-width: 980px){ .hero{ grid-template-columns: 1fr } }
+  /* Top blocks */
+  .top{width:min(100% - 24px, var(--maxw));margin:18px auto;display:grid;gap:14px}
+  .card{background:var(--card);border:1px solid var(--stroke);border-radius:16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .card::after{content:"";position:absolute;inset:-20%;background:
+    radial-gradient(600px 200px at 0% 0%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 60%),
+    radial-gradient(800px 250px at 100% -20%, color-mix(in srgb, var(--brand2) 18%, transparent), transparent 60%);pointer-events:none}
 
-    .card{
-      background: var(--card); border:1px solid var(--stroke); border-radius:var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .hero .summary{
-      padding:18px; display:grid; gap:14px;
-      background-image: radial-gradient(1000px 500px at -10% -30%, rgba(122,162,255,.25), transparent 60%),
-                       radial-gradient(700px 500px at 120% -20%, rgba(185,115,255,.22), transparent 60%);
-    }
-    .kpis{ display:grid; grid-template-columns: repeat(4,1fr); gap:10px }
-    @media (max-width: 680px){ .kpis{ grid-template-columns: repeat(2,1fr) } }
-    .kpi{ padding:12px; border:1px dashed var(--stroke); border-radius:12px; display:grid; gap:6px; background: color-mix(in srgb, var(--glass) 50%, transparent) }
-    .kpi b{ font-size:20px }
-    .chips{ display:flex; gap:8px; flex-wrap:wrap }
-    .chip{
-      height: var(--chip-h); display:inline-flex; align-items:center; gap:8px; padding:0 12px;
-      border-radius:999px; border:1px solid var(--stroke); background: color-mix(in srgb, var(--glass) 60%, transparent); color:var(--muted); font-size:12px;
-    }
-    .chip.ok{ border-color: color-mix(in srgb, var(--ok) 40%, var(--stroke)); color:#cbffda }
-    .chip.warn{ border-color: color-mix(in srgb, var(--warn) 45%, var(--stroke)); color:#ffe6b0 }
-    .chip.fly{ border-color: color-mix(in srgb, var(--danger) 45%, var(--stroke)); color:#ffd5db }
+  .filters{padding:14px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{padding:9px 12px;border-radius:12px;border:1px solid var(--stroke);background:color-mix(in srgb, var(--glass) 60%, transparent)}
+  .tag.active{border-color:var(--brand);color:#cfe2ff}
 
-    .panel{
-      padding:18px; display:grid; gap:14px;
-    }
-    .panel h3{ margin:0; font-size:15px; letter-spacing:.2px }
-    .filters{ display:flex; flex-wrap:wrap; gap:8px }
-    .tag{ padding:8px 12px; border-radius:12px; border:1px solid var(--stroke); cursor:pointer; background: color-mix(in srgb, var(--glass) 50%, transparent) }
-    .tag.active{ border-color:var(--brand); color:#cfe2ff }
+  .summary{padding:18px;display:grid;gap:14px}
+  .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media (max-width:680px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{padding:12px;border:1px dashed var(--stroke);border-radius:12px;display:grid;gap:6px;background:color-mix(in srgb, var(--glass) 50%, transparent)}
+  .kpi b{font-size:20px}
 
-    /* Timeline */
-    .days{
-      width: min(100% - 24px, var(--maxw));
-      margin: 14px auto 60px; display:grid; gap:12px;
-    }
-    .day{
-      border:1px solid var(--stroke); border-radius:16px; overflow:hidden; background: color-mix(in srgb, #0d1730 65%, transparent);
-      position:relative;
-    }
-    .day::before{
-      content:""; position:absolute; inset:0;
-      background: radial-gradient(600px 220px at 0% 0%, rgba(122,162,255,.12), transparent 60%);
-      pointer-events:none
-    }
-    .day__hdr{
-      display:flex; align-items:center; gap:10px; padding:12px 14px; background: color-mix(in srgb, var(--glass) 65%, transparent);
-      border-bottom:1px solid var(--stroke);
-    }
-    .date{ font-weight:800; letter-spacing:.3px }
-    .city{ color:var(--muted); font-size:13px; margin-left:auto }
-    .state{ font-size:12px; padding:6px 10px; border-radius:10px; border:1px solid var(--stroke); }
-    .state.ok{ color:#aaffc7; border-color: color-mix(in srgb, var(--ok) 45%, var(--stroke)) }
-    .state.pend{ color:#ffe2a6; border-color: color-mix(in srgb, var(--warn) 45%, var(--stroke)) }
-    .state.fly{ color:#ffcad2; border-color: color-mix(in srgb, var(--danger) 45%, var(--stroke)) }
+  /* Itinerario */
+  .days{width:min(100% - 24px, var(--maxw));margin:12px auto 60px;display:grid;gap:12px}
+  .day{border:1px solid var(--stroke);border-radius:16px;background:color-mix(in srgb, #0d1730 65%, transparent);overflow:hidden}
+  :root[data-theme="light"] .day{background:#ffffffcc}
+  .day__hdr{display:flex;align-items:center;gap:10px;padding:12px 14px;background:color-mix(in srgb, var(--glass) 65%, transparent);border-bottom:1px solid var(--stroke)}
+  .date{font-weight:900;letter-spacing:.3px}
+  .city{color:var(--muted);font-size:13px;margin-left:auto}
+  .state{font-size:12px;padding:6px 10px;border-radius:10px;border:1px solid var(--stroke)}
+  .state.ok{color:#aaffc7}
+  .state.pend{color:#ffe2a6}
+  .state.fly{color:#ffcad2}
 
-    .events{ display:grid; gap:10px; padding:12px; }
-    .ev{
-      display:grid; gap:10px; padding:12px; border:1px solid var(--stroke); border-radius:12px; background: color-mix(in srgb, var(--glass) 50%, transparent);
-      transition: transform .2s ease, border-color .2s ease;
-    }
-    .ev:hover{ transform: translateY(-2px); border-color: color-mix(in srgb, var(--brand) 45%, var(--stroke)) }
-    .ev__row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap }
-    .ev h4{ margin:0; font-size:15px }
-    .pill{
-      height: 26px; display:inline-flex; align-items:center; gap:6px; padding:0 10px; border-radius:999px; font-size:12px;
-      border:1px solid var(--stroke); color:var(--muted); background: color-mix(in srgb, var(--glass) 50%, transparent)
-    }
-    .pill.ok{ color:#caffda; border-color: color-mix(in srgb, var(--ok) 50%, var(--stroke)) }
-    .pill.pend{ color:#ffe2a6; border-color: color-mix(in srgb, var(--warn) 50%, var(--stroke)) }
-    .pill.fly{ color:#ffd0d8; border-color: color-mix(in srgb, var(--danger) 50%, var(--stroke)) }
-    .when{ color:#cfe0ff }
-    .where{ color:#cbbdff }
-    .act{ margin-left:auto; display:flex; gap:8px; flex-wrap:wrap }
-    .btn-mini{
-      height:30px; padding:0 10px; border-radius:10px; border:1px solid var(--stroke); background: color-mix(in srgb, var(--glass) 40%, transparent); color:var(--ink); cursor:pointer; font-size:12px;
-    }
-    .btn-mini.ok{ border-color: color-mix(in srgb, var(--ok) 45%, var(--stroke)) }
-    .btn-mini.warn{ border-color: color-mix(in srgb, var(--warn) 45%, var(--stroke)) }
-    .btn-mini.fly{ border-color: color-mix(in srgb, var(--danger) 45%, var(--stroke)) }
+  .events{display:grid;gap:10px;padding:12px}
+  .ev{display:grid;gap:10px;padding:12px;border:1px solid var(--stroke);border-radius:12px;background:color-mix(in srgb, var(--glass) 55%, transparent);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+  .ev:hover{transform:translateY(-3px) scale(1.004);border-color:color-mix(in srgb, var(--brand) 45%, var(--stroke));box-shadow:0 8px 26px rgba(35,76,184,.25)}
+  .ev__row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .ev h4{margin:0;font-size:15px;display:flex;align-items:center;gap:8px}
+  .pill{height:26px;display:inline-flex;align-items:center;gap:6px;padding:0 10px;border-radius:999px;font-size:12px;border:1px solid var(--stroke);color:var(--muted);background:color-mix(in srgb, var(--glass) 55%, transparent)}
+  .pill.ok{border-color:color-mix(in srgb, var(--ok) 50%, var(--stroke))}
+  .pill.pend{border-color:color-mix(in srgb, var(--warn) 50%, var(--stroke))}
+  .pill.fly{border-color:color-mix(in srgb, var(--danger) 50%, var(--stroke))}
+  .when{color:#2b7fff}
+  .where{color:#7f63ff}
+  .act{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+  .btn-mini{height:28px;padding:0 8px;border-radius:10px;border:1px solid var(--stroke);background:color-mix(in srgb, var(--glass) 50%, transparent);color:var(--ink);font-size:12px}
+  .mini-map{font-size:11px;opacity:.9}
+  .icon{width:22px;height:22px;display:inline-grid;place-items:center;border-radius:8px;background:linear-gradient(180deg, color-mix(in srgb, var(--brand) 30%, transparent), color-mix(in srgb, var(--brand2) 20%, transparent));border:1px solid color-mix(in srgb, var(--stroke) 80%, transparent);box-shadow:inset 0 0 10px rgba(255,255,255,.18)}
+  .ico{font-size:14px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+  .muted{color:var(--muted)}
 
-    .tools{
-      width:min(100% - 24px, var(--maxw)); margin: 0 auto 40px;
-      display:grid; grid-template-columns: 1.3fr .7fr; gap:16px;
-    }
-    @media (max-width: 980px){ .tools{ grid-template-columns: 1fr } }
+  /* Tools */
+  .tools{width:min(100% - 24px, var(--maxw));margin:0 auto 40px;display:grid;grid-template-columns:1.3fr .7fr;gap:16px}
+  @media (max-width:980px){.tools{grid-template-columns:1fr}}
+  .panel{padding:18px;display:grid;gap:14px}
+  textarea{width:100%;min-height:160px;resize:vertical;padding:12px;border-radius:12px;border:1px solid var(--stroke);background:color-mix(in srgb, #0f1a35 70%, transparent);color:var(--ink)}
+  :root[data-theme="light"] textarea{background:#fff;color:#0b1220}
+  .checklist{display:grid;gap:10px}
+  .check{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--stroke);border-radius:12px;background:color-mix(in srgb, var(--glass) 55%, transparent)}
+  .check input{width:18px;height:18px}
 
-    .notes{ min-height:180px }
-    textarea{
-      width:100%; min-height:160px; resize:vertical; padding:12px; border-radius:12px; border:1px solid var(--stroke);
-      background: color-mix(in srgb, #0f1a35 70%, transparent); color:var(--ink);
-    }
-    .checklist{ display:grid; gap:10px }
-    .check{ display:flex; gap:10px; align-items:center; padding:10px; border:1px solid var(--stroke); border-radius:12px; background: color-mix(in srgb, var(--glass) 50%, transparent) }
-    .check input{ width:18px; height:18px }
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.show{opacity:1;transform:none}
 
-    /* Reveal animation */
-    .reveal{ opacity:0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease }
-    .reveal.show{ opacity:1; transform:none }
-
-    /* Print */
-    @media print{
-      .hdr, .panel, .filters, .hdr__actions{ display:none !important }
-      body{ background:#fff; color:#111 }
-      .card, .day{ box-shadow:none; border:1px solid #ddd }
-      .day__hdr{ background:#f6f8ff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    }
-  </style>
+  /* print */
+  @media print{
+    .hdr, .filters, .hdr__actions{display:none !important}
+    body{background:#fff;color:#111}
+    .card, .day{box-shadow:none;border:1px solid #ddd}
+    .day__hdr{background:#f6f8ff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    a{color:#000;text-decoration:none}
+  }
+</style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header class="hdr">
-    <div class="hdr__in">
-      <div class="logo">GV</div>
-      <div class="title">
+<section class="cover">
+  <h1 class="cover__title">EUROTRIP ITINERARIO VIAJE MADRID PARÍS</h1>
+  <div class="cover__faces">
+    <img class="cover__head" src="https://lh3.googleusercontent.com/d/1E82o__-jHJmWwubokZcy2WgMVBXha4LO=w1000" alt="Antonio">
+    <img class="cover__head cover__head--lag" src="https://lh3.googleusercontent.com/d/1GfkwGMzG9RTNaMLWdUxzxkvdTBWmFIxA=w1000" alt="Pareja">
+  </div>
+</section>
+
+<header class="hdr">
+  <div class="hdr__in">
+    <div class="logo"><span>✈️</span></div>
+
+    <div class="title">
+      <div class="title__text">
         <h1>Itinerario — Lima · Madrid · París · Madrid · Lima</h1>
-        <p>6–17 noviembre 2025 · 2 personas · París sin hotel (familiar)</p>
-      </div>
-
-      <div class="hdr__actions">
-        <button class="btn" id="btnPrint">🖨️ Imprimir / PDF</button>
-        <button class="btn btn--brand" id="btnReset">↺ Reset notas/checklist</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Hero & Filters -->
-  <section class="hero">
-    <div class="summary card reveal">
-      <div style="display:flex; align-items:center; gap:12px; justify-content:space-between">
-        <div>
-          <div style="opacity:.85; font-weight:800; letter-spacing:.3px">Resumen de viaje</div>
-          <div style="color:var(--muted); font-size:13px">Fechas: <b>6–17 nov 2025</b> · Base en <b>Saint-Germain-en-Laye</b></div>
-        </div>
-        <div class="chips">
-          <div class="chip fly">✈️ Vuelos</div>
-          <div class="chip ok">✅ Confirmado</div>
-          <div class="chip warn">⏳ Pendiente</div>
-        </div>
-      </div>
-
-      <div class="kpis">
-        <div class="kpi"><span style="color:var(--muted); font-size:12px">Días totales</span><b>12</b></div>
-        <div class="kpi"><span style="color:var(--muted); font-size:12px">Ciudades</span><b>Madrid · París</b></div>
-        <div class="kpi"><span style="color:var(--muted); font-size:12px">Entradas</span><b>5 confirmadas</b></div>
-        <div class="kpi"><span style="color:var(--muted); font-size:12px">Pendientes</span><b>2</b></div>
-      </div>
-
-      <div class="chips">
-        <div class="chip">🏨 París: familiar (sin hotel)</div>
-        <div class="chip">🕑 Horarios locales de cada ciudad</div>
-        <div class="chip">🗺️ Links a mapas y compra</div>
+        <p>6–17 noviembre 2025 · 2 personas</p>
       </div>
     </div>
 
-    <aside class="panel card reveal">
-      <h3>Filtros rápidos</h3>
-      <div class="filters" id="filters">
-        <button class="tag active" data-filter="all">Todos</button>
-        <button class="tag" data-filter="Madrid">Madrid</button>
-        <button class="tag" data-filter="París">París</button>
-        <button class="tag" data-filter="Versalles">Versalles</button>
-        <button class="tag" data-filter="Vuelo">Vuelos</button>
-        <button class="tag" data-filter="Confirmado">Confirmado</button>
-        <button class="tag" data-filter="Pendiente">Pendiente</button>
+    <div class="hdr__actions">
+      <button class="btn" id="btnTheme">🌙/☀️ Tema</button>
+      <button class="btn btn--brand" id="btnICS">➕ Todo · Apple / ICS</button>
+      <button class="btn" id="btnGoogleAll">➕ Todo · Google Calendar</button>
+      <button class="btn btn--ghost" id="btnPrint">🖨️ PDF</button>
+      <button class="btn btn--ghost" id="btnReset">↺ Reset notas</button>
+    </div>
+  </div>
+</header>
+
+<section class="top">
+  <div class="card">
+    <div class="filters" id="filters">
+      <button class="tag active" data-filter="all">🔎 Todos</button>
+      <button class="tag" data-filter="Madrid">🏙️ Madrid</button>
+      <button class="tag" data-filter="París">🗼 París</button>
+      <button class="tag" data-filter="Versalles">👑 Versalles</button>
+      <button class="tag" data-filter="Vuelo">✈️ Vuelos</button>
+      <button class="tag" data-filter="Confirmado">✅ Confirmado</button>
+      <button class="tag" data-filter="Pendiente">⏳ Pendiente</button>
+      <button class="tag" data-filter="Museo">🖼️ Museos</button>
+      <button class="tag" data-filter="Crucero">🚤 Crucero</button>
+      <button class="tag" data-filter="Parque">🎢 Parque</button>
+      <button class="tag" data-filter="Paseo">🚶 Paseo</button>
+      <button class="tag" data-filter="Tour">🏟️ Tour</button>
+      <button class="tag" data-filter="Monumento">🏛️ Monumento</button>
+      <button class="tag" data-filter="Cultura">📚 Cultura</button>
+      <button class="tag" data-filter="Info">ℹ️ Info</button>
+    </div>
+  </div>
+
+  <div class="card summary reveal">
+    <div class="row">
+      <div>
+        <div style="opacity:.9;font-weight:900;letter-spacing:.3px">Resumen de viaje</div>
+        <div class="muted" style="font-size:13px">Fechas: <b>6–17 nov 2025</b> · Base: <b>Saint-Germain-en-Laye</b></div>
       </div>
-
-      <h3>Accesos útiles</h3>
-      <div class="chips">
-        <a class="chip" href="https://ticket.louvre.fr/en" target="_blank">🎟️ Louvre (oficial)</a>
-        <a class="chip" href="https://billetterie.chateauversailles.fr/" target="_blank">👑 Versalles (oficial)</a>
-        <a class="chip" href="https://www.toureiffel.paris/" target="_blank">🗼 Torre Eiffel (oficial)</a>
-        <a class="chip" href="https://www.bateaux-mouches.fr/es/reservas" target="_blank">🚤 Sena · Bateaux Mouches</a>
-        <a class="chip" href="https://www.bateauxparisiens.com/espanol.html" target="_blank">🚤 Sena · Bateaux Parisiens</a>
-      </div>
-    </aside>
-  </section>
-
-  <!-- Days / Timeline -->
-  <main class="days" id="days"></main>
-
-  <!-- Tools: Notas y Checklist -->
-  <section class="tools">
-    <div class="card panel notes reveal">
-      <h3>Notas personales (se guardan en este navegador)</h3>
-      <textarea id="notes" placeholder="Escribe aquí ideas, recordatorios, presupuestos…"></textarea>
-      <div style="display:flex; gap:8px; justify-content:flex-end">
-        <button class="btn" id="saveNotes">💾 Guardar</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="kpi" style="display:inline-grid;min-width:160px"><span class="muted" style="font-size:12px">Entradas confirmadas</span><b>5</b></span>
+        <span class="kpi" style="display:inline-grid;min-width:160px"><span class="muted" style="font-size:12px">Pendientes</span><b>2</b></span>
       </div>
     </div>
-
-    <div class="card panel reveal">
-      <h3>Checklist de entradas / tareas</h3>
-      <div class="checklist" id="checklist"></div>
+    <div class="kpis">
+      <div class="kpi"><span class="muted" style="font-size:12px">Días totales</span><b>12</b></div>
+      <div class="kpi"><span class="muted" style="font-size:12px">Ciudades</span><b>Madrid · París</b></div>
+      <div class="kpi"><span class="muted" style="font-size:12px">Vuelos planificados</span><b>3</b></div>
+      <div class="kpi"><span class="muted" style="font-size:12px">Modo</span><b>Responsive + Calendarios + PDF</b></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer style="width:min(100% - 24px, var(--maxw)); margin:0 auto 40px; color:var(--muted); text-align:center">
-    Hecho con ❤️ para Antonio · Interactivo, responsive y listo para imprimir.
-  </footer>
+<main class="days" id="days"></main>
 
-  <script>
-    // ====== Datos del itinerario (EDITABLES) ======
-    // Estados: Confirmado | Pendiente | Info | Vuelo
-    // Ciudades: Madrid | París | Versalles | Traslado
-    // tz: "Europe/Madrid" | "Europe/Paris" (para Google Calendar 'ctz')
+<section class="tools">
+  <div class="card panel reveal">
+    <h3>Notas personales (guardadas en este navegador)</h3>
+    <textarea id="notes" placeholder="Escribe ideas, presupuestos, recordatorios…"></textarea>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn" id="saveNotes">💾 Guardar</button>
+    </div>
+  </div>
+  <div class="card panel reveal">
+    <h3>Checklist de entradas / tareas</h3>
+    <div class="checklist" id="checklist"></div>
+  </div>
+</section>
 
-    const DAYS = [
-      {
-        date: "Jue · 6 nov 2025",
-        city: "Vuelo",
-        state: "Confirmado",
-        items: [
-          {
-            title: "Vuelo Lima → Madrid",
-            when: "23:05 (6 nov) – 18:30 (7 nov) · 11h 30m",
-            where: "LIM → MAD (Barajas)",
-            type: "Vuelo",
-            state: "Confirmado",
-            startISO: "2025-11-06T23:05:00",
-            endISO:   "2025-11-07T18:30:00",
-            tz: "Europe/Madrid",
-            gcalLocation: "LIM+Airport",
-            details: "Noche en vuelo. Llegada el 7 nov 18:30.",
-            links: []
-          }
-        ]
-      },
-      {
-        date: "Vie · 7 nov 2025",
-        city: "Madrid",
-        state: "Info",
-        items: [
-          {
-            title: "Llegada a Madrid + Check-in",
-            when: "18:30",
-            where: "Zona Gran Vía / Chamberí",
-            type: "Info",
-            state: "Confirmado",
-            startISO: "2025-11-07T18:30:00",
-            endISO:   "2025-11-07T20:00:00",
-            tz: "Europe/Madrid",
-            details: "Cena ligera y descanso (jet lag).",
-            links: [{label:"Mapa Gran Vía", url:"https://maps.google.com/?q=Gran+V%C3%ADa+Madrid"}]
-          }
-        ]
-      },
-      {
-        date: "Sáb · 8 nov 2025",
-        city: "Madrid",
-        state: "Confirmado",
-        items: [
-          {
-            title: "Tour Santiago Bernabéu",
-            when: "11:30 (2–3h)",
-            where: "Estadio Santiago Bernabéu",
-            type: "Tour",
-            state: "Confirmado",
-            startISO: "2025-11-08T11:30:00",
-            endISO:   "2025-11-08T13:45:00",
-            tz: "Europe/Madrid",
-            details: "Entrada comprada.",
-            links: [{label:"Cómo llegar", url:"https://maps.google.com/?q=Estadio+Santiago+Bernab%C3%A9u"}]
-          },
-          {
-            title: "Centro histórico: Plaza Mayor · Sol · San Miguel",
-            when: "Tarde",
-            where: "Madrid Centro",
-            type: "Paseo",
-            state: "Info",
-            startISO: "2025-11-08T16:00:00",
-            endISO:   "2025-11-08T19:00:00",
-            tz: "Europe/Madrid",
-            details: "Atardecer en Templo de Debod opcional.",
-            links: [{label:"Mapa Plaza Mayor", url:"https://maps.google.com/?q=Plaza+Mayor+Madrid"}]
-          }
-        ]
-      },
-      {
-        date: "Dom · 9 nov 2025",
-        city: "Traslado",
-        state: "Confirmado",
-        items: [
-          {
-            title: "Vuelo Madrid → París (ORY)",
-            when: "16:30 → 18:25 (1h 55m)",
-            where: "MAD → ORY",
-            type: "Vuelo",
-            state: "Confirmado",
-            startISO: "2025-11-09T16:30:00",
-            endISO:   "2025-11-09T18:25:00",
-            tz: "Europe/Paris",
-            details: "Economy Lite. Traslado a Saint-Germain-en-Laye (~1h).",
-            links: [{label:"Cómo llegar a Saint-Germain-en-Laye", url:"https://maps.google.com/?q=Saint-Germain-en-Laye"}]
-          }
-        ]
-      },
-      {
-        date: "Lun · 10 nov 2025",
-        city: "París",
-        state: "Pendiente",
-        items: [
-          {
-            title: "Arco del Triunfo + Campos Elíseos",
-            when: "Mañana",
-            where: "Charles de Gaulle – Étoile",
-            type: "Paseo",
-            state: "Info",
-            startISO: "2025-11-10T10:00:00",
-            endISO:   "2025-11-10T12:00:00",
-            tz: "Europe/Paris",
-            details: "Subida al mirador opcional.",
-            links: [{label:"Entradas Arco", url:"https://www.paris-arc-de-triomphe.fr/"}]
-          },
-          {
-            title: "Torre Eiffel (cima por ascensor)",
-            when: "Ideal 15:30–16:00",
-            where: "Champ de Mars",
-            type: "Monumento",
-            state: "Pendiente",
-            startISO: "2025-11-10T15:30:00",
-            endISO:   "2025-11-10T17:30:00",
-            tz: "Europe/Paris",
-            details: "Compra pendiente (web oficial). Ver atardecer + encendido.",
-            links: [{label:"Comprar (oficial)", url:"https://www.toureiffel.paris/"}]
-          }
-        ]
-      },
-      {
-        date: "Mar · 11 nov 2025",
-        city: "Versalles",
-        state: "Confirmado",
-        items: [
-          {
-            title: "Palacio de Versalles (Pasaporte)",
-            when: "09:30 (día completo)",
-            where: "Château de Versailles",
-            type: "Museo",
-            state: "Confirmado",
-            startISO: "2025-11-11T09:30:00",
-            endISO:   "2025-11-11T16:30:00",
-            tz: "Europe/Paris",
-            details: "Palacio → Jardines → Grand/ Petit Trianon → Aldea de la Reina.",
-            links: [{label:"Entradas (oficial)", url:"https://billetterie.chateauversailles.fr/"},{label:"Mapa", url:"https://maps.google.com/?q=Ch%C3%A2teau+de+Versailles"}]
-          }
-        ]
-      },
-      {
-        date: "Mié · 12 nov 2025",
-        city: "París",
-        state: "Confirmado",
-        items: [
-          {
-            title: "Museo del Louvre (entrada confirmada)",
-            when: "11:30 → 14:30",
-            where: "Pirámide del Louvre",
-            type: "Museo",
-            state: "Confirmado",
-            startISO: "2025-11-12T11:30:00",
-            endISO:   "2025-11-12T14:30:00",
-            tz: "Europe/Paris",
-            details: "Ruta obras maestras: Mona Lisa · Venus de Milo · Samotracia.",
-            links: [{label:"Tus entradas (oficial)", url:"https://ticket.louvre.fr/en"}]
-          },
-          {
-            title: "Île de la Cité (Notre-Dame) + Sainte-Chapelle",
-            when: "Tarde",
-            where: "Cité",
-            type: "Paseo",
-            state: "Info",
-            startISO: "2025-11-12T15:30:00",
-            endISO:   "2025-11-12T17:30:00",
-            tz: "Europe/Paris",
-            details: "Exterior de Notre-Dame, capilla gótica opcional.",
-            links: [{label:"Sainte-Chapelle", url:"https://www.sainte-chapelle.fr/"}]
-          },
-          {
-            title: "Montmartre + Sacré-Cœur",
-            when: "Atardecer / noche",
-            where: "Montmartre",
-            type: "Paseo",
-            state: "Info",
-            startISO: "2025-11-12T18:30:00",
-            endISO:   "2025-11-12T20:30:00",
-            tz: "Europe/Paris",
-            details: "Mirador, Place du Tertre, fotos nocturnas.",
-            links: [{label:"Mapa Montmartre", url:"https://maps.google.com/?q=Montmartre"}]
-          }
-        ]
-      },
-      {
-        date: "Jue · 13 nov 2025",
-        city: "París",
-        state: "Confirmado",
-        items: [
-          {
-            title: "Disneyland París (entrada confirmada)",
-            when: "8:30 (día completo)",
-            where: "Marne-la-Vallée — Chessy",
-            type: "Parque",
-            state: "Confirmado",
-            startISO: "2025-11-13T08:30:00",
-            endISO:   "2025-11-13T20:30:00",
-            tz: "Europe/Paris",
-            details: "Salida 6:45 (RER A ~1h15). Rope drop y shows nocturnos.",
-            links: [{label:"Cómo llegar", url:"https://maps.google.com/?q=Marne-la-Vall%C3%A9e+Chessy"}]
-          }
-        ]
-      },
-      {
-        date: "Vie · 14 nov 2025",
-        city: "París",
-        state: "Pendiente",
-        items: [
-          {
-            title: "Le Marais + Place des Vosges",
-            when: "Mañana",
-            where: "Le Marais",
-            type: "Paseo",
-            state: "Info",
-            startISO: "2025-11-14T10:00:00",
-            endISO:   "2025-11-14T12:00:00",
-            tz: "Europe/Paris",
-            details: "Boutiques, cafés y arquitectura.",
-            links: [{label:"Mapa Le Marais", url:"https://maps.google.com/?q=Le+Marais+Paris"}]
-          },
-          {
-            title: "Galeries Lafayette (mirador)",
-            when: "Tarde",
-            where: "Boulevard Haussmann",
-            type: "Paseo",
-            state: "Info",
-            startISO: "2025-11-14T16:00:00",
-            endISO:   "2025-11-14T17:00:00",
-            tz: "Europe/Paris",
-            details: "Sube a la terraza (vista gratis de París).",
-            links: [{label:"Ubicación", url:"https://maps.google.com/?q=Galeries+Lafayette+Haussmann"}]
-          },
-          {
-            title: "Crucero por el Sena con cena",
-            when: "19:30–21:00 (recomendado)",
-            where: "Bateaux Mouches / Bateaux Parisiens",
-            type: "Crucero",
-            state: "Pendiente",
-            startISO: "2025-11-14T19:30:00",
-            endISO:   "2025-11-14T21:00:00",
-            tz: "Europe/Paris",
-            details: "Reservar con antelación (mesa ventana si es posible).",
-            links: [
-              {label:"Reservar · Bateaux Mouches", url:"https://www.bateaux-mouches.fr/es/reservas"},
-              {label:"Reservar · Bateaux Parisiens", url:"https://www.bateauxparisiens.com/espanol.html"}
-            ]
-          }
-        ]
-      },
-      {
-        date: "Sáb · 15 nov 2025",
-        city: "Traslado",
-        state: "Confirmado",
-        items: [
-          {
-            title: "Vuelo París (ORY) → Madrid",
-            when: "17:15 → 19:15 (2h)",
-            where: "ORY → MAD",
-            type: "Vuelo",
-            state: "Confirmado",
-            startISO: "2025-11-15T17:15:00",
-            endISO:   "2025-11-15T19:15:00",
-            tz: "Europe/Madrid",
-            details: "Llegada ~19:30, hotel y cena ligera.",
-            links: []
-          }
-        ]
-      },
-      {
-        date: "Dom · 16 nov 2025",
-        city: "Madrid",
-        state: "Info",
-        items: [
-          {
-            title: "Madrid libre + Museo (opcional)",
-            when: "Día",
-            where: "Prado o Reina Sofía",
-            type: "Cultura",
-            state: "Info",
-            startISO: "2025-11-16T11:00:00",
-            endISO:   "2025-11-16T14:00:00",
-            tz: "Europe/Madrid",
-            details: "Compras finales y cena de despedida.",
-            links: [{label:"Museo del Prado", url:"https://www.museodelprado.es/"},{label:"Reina Sofía", url:"https://www.museoreinasofia.es/"}]
-          }
-        ]
-      },
-      {
-        date: "Lun · 17 nov 2025",
-        city: "Vuelo",
-        state: "Confirmado",
-        items: [
-          {
-            title: "Vuelo Madrid → Lima",
-            when: "00:45 (noche del 16)",
-            where: "MAD → LIM",
-            type: "Vuelo",
-            state: "Confirmado",
-            startISO: "2025-11-17T00:45:00",
-            endISO:   "2025-11-17T12:45:00",
-            tz: "America/Lima",
-            details: "Check-in anticipado en Barajas.",
-            links: []
-          }
-        ]
-      }
-    ];
+<script>
+/* ===== Tema claro/oscuro (persistente) ===== */
+(function(){
+  const saved=localStorage.getItem("trip.theme");
+  if(saved){ document.documentElement.setAttribute("data-theme", saved); }
+})();
+document.getElementById('btnTheme').addEventListener('click',()=>{
+  const cur=document.documentElement.getAttribute('data-theme')||'dark';
+  const next= cur==='light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('trip.theme', next);
+});
 
-    const CHECKS = [
-      { id:"eiffel", label:"Comprar Torre Eiffel (10 nov · 15:30–16:00)", url:"https://www.toureiffel.paris/" },
-      { id:"sena",   label:"Reservar Crucero Sena con cena (14 nov · 19:30)", url:"https://www.bateaux-mouches.fr/es/reservas" },
-      { id:"metro",  label:"Cargar saldo Navigo/metro (París)", url:"" },
-      { id:"euros",  label:"Cambiar euros en Lima (efectivo diario)", url:"" },
-      { id:"docs",   label:"Documentos de viaje en el móvil (PDFs/QRs)", url:"" },
-    ];
+/* ===== Íconos ===== */
+const ICONS={"Vuelo":"✈️","Tour":"🏟️","Museo":"🖼️","Monumento":"🏛️","Paseo":"🚶","Parque":"🎢","Crucero":"🚤","Cultura":"📚","Info":"ℹ️"};
 
-    // ====== Utilidades ======
-    const pad = n => (n<10? "0"+n : ""+n);
+/* ===== Datos ===== */
+const DAYS=[
+  {date:"Jue · 6 nov 2025",city:"Vuelo",state:"Confirmado",items:[{title:"Vuelo Lima → Madrid",when:"23:05 (6 nov) – 18:30 (7 nov) · 11h 30m",where:"LIM → MAD (Barajas)",type:"Vuelo",state:"Confirmado",startISO:"2025-11-06T23:05:00",endISO:"2025-11-07T18:30:00",tz:"Europe/Madrid",details:"Noche en vuelo. Llegada el 7 nov 18:30.",links:[]}]},
+  {date:"Vie · 7 nov 2025",city:"Madrid",state:"Info",items:[{title:"Llegada a Madrid + Check-in",when:"18:30",where:"Gran Vía / Chamberí",type:"Info",state:"Confirmado",startISO:"2025-11-07T18:30:00",endISO:"2025-11-07T20:00:00",tz:"Europe/Madrid",details:"Cena ligera y descanso (jet lag).",links:[{label:"Mapa",url:"https://maps.google.com/?q=Gran+V%C3%ADa+Madrid"}]}]},
+  {date:"Sáb · 8 nov 2025",city:"Madrid",state:"Confirmado",items:[
+    {title:"Tour Santiago Bernabéu",when:"11:30 (2–3h)",where:"Estadio Santiago Bernabéu",type:"Tour",state:"Confirmado",startISO:"2025-11-08T11:30:00",endISO:"2025-11-08T13:45:00",tz:"Europe/Madrid",details:"Entrada comprada.",links:[{label:"Cómo llegar",url:"https://maps.google.com/?q=Estadio+Santiago+Bernab%C3%A9u"}]},
+    {title:"Centro histórico: Plaza Mayor · Sol · San Miguel",when:"Tarde",where:"Madrid Centro",type:"Paseo",state:"Info",startISO:"2025-11-08T16:00:00",endISO:"2025-11-08T19:00:00",tz:"Europe/Madrid",details:"Atardecer en Templo de Debod opcional.",links:[{label:"Mapa",url:"https://maps.google.com/?q=Plaza+Mayor+Madrid"}]}
+  ]},
+  {date:"Dom · 9 nov 2025",city:"Traslado",state:"Confirmado",items:[{title:"Vuelo Madrid → París (ORY)",when:"16:30 → 18:25 (1h 55m)",where:"MAD → ORY",type:"Vuelo",state:"Confirmado",startISO:"2025-11-09T16:30:00",endISO:"2025-11-09T18:25:00",tz:"Europe/Paris",details:"Economy Lite. Traslado a Saint-Germain-en-Laye (~1h).",links:[{label:"Saint-Germain-en-Laye",url:"https://maps.google.com/?q=Saint-Germain-en-Laye"}]}]},
+  {date:"Lun · 10 nov 2025",city:"París",state:"Pendiente",items:[
+    {title:"Arco del Triunfo + Campos Elíseos",when:"Mañana",where:"Charles de Gaulle – Étoile",type:"Paseo",state:"Info",startISO:"2025-11-10T10:00:00",endISO:"2025-11-10T12:00:00",tz:"Europe/Paris",details:"Subida al mirador opcional.",links:[{label:"Entradas",url:"https://www.paris-arc-de-triomphe.fr/"}]},
+    {title:"Torre Eiffel (cima por ascensor)",when:"Ideal 15:30–16:00",where:"Champ de Mars",type:"Monumento",state:"Pendiente",startISO:"2025-11-10T15:30:00",endISO:"2025-11-10T17:30:00",tz:"Europe/Paris",details:"Compra pendiente (web oficial). Atardecer + encendido.",links:[{label:"Comprar (oficial)",url:"https://www.toureiffel.paris/"}]}
+  ]},
+  {date:"Mar · 11 nov 2025",city:"Versalles",state:"Confirmado",items:[{title:"Palacio de Versalles (Pasaporte)",when:"09:30 (día completo)",where:"Château de Versailles",type:"Museo",state:"Confirmado",startISO:"2025-11-11T09:30:00",endISO:"2025-11-11T16:30:00",tz:"Europe/Paris",details:"Palacio → Jardines → Grand/Petit Trianon → Aldea de la Reina.",links:[{label:"Entradas",url:"https://billetterie.chateauversailles.fr/"}]}]},
+  {date:"Mié · 12 nov 2025",city:"París",state:"Confirmado",items:[
+    {title:"Museo del Louvre (entrada confirmada)",when:"11:30 → 14:30",where:"Pirámide del Louvre",type:"Museo",state:"Confirmado",startISO:"2025-11-12T11:30:00",endISO:"2025-11-12T14:30:00",tz:"Europe/Paris",details:"Ruta: Mona Lisa · Venus · Samotracia.",links:[{label:"Tus entradas",url:"https://ticket.louvre.fr/en"}]},
+    {title:"Île de la Cité (Notre-Dame) + Sainte-Chapelle",when:"Tarde",where:"Cité",type:"Paseo",state:"Info",startISO:"2025-11-12T15:30:00",endISO:"2025-11-12T17:30:00",tz:"Europe/Paris",details:"Exterior de Notre-Dame, capilla gótica opcional.",links:[{label:"Sainte-Chapelle",url:"https://www.sainte-chapelle.fr/"}]},
+    {title:"Montmartre + Sacré-Cœur",when:"Atardecer / noche",where:"Montmartre",type:"Paseo",state:"Info",startISO:"2025-11-12T18:30:00",endISO:"2025-11-12T20:30:00",tz:"Europe/Paris",details:"Mirador, Place du Tertre, fotos nocturnas.",links:[{label:"Mapa",url:"https://maps.google.com/?q=Montmartre"}]}
+  ]},
+  {date:"Jue · 13 nov 2025",city:"París",state:"Confirmado",items:[{title:"Disneyland París (entrada confirmada)",when:"8:30 (día completo)",where:"Marne-la-Vallée — Chessy",type:"Parque",state:"Confirmado",startISO:"2025-11-13T08:30:00",endISO:"2025-11-13T20:30:00",tz:"Europe/Paris",details:"Salida 6:45 (RER A ~1h15). Rope drop + show nocturno.",links:[{label:"Cómo llegar",url:"https://maps.google.com/?q=Marne-la-Vall%C3%A9e+Chessy"}]}]},
+  {date:"Vie · 14 nov 2025",city:"París",state:"Pendiente",items:[
+    {title:"Le Marais + Place des Vosges",when:"Mañana",where:"Le Marais",type:"Paseo",state:"Info",startISO:"2025-11-14T10:00:00",endISO:"2025-11-14T12:00:00",tz:"Europe/Paris",details:"Boutiques, cafés y arquitectura.",links:[{label:"Mapa",url:"https://maps.google.com/?q=Le+Marais+Paris"}]},
+    {title:"Galeries Lafayette (mirador)",when:"Tarde",where:"Boulevard Haussmann",type:"Paseo",state:"Info",startISO:"2025-11-14T16:00:00",endISO:"2025-11-14T17:00:00",tz:"Europe/Paris",details:"Terraza gratuita con vista de París.",links:[{label:"Ubicación",url:"https://maps.google.com/?q=Galeries+Lafayette+Haussmann"}]},
+    {title:"Crucero por el Sena con cena",when:"19:30–21:00 (recomendado)",where:"Bateaux Mouches / Parisiens",type:"Crucero",state:"Pendiente",startISO:"2025-11-14T19:30:00",endISO:"2025-11-14T21:00:00",tz:"Europe/Paris",details:"Reservar con antelación (mesa ventana si es posible).",links:[{label:"Bateaux Mouches",url:"https://www.bateaux-mouches.fr/es/reservas"},{label:"Bateaux Parisiens",url:"https://www.bateauxparisiens.com/espanol.html"}]}
+  ]},
+  {date:"Sáb · 15 nov 2025",city:"Traslado",state:"Confirmado",items:[{title:"Vuelo París (ORY) → Madrid",when:"17:15 → 19:15 (2h)",where:"ORY → MAD",type:"Vuelo",state:"Confirmado",startISO:"2025-11-15T17:15:00",endISO:"2025-11-15T19:15:00",tz:"Europe/Madrid",details:"Llegada ~19:30, hotel y cena ligera.",links:[]}]},
+  {date:"Dom · 16 nov 2025",city:"Madrid",state:"Info",items:[{title:"Madrid libre + Museo (opcional)",when:"Día",where:"Prado o Reina Sofía",type:"Cultura",state:"Info",startISO:"2025-11-16T11:00:00",endISO:"2025-11-16T14:00:00",tz:"Europe/Madrid",details:"Compras finales y cena de despedida.",links:[{label:"Museo del Prado",url:"https://www.museodelprado.es/"},{label:"Reina Sofía",url:"https://www.museoreinasofia.es/"}]}]},
+  {date:"Lun · 17 nov 2025",city:"Vuelo",state:"Confirmado",items:[{title:"Vuelo Madrid → Lima",when:"00:45 (noche del 16)",where:"MAD → LIM",type:"Vuelo",state:"Confirmado",startISO:"2025-11-17T00:45:00",endISO:"2025-11-17T12:45:00",tz:"America/Lima",details:"Check-in anticipado en Barajas.",links:[]}]}
+];
 
-    function toGoogleCalendarURL({title, startISO, endISO, tz, where, details}){
-      // Construye link de Google Calendar con zona horaria (ctz)
-      const start = new Date(startISO);
-      const end   = new Date(endISO || start.getTime()+90*60000);
-      const fmt   = (d)=> d.getUTCFullYear()+ pad(d.getUTCMonth()+1)+ pad(d.getUTCDate())+"T"+ pad(d.getUTCHours())+ pad(d.getUTCMinutes())+ pad(d.getUTCSeconds())+"Z";
-      const dates = fmt(start)+"/"+fmt(end);
-      const params = new URLSearchParams({
-        action:"TEMPLATE",
-        text: title,
-        dates,
-        details: details || "",
-        location: where || "",
-        ctz: tz || "Europe/Paris"
-      });
-      return "https://calendar.google.com/calendar/render?"+params.toString();
-    }
+/* ===== Checklist ===== */
+const CHECKS=[
+  {id:"eiffel",label:"Comprar Torre Eiffel (10 nov · 15:30–16:00)",url:"https://www.toureiffel.paris/"},
+  {id:"sena",label:"Reservar Crucero Sena con cena (14 nov · 19:30)",url:"https://www.bateaux-mouches.fr/es/reservas"},
+  {id:"metro",label:"Cargar Navigo/metro (París)",url:""},
+  {id:"euros",label:"Cambiar euros (efectivo diario)",url:""},
+  {id:"docs",label:"Guardar PDFs/QRs de entradas en el móvil",url:""}
+];
 
-    function el(tag, attrs={}, kids=[]){
-      const n = document.createElement(tag);
-      Object.entries(attrs).forEach(([k,v])=>{
-        if(k==="class") n.className = v;
-        else if(k==="html") n.innerHTML = v;
-        else if(k==="text") n.textContent = v;
-        else n.setAttribute(k, v);
-      });
-      (Array.isArray(kids)? kids:[kids]).forEach(k=> k && n.appendChild(k));
-      return n;
-    }
+/* ===== Utilidades ===== */
+const pad=n=>n<10?("0"+n):(""+n);
+function toGoogleCalendarURL({title,startISO,endISO,tz,where,details}){
+  const s=new Date(startISO), e=new Date(endISO||s.getTime()+90*60000);
+  const fmt=d=> d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+"T"+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+"Z";
+  const p=new URLSearchParams({action:"TEMPLATE",text:title,dates:fmt(s)+"/"+fmt(e),details:details||"",location:where||"",ctz:tz||"Europe/Paris"});
+  return "https://calendar.google.com/calendar/render?"+p.toString();
+}
+const appleMapsURL=q=>"https://maps.apple.com/?q="+encodeURIComponent(q||"Paris");
+const googleMapsURL=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q||"Paris");
 
-    // ====== Render ======
-    const daysBox = document.getElementById('days');
+function el(tag,attrs={},kids=[]){const n=document.createElement(tag);
+  Object.entries(attrs).forEach(([k,v])=>{if(k==="class")n.className=v;else if(k==="text")n.textContent=v;else if(k==="html")n.innerHTML=v;else n.setAttribute(k,v);});
+  (Array.isArray(kids)?kids:[kids]).forEach(k=>k&&n.appendChild(k));return n}
 
-    function renderDays(filter="all"){
-      daysBox.innerHTML = "";
-      DAYS.forEach((day, di)=>{
-        const matchesDay = (filter==="all") || [day.city, day.state].includes(filter) || day.city.includes(filter);
-        const dayCard = el("section", {class:"day reveal", "data-city":day.city, "data-state":day.state});
+/* ===== Render ===== */
+const daysBox=document.getElementById('days');
+function renderDays(filter="all"){
+  daysBox.innerHTML="";
+  DAYS.forEach(day=>{
+    const dayCard=el("section",{class:"day reveal","data-city":day.city,"data-state":day.state});
+    const hdr=el("div",{class:"day__hdr"},[
+      el("div",{class:"date",text:day.date}),
+      el("div",{class:"city",text:day.city}),
+      el("div",{class:"state "+(day.state==="Confirmado"?"ok":day.state==="Pendiente"?"pend":day.state==="Vuelo"?"fly":"") ,text:day.state})
+    ]);
+    const evBox=el("div",{class:"events"});
 
-        const hdr = el("div", {class:"day__hdr"}, [
-          el("div", {class:"date", text: day.date}),
-          el("div", {class:"city", text: day.city}),
-          el("div", {class:"state "+ (day.state==="Confirmado"?"ok": day.state==="Pendiente"?"pend": day.state==="Vuelo"?"fly":"") , text: day.state})
-        ]);
+    day.items.forEach(ev=>{
+      const match=(filter==="all")||[day.city,day.state,ev.type,ev.state].includes(filter)||
+        (ev.title+ev.where).toLowerCase().includes(String(filter).toLowerCase());
+      if(!match) return;
 
-        const evBox = el("div", {class:"events"});
-        day.items.forEach((ev, ei)=>{
-          const matches = matchesDay || [ev.type, ev.state].includes(filter) || (filter!=="all" && (ev.title+ev.where).toLowerCase().includes(filter.toLowerCase()));
-          if(!matches) return;
+      const icon=ICONS[ev.type]||"📍";
+      const row1=el("div",{class:"ev__row"},[
+        el("h4",{},[
+          el("span",{class:"icon"},[el("span",{class:"ico",text:icon})]),
+          document.createTextNode(ev.title)
+        ]),
+        el("span",{class:"pill "+(ev.state==="Confirmado"?"ok":ev.state==="Pendiente"?"pend":ev.type==="Vuelo"?"fly":""),text:(ev.state==="Confirmado"?"Confirmado":ev.state==="Pendiente"?"Pendiente":ev.type)}),
+        el("span",{class:"pill when",text:"🕒 "+ev.when}),
+        el("span",{class:"pill where",text:"📍 "+ev.where})
+      ]);
 
-          const statusPill = el("span", {class:"pill "+ (ev.state==="Confirmado"?"ok": ev.state==="Pendiente"?"pend": ev.type==="Vuelo"?"fly":""), text: (ev.state==="Confirmado"?"Confirmado": ev.state==="Pendiente"?"Pendiente": ev.type) });
-          const row1 = el("div", {class:"ev__row"}, [
-            el("h4", {text: ev.title}),
-            statusPill,
-            el("span", {class:"pill when", text: "🕒 "+ev.when}),
-            el("span", {class:"pill where", text: "📍 "+ev.where}),
-          ]);
+      const row2=el("div",{class:"ev__row"},[
+        el("div",{class:"muted",text:ev.details||""}),
+        el("div",{class:"act"},[
+          ev.startISO?el("a",{href:toGoogleCalendarURL(ev),target:"_blank",class:"btn-mini",text:"➕ Google Cal (evento)"}):null,
+          el("a",{href:googleMapsURL(ev.where),target:"_blank",class:"btn-mini mini-map",text:"🗺️ GMaps"}),
+          el("a",{href:appleMapsURL(ev.where),target:"_blank",class:"btn-mini mini-map",text:"🍎 Maps"})
+        ])
+      ]);
 
-          const row2 = el("div", {class:"ev__row"}, [
-            el("div", {class:"muted", style:"color:var(--muted)" , text: ev.details || "" }),
-            el("div", {class:"act"}, [
-              ev.startISO ? el("a", {href: toGoogleCalendarURL({title:ev.title,startISO:ev.startISO,endISO:ev.endISO,tz:ev.tz,where:ev.where,details:ev.details}), target:"_blank", class:"btn-mini "+(ev.type==="Vuelo"?"fly":"") , text:"➕ Google Calendar"}) : null,
-              ...(ev.links||[]).map(l=> el("a", {href:l.url, target:"_blank", class:"btn-mini", text:l.label}))
-            ])
-          ]);
-
-          evBox.appendChild(el("article", {class:"ev", "data-type":ev.type, "data-state":ev.state}, [row1, row2]));
-        });
-
-        dayCard.append(hdr, evBox);
-        daysBox.appendChild(dayCard);
-      });
-
-      // anim reveal
-      observeReveals();
-    }
-
-    // ====== Filtros ======
-    const filters = document.getElementById('filters');
-    filters.addEventListener('click', (e)=>{
-      const b = e.target.closest('.tag'); if(!b) return;
-      [...filters.querySelectorAll('.tag')].forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-      renderDays(b.dataset.filter);
-      scrollToDays();
+      evBox.appendChild(el("article",{class:"ev","data-type":ev.type,"data-state":ev.state},[row1,row2]));
     });
 
-    function scrollToDays(){
-      window.scrollTo({ top: document.querySelector('.days').offsetTop - 12 - 60, behavior:'smooth' });
-    }
+    dayCard.append(hdr,evBox); daysBox.appendChild(dayCard);
+  });
+  revealObserve();
+}
 
-    // ====== Notas (localStorage) ======
-    const notes = document.getElementById('notes');
-    const saveNotes = document.getElementById('saveNotes');
-    notes.value = localStorage.getItem('trip.notes') || "";
-    saveNotes.addEventListener('click', ()=>{
-      localStorage.setItem('trip.notes', notes.value);
-      saveNotes.textContent = "✅ Guardado";
-      setTimeout(()=> saveNotes.textContent="💾 Guardar", 1200);
-    });
+/* ===== Filtros ===== */
+const filters=document.getElementById('filters');
+filters.addEventListener('click',e=>{
+  const b=e.target.closest('.tag'); if(!b) return;
+  [...filters.querySelectorAll('.tag')].forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  renderDays(b.dataset.filter);
+  window.scrollTo({top:document.querySelector('.days').offsetTop-60,behavior:'smooth'});
+});
 
-    // ====== Checklist (localStorage) ======
-    const checklist = document.getElementById('checklist');
-    function renderChecklist(){
-      checklist.innerHTML = "";
-      CHECKS.forEach(item=>{
-        const wrap = el("label", {class:"check"});
-        const inp = el("input", {type:"checkbox"});
-        inp.checked = localStorage.getItem('check.'+item.id) === "1";
-        inp.addEventListener('change', ()=> localStorage.setItem('check.'+item.id, inp.checked?"1":"0"));
-        const txt = el("div", {}, [
-          el("div", {text: item.label}),
-          item.url ? el("a", {href:item.url, target:"_blank", text:"Abrir enlace"}) : null
-        ]);
-        wrap.append(inp, txt);
-        checklist.appendChild(wrap);
-      });
-    }
+/* ===== Notas & Checklist ===== */
+const notes=document.getElementById('notes'); const saveNotes=document.getElementById('saveNotes');
+notes.value=localStorage.getItem('trip.notes')||"";
+saveNotes.addEventListener('click',()=>{localStorage.setItem('trip.notes',notes.value);saveNotes.textContent="✅ Guardado";setTimeout(()=>saveNotes.textContent="💾 Guardar",1200);});
+const checklist=document.getElementById('checklist');
+function renderChecklist(){
+  checklist.innerHTML="";
+  CHECKS.forEach(item=>{
+    const wrap=el("label",{class:"check"});
+    const box=el("input",{type:"checkbox"});
+    box.checked=(localStorage.getItem('check.'+item.id)==="1");
+    box.addEventListener('change',()=>localStorage.setItem('check.'+item.id, box.checked?"1":"0"));
+    const txt=el("div",{},[el("div",{text:item.label}), item.url?el("a",{href:item.url,target:"_blank",text:"Abrir enlace"}):null]);
+    wrap.append(box,txt); checklist.appendChild(wrap);
+  });
+}
 
-    // ====== Acciones header ======
-    document.getElementById('btnPrint').addEventListener('click', ()=> window.print());
-    document.getElementById('btnReset').addEventListener('click', ()=>{
-      if(!confirm("¿Resetear notas y checklist?")) return;
-      localStorage.removeItem('trip.notes');
-      CHECKS.forEach(i=> localStorage.removeItem('check.'+i.id));
-      notes.value = "";
-      renderChecklist();
-    });
+/* ===== ICS (todo el viaje) ===== */
+function toUTC(d){const z=new Date(d);const b=n=>n<10?"0"+n:n;return z.getUTCFullYear()+b(z.getUTCMonth()+1)+b(z.getUTCDate())+"T"+b(z.getUTCHours())+b(z.getUTCMinutes())+b(z.getUTCSeconds())+"Z";}
+function generateICS(){
+  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Itinerario Antonio//ES","CALSCALE:GREGORIAN","METHOD:PUBLISH"];
+  DAYS.forEach(day=>day.items.forEach((ev,i)=>{
+    if(!ev.startISO) return;
+    const uid=(ev.startISO+"-"+ev.where+"-"+i).replace(/[^A-Za-z0-9]/g,"")+"@antonio-trip";
+    L.push("BEGIN:VEVENT","UID:"+uid,"DTSTAMP:"+toUTC(new Date()),"DTSTART:"+toUTC(ev.startISO),"DTEND:"+toUTC(ev.endISO||new Date(new Date(ev.startISO).getTime()+90*60000)),"SUMMARY:"+ev.title.replace(/[\r\n]/g," "));
+    if(ev.where) L.push("LOCATION:"+ev.where.replace(/[\r\n]/g," "));
+    if(ev.details) L.push("DESCRIPTION:"+ev.details.replace(/[\r\n]/g," "));
+    L.push("END:VEVENT");
+  }));
+  L.push("END:VCALENDAR"); return L.join("\r\n");
+}
+function downloadICS(name="itinerario-antonio.ics"){
+  const blob=new Blob([generateICS()],{type:"text/calendar;charset=utf-8"});
+  const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
 
-    // ====== Animaciones de aparición ======
-    function observeReveals(){
-      const obs = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); obs.unobserve(e.target); } });
-      }, {threshold:.12});
-      document.querySelectorAll('.reveal').forEach(x=> obs.observe(x));
-      document.querySelectorAll('.day').forEach(x=> obs.observe(x));
-    }
+/* ===== Botones de cabecera ===== */
+document.getElementById('btnICS').addEventListener('click',()=>downloadICS());
+document.getElementById('btnGoogleAll').addEventListener('click',()=>{downloadICS("itinerario-antonio.ics"); window.open("https://calendar.google.com/calendar/u/0/r/settings/import","_blank");});
+document.getElementById('btnPrint').addEventListener('click',()=>window.print());
+document.getElementById('btnReset').addEventListener('click',()=>{ if(!confirm("¿Resetear notas y checklist?")) return; localStorage.removeItem('trip.notes'); CHECKS.forEach(i=>localStorage.removeItem('check.'+i.id)); notes.value=""; renderChecklist(); });
 
-    // Init
-    renderDays("all");
-    renderChecklist();
-    observeReveals();
-  </script>
+/* ===== Aparición ===== */
+function revealObserve(){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}}),{threshold:.12});
+  document.querySelectorAll('.reveal,.day').forEach(n=>io.observe(n));
+}
+
+/* ===== Init ===== */
+function initChecklist(){ try{ renderChecklist(); }catch{ checklist.innerHTML='<div class="muted">Checklist no disponible en modo privado.</div>'; } }
+renderDays("all"); initChecklist(); revealObserve();
+</script>
 </body>
 </html>
