@@ -15,7 +15,7 @@
     --stroke: color-mix(in srgb, #99b1ff 20%, transparent);
     --brand:#6b8cff; --brand2:#a66bff;
     --ok:#34d399; --warn:#f59e0b; --danger:#f87171;
-    --radius:12px; --maxw:1100px; --hdr:100px;
+    --radius:12px; --maxw:1100px; --hdr:88px;
     --shadow:0 8px 24px rgba(0,0,0,.4);
     --bg-grad1: radial-gradient(1000px 1000px at 5% -5%, #162040 0, transparent 65%);
     --bg-grad2: radial-gradient(1000px 1000px at 105% 15%, #2e1a45 0, transparent 60%);
@@ -83,7 +83,7 @@
     100% { transform: rotate(0deg) }
   }
 
-  /* HEADER */
+  /* HEADER (sin título, solo acciones) */
   .hdr{
     position:sticky;top:0;z-index:60;height:var(--hdr);
     display:flex;align-items:center;justify-content:center;
@@ -94,21 +94,33 @@
   .hdr__in{
     width:min(100% - 24px, var(--maxw));
     display:flex;
-    justify-content:space-between;
+    justify-content:flex-end;
     align-items:center;
     gap:12px;
   }
-  .title{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
-  .title__text{display:grid;gap:3px;min-width:0;flex:1 1 auto}
-  .title h1{margin:0;font-weight:900;font-size:18px;letter-spacing:.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .title p{margin:0;color:var(--muted);font-size:12px}
 
-  .hdr__actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-  .btn{height:36px;padding:0 12px;border:1px solid var(--stroke);border-radius:10px;color:var(--ink);
-       background:linear-gradient(180deg, color-mix(in srgb, var(--card) 65%, transparent), transparent);
-       transition:all .2s ease}
+  /* Acciones responsivas */
+  .hdr__actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    height:40px; padding:0 14px;
+    border:1px solid var(--stroke); border-radius:10px; color:var(--ink);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--card) 65%, transparent), transparent);
+    transition:all .2s ease; min-width:120px;
+  }
   .btn:hover{border-color:color-mix(in srgb, var(--brand) 50%, var(--stroke));background:color-mix(in srgb, var(--brand) 15%, var(--card))}
   .btn--ghost{border:1px solid var(--stroke);background:transparent}
+
+  /* En móviles: botones escalonados y a ancho completo */
+  @media (max-width: 560px){
+    .hdr{ --hdr: auto; padding:10px 0; }
+    .hdr__in{justify-content:center}
+    .hdr__actions{flex-direction:column; align-items:stretch; width:100%; max-width:420px}
+    .btn{width:100%}
+  }
 
   /* Top blocks */
   .top{width:min(100% - 24px, var(--maxw));margin:16px auto;display:grid;gap:12px}
@@ -199,17 +211,9 @@
 
 <header class="hdr">
   <div class="hdr__in">
-    <div class="title">
-      <div class="title__text">
-        <h1>Itinerario — Lima · Madrid · París · Madrid · Lima</h1>
-        <p>6–17 noviembre 2025 · 2 personas</p>
-      </div>
-    </div>
-
     <div class="hdr__actions">
       <button class="btn" id="btnTheme">🌙/☀️ Tema</button>
       <button class="btn btn--ghost" id="btnPrint">🖨️ PDF</button>
-      <button class="btn btn--ghost" id="btnReset">↺ Reset notas</button>
     </div>
   </div>
 </header>
@@ -416,7 +420,6 @@ function renderChecklist(){
 
 /* ===== Botones de cabecera ===== */
 document.getElementById('btnPrint').addEventListener('click',()=>window.print());
-document.getElementById('btnReset').addEventListener('click',()=>{ if(!confirm("¿Resetear notas y checklist?")) return; localStorage.removeItem('trip.notes'); CHECKS.forEach(i=>localStorage.removeItem('check.'+i.id)); notes.value=""; renderChecklist(); });
 
 /* ===== Aparición ===== */
 function revealObserve(){
