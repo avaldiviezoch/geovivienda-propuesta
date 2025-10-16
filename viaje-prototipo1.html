@@ -44,11 +44,11 @@
   /* COVER SECTION */
   .cover{
     width:min(100% - 24px, var(--maxw));
-    margin:40px auto 40px;
+    margin:40px auto 20px;
     text-align:center;
     display:grid;
-    gap:20px;
-    padding:30px 0;
+    gap:18px;
+    padding:30px 0 18px;
     background:radial-gradient(circle at 50% 50%, rgba(0,0,0,.25), var(--bg) 70%);
   }
   .cover__title{
@@ -59,18 +59,22 @@
     color:var(--ink);
     text-shadow:0 4px 12px rgba(0,0,0,.3);
   }
+
+  /* HERO SHARE SPACE (cabezas / auto) */
+  .hero-box{
+    position:relative;
+    height:160px;             /* MISMO ALTO SIEMPRE */
+    display:grid; place-items:center;
+    overflow:visible;
+  }
+  /* CABEZAS */
   .cover__faces{
-    display:flex;
-    justify-content:center;
-    gap:28px;
-    margin-top:16px;
+    position:absolute; inset:0;
+    display:flex; justify-content:center; align-items:flex-end; gap:28px;
+    filter: drop-shadow(0 8px 20px rgba(0,0,0,.45));
   }
   .cover__head{
-    width:130px;
-    height:130px;
-    display:block;
-    object-fit:contain;
-    filter: drop-shadow(0 8px 20px rgba(0,0,0,.45));
+    width:130px; height:130px; object-fit:contain;
     transform-origin: bottom center;
     animation: neck-tilt 3.5s ease-in-out infinite;
   }
@@ -83,7 +87,37 @@
     100% { transform: rotate(0deg) }
   }
 
-  /* HEADER */
+  /* AUTO (ocupa el MISMO espacio que las cabezas) */
+  .cover__car{
+    position:absolute; inset:0;
+    display:grid; place-items:center;
+    pointer-events:none;
+  }
+  .car-img{
+    width:min(520px, 90%);
+    filter:drop-shadow(0 16px 24px rgba(0,0,0,.45));
+    animation: car-bob 1.6s ease-in-out infinite, car-sway 2.6s ease-in-out infinite;
+  }
+  @keyframes car-bob{ 0%,100%{ transform:translateY(0)} 50%{ transform:translateY(-7px)} }
+  @keyframes car-sway{ 0%,100%{ transform:rotate(-1.5deg)} 50%{ transform:rotate(1.5deg)} }
+  .car-shadow{
+    position:absolute; bottom:6px; left:50%; transform:translateX(-50%);
+    width:44%; height:14px; background:radial-gradient(ellipse, rgba(0,0,0,.35), rgba(0,0,0,0) 70%);
+    filter:blur(3px); animation: squash 1.6s ease-in-out infinite;
+  }
+  @keyframes squash{ 0%,100%{ transform:translateX(-50%) scaleX(1) } 50%{ transform:translateX(-50%) scaleX(1.08) } }
+  .speedlines{ position:absolute; inset:0; overflow:hidden }
+  .line{
+    position:absolute; right:-10%; width:18%; height:2px;
+    background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.75), rgba(255,255,255,0));
+    filter:blur(.6px); animation: fly 1.2s linear infinite;
+  }
+  .line:nth-child(2){ top:30%; animation-delay:.2s }
+  .line:nth-child(3){ top:55%; animation-delay:.5s }
+  .line:nth-child(4){ top:75%; animation-delay:.8s }
+  @keyframes fly{ 0%{transform:translateX(0)} 100%{transform:translateX(-120vw)} }
+
+  /* HEADER (solo botones a la derecha) */
   .hdr{
     position:sticky;top:0;z-index:60;height:var(--hdr);
     display:flex;align-items:center;justify-content:center;
@@ -93,25 +127,34 @@
   }
   .hdr__in{
     width:min(100% - 24px, var(--maxw));
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    display:flex;align-items:center;justify-content:flex-end;gap:12px;
   }
 
-  /* === Tabs superiores === */
-  .tabs{
-    display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto;
-    scrollbar-width:none; -ms-overflow-style:none;
+  /* === Segmented Tabs (iPhone style) — debajo de las cabezas === */
+  .segmented{
+    width:min(100% - 24px, 520px);
+    margin:0 auto;
+    position:relative; display:flex; gap:0; padding:4px;
+    border:1px solid var(--stroke); border-radius:999px;
+    background:color-mix(in srgb, var(--card) 70%, transparent);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    overflow:auto; scrollbar-width:none; -ms-overflow-style:none;
   }
-  .tabs::-webkit-scrollbar{display:none}
-  .tab{
-    flex:0 0 auto; padding:8px 18px; font-weight:600; font-size:14px;
-    border-radius:999px; border:1px solid var(--stroke);
-    background:color-mix(in srgb, var(--card) 60%, transparent);
-    color:var(--muted); transition:all .2s ease;
+  .segmented::-webkit-scrollbar{display:none}
+  .seg{ position:relative; z-index:1; flex:1 1 auto; white-space:nowrap;
+        padding:8px 18px; border:0; background:transparent; color:var(--muted);
+        font-weight:800; border-radius:999px; transition:color .2s ease }
+  .seg[aria-selected="true"]{ color:#081123 }
+  :root[data-theme="dark"] .seg[aria-selected="true"]{ color:#061022 }
+  .thumb{
+    position:absolute; z-index:0; top:4px; left:4px; height:calc(100% - 8px);
+    width:120px; border-radius:999px;
+    background:linear-gradient(180deg, #fff, color-mix(in srgb,#fff 45%, transparent));
+    box-shadow:0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.65);
+    transition:left .22s cubic-bezier(.22,.9,.2,1), width .22s cubic-bezier(.22,.9,.2,1);
   }
-  .tab:hover{ background:color-mix(in srgb, var(--brand) 20%, var(--card)); color:var(--ink) }
-  .tab.active{
-    background:linear-gradient(90deg, var(--brand), var(--brand2));
-    color:#fff; border:none; transform:scale(1.03);
+  :root[data-theme="dark"] .thumb{
+    background:linear-gradient(180deg, #eaf1ff, color-mix(in srgb,#eaf1ff 70%, transparent));
   }
 
   /* Acciones del header */
@@ -129,7 +172,6 @@
   @media (max-width: 560px){
     .hdr{ --hdr:auto; padding:10px 0; }
     .hdr__in{flex-direction:column; gap:12px; align-items:stretch}
-    .tabs{justify-content:center; width:100%}
     .hdr__actions{width:100%; justify-content:center}
     .btn{width:100%}
   }
@@ -234,7 +276,7 @@
 
   /* print */
   @media print{
-    .hdr, .filters, .hdr__actions, .tabs{display:none !important}
+    .hdr, .filters, .hdr__actions, .segmented{display:none !important}
     body{background:#fff;color:#111}
     .card, .day{box-shadow:none;border:1px solid #ddd}
     .day__hdr{background:#f6f8ff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -246,24 +288,41 @@
 
 <section class="cover">
   <h1 class="cover__title">EUROTRIP ITINERARIO VIAJE MADRID PARÍS</h1>
-  <div class="cover__faces">
-    <img class="cover__head" src="https://lh3.googleusercontent.com/d/1E82o__-jHJmWwubokZcy2WgMVBXha4LO=w1000" alt="Antonio">
-    <img class="cover__head cover__head--lag" src="https://lh3.googleusercontent.com/d/1GfkwGMzG9RTNaMLWdUxzxkvdTBWmFIxA=w1000" alt="Pareja">
+
+  <!-- HERO compartido: cabezas / auto (misma caja) -->
+  <div class="hero-box" id="heroBox">
+    <!-- Cabezas -->
+    <div class="cover__faces" id="hero-heads" aria-hidden="false">
+      <img class="cover__head" src="https://lh3.googleusercontent.com/d/1E82o__-jHJmWwubokZcy2WgMVBXha4LO=w1000" alt="Antonio">
+      <img class="cover__head cover__head--lag" src="https://lh3.googleusercontent.com/d/1GfkwGMzG9RTNaMLWdUxzxkvdTBWmFIxA=w1000" alt="Pareja">
+    </div>
+
+    <!-- Auto (mismo espacio, oculto al inicio) -->
+    <div class="cover__car" id="hero-car" aria-hidden="true" style="display:none">
+      <div class="speedlines">
+        <span class="line" style="top:20%"></span>
+        <span class="line" style="top:38%"></span>
+        <span class="line" style="top:58%"></span>
+        <span class="line" style="top:78%"></span>
+      </div>
+      <img class="car-img" src="https://lh3.googleusercontent.com/d/1b06CeZcjsV4qlKcHyQoV9dtceRli9Zsg=w1000" alt="Auto en movimiento">
+      <div class="car-shadow"></div>
+    </div>
   </div>
+
+  <!-- PESTAÑAS estilo iPhone (debajo de las cabezas) -->
+  <nav class="segmented" id="segmented">
+    <div class="thumb" id="thumb"></div>
+    <button class="seg" aria-selected="true"  data-tab="itinerario">Itinerario</button>
+    <button class="seg" aria-selected="false" data-tab="recorrido">Recorrido</button>
+    <button class="seg" aria-selected="false" data-tab="calendario">Calendario</button>
+    <button class="seg" aria-selected="false" data-tab="ruta">Ruta</button>
+  </nav>
 </section>
 
+<!-- HEADER (solo botones) -->
 <header class="hdr">
   <div class="hdr__in">
-
-    <!-- PESTAÑAS -->
-    <nav class="tabs">
-      <button class="tab active" data-tab="itinerario">Itinerario</button>
-      <button class="tab" data-tab="recorrido">Recorrido</button>
-      <button class="tab" data-tab="calendario">Calendario</button>
-      <button class="tab" data-tab="ruta">Ruta</button>
-    </nav>
-
-    <!-- BOTONES DERECHA -->
     <div class="hdr__actions">
       <button class="btn" id="btnTheme">🌙/☀️ Tema</button>
       <button class="btn btn--ghost" id="btnPrint">🖨️ PDF</button>
@@ -356,7 +415,7 @@
 /* ===== Tema claro/oscuro (persistente) ===== */
 (function(){
   const saved=localStorage.getItem("trip.theme");
-  if(saved){ document.documentElement.setAttribute("data-theme", saved); }
+  if(saved){ document.documentElement.setAttribute('data-theme', saved); }
 })();
 document.getElementById('btnTheme').addEventListener('click',()=>{
   const cur=document.documentElement.getAttribute('data-theme')||'dark';
@@ -364,12 +423,13 @@ document.getElementById('btnTheme').addEventListener('click',()=>{
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('trip.theme', next);
 });
+document.getElementById('btnPrint').addEventListener('click',()=>window.print());
 
 /* ===== Íconos ===== */
 const ICONS={"Vuelo":"✈️","Tour":"🏟️","Museo":"🖼️","Monumento":"🏛️","Paseo":"🚶","Parque":"🎢","Crucero":"🚤","Cultura":"📚","Info":"ℹ️"};
 
 /* ===== Datos ===== */
-const DAYS=[
+const DAYS=[ /* (tus datos originales idénticos) */ 
   {date:"Jue · 6 nov 2025",city:"Vuelo",state:"Confirmado",items:[{title:"Vuelo Lima → Madrid",when:"23:05 (6 nov) – 18:30 (7 nov) · 11h 30m",where:"LIM → MAD (Barajas)",type:"Vuelo",state:"Confirmado",startISO:"2025-11-06T23:05:00",endISO:"2025-11-07T18:30:00",tz:"Europe/Madrid",details:"Noche en vuelo. Llegada el 7 nov 18:30.",links:[]}]},
   {date:"Vie · 7 nov 2025",city:"Madrid",state:"Info",items:[{title:"Llegada a Madrid + Check-in",when:"18:30",where:"Gran Vía / Chamberí",type:"Info",state:"Confirmado",startISO:"2025-11-07T18:30:00",endISO:"2025-11-07T20:00:00",tz:"Europe/Madrid",details:"Cena ligera y descanso (jet lag).",links:[{label:"Mapa",url:"https://maps.google.com/?q=Gran+V%C3%ADa+Madrid"}]}]},
   {date:"Sáb · 8 nov 2025",city:"Madrid",state:"Confirmado",items:[
@@ -500,35 +560,67 @@ function renderChecklist(){
   });
 }
 
-/* ===== Botones de cabecera ===== */
-document.getElementById('btnPrint').addEventListener('click',()=>window.print());
-
 /* ===== Aparición ===== */
 function revealObserve(){
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}}),{threshold:.15});
   document.querySelectorAll('.reveal,.day').forEach(n=>io.observe(n));
 }
 
-/* ===== PESTAÑAS: mostrar/ocultar vistas ===== */
+/* ===== PESTAÑAS (segmented) + Hero swap ===== */
+const segmented = document.getElementById('segmented');
+const thumb = document.getElementById('thumb');
+const tabs = Array.from(segmented.querySelectorAll('.seg'));
+
 const views={
   itinerario:document.getElementById('view-itinerario'),
   recorrido:document.getElementById('view-recorrido'),
   calendario:document.getElementById('view-calendario'),
   ruta:document.getElementById('view-ruta')
 };
-document.querySelectorAll('.tab').forEach(t=>{
+const heroHeads=document.getElementById('hero-heads');
+const heroCar=document.getElementById('hero-car');
+
+function moveThumbTo(el){
+  const {left,width}=el.getBoundingClientRect();
+  const wrapLeft=segmented.getBoundingClientRect().left + segmented.scrollLeft;
+  thumb.style.width=width+'px';
+  thumb.style.left=(left - wrapLeft + segmented.scrollLeft)+'px';
+}
+function setHeroFor(key){
+  const showHeads = key==='itinerario';
+  heroHeads.style.display = showHeads ? 'flex' : 'none';
+  heroHeads.setAttribute('aria-hidden', String(!showHeads));
+  heroCar.style.display   = showHeads ? 'none' : 'grid';
+  heroCar.setAttribute('aria-hidden', String(showHeads));
+}
+
+tabs.forEach(t=>{
   t.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    t.classList.add('active');
+    tabs.forEach(x=>x.setAttribute('aria-selected','false'));
+    t.setAttribute('aria-selected','true');
     const key=t.dataset.tab;
     Object.entries(views).forEach(([k,elv])=>elv.classList.toggle('active',k===key));
     // Render diferido por vista
     if(key==='recorrido') renderRecorrido();
-    if(key==='calendario') renderCalendar(2025,10); // 10 = noviembre (0-based)
+    if(key==='calendario') renderCalendar(2025,10); // 10 = noviembre
     if(key==='ruta') renderRoutes();
     if(key==='itinerario') { renderDays('all'); revealObserve(); }
+    setHeroFor(key);
+    moveThumbTo(t);
     window.scrollTo({top:document.querySelector('.views').offsetTop-60,behavior:'smooth'});
   });
+});
+window.addEventListener('load',()=>{
+  const current=tabs.find(b=>b.getAttribute('aria-selected')==='true');
+  if(current) moveThumbTo(current);
+});
+window.addEventListener('resize',()=>{
+  const current=tabs.find(b=>b.getAttribute('aria-selected')==='true');
+  if(current) moveThumbTo(current);
+});
+segmented.addEventListener('scroll',()=>{
+  const current=tabs.find(b=>b.getAttribute('aria-selected')==='true');
+  if(current) moveThumbTo(current);
 });
 
 /* ===== RECORRIDO ===== */
@@ -553,37 +645,30 @@ function renderRecorrido(){
   });
 }
 
-/* ===== CALENDARIO (grid de mes) ===== */
-function renderCalendar(year,monthIdx){ // monthIdx: 0=ene
+/* ===== CALENDARIO ===== */
+function renderCalendar(year,monthIdx){
   const head=document.getElementById('cal-head');
   const grid=document.getElementById('cal-grid');
   if(!head||!grid) return;
 
-  const labels=['L','M','X','J','V','S','D']; // lunes primero
+  const labels=['L','M','X','J','V','S','D'];
   head.innerHTML=''; labels.forEach(l=>head.appendChild(el('div',{text:l})));
 
-  // Mapeo de eventos por día
-  const map=new Map(); // key=YYYY-MM-DD -> [{title,state,type}]
-  DAYS.forEach(d=>{
-    d.items.forEach(i=>{
-      const dd=new Date(i.startISO||Date.now());
-      const y=dd.getFullYear(), m=dd.getMonth(), day=dd.getDate();
-      const key=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-      if(!map.has(key)) map.set(key,[]);
-      map.get(key).push({title:i.title,state:i.state,type:i.type});
-    });
-  });
+  const map=new Map();
+  DAYS.forEach(d=>d.items.forEach(i=>{
+    const dd=new Date(i.startISO||Date.now());
+    const y=dd.getFullYear(), m=dd.getMonth(), day=dd.getDate();
+    const key=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    if(!map.has(key)) map.set(key,[]);
+    map.get(key).push({title:i.title,state:i.state,type:i.type});
+  }));
 
-  // Primer día del mes (JS: 0=domingo). Ajustamos a lunes=0
   const first=new Date(year,monthIdx,1);
-  const firstJS=first.getDay(); // 0 dom .. 6 sáb
-  const offset=(firstJS+6)%7;   // 0 si lunes
-
+  const offset=(first.getDay()+6)%7;
   const daysInMonth=new Date(year,monthIdx+1,0).getDate();
+
   grid.innerHTML='';
-  // celdas vacías antes
   for(let i=0;i<offset;i++) grid.appendChild(el('div',{class:'cal-cell'}));
-  // días del mes
   for(let d=1; d<=daysInMonth; d++){
     const key=`${year}-${String(monthIdx+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const events=map.get(key)||[];
@@ -602,7 +687,6 @@ function renderCalendar(year,monthIdx){ // monthIdx: 0=ene
 function renderRoutes(){
   const r=document.getElementById('routes'); if(!r) return;
   r.innerHTML='';
-  // Tomamos solo eventos de vuelo para armar tramos:
   const legs=[];
   DAYS.forEach(d=>d.items.forEach(i=>{
     if(i.type==='Vuelo'){
