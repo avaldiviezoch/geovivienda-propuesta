@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Itinerario · Lima – Madrid – París – Madrid – Lima (6–17 nov 2025)</title>
+<title>EUROTRIP 2025 · Itinerario + Tips</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 <!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -22,7 +22,6 @@
     --shadow:0 8px 24px rgba(0,0,0,.4);
     --bg-grad1: radial-gradient(1000px 1000px at 5% -5%, #162040 0, transparent 65%);
     --bg-grad2: radial-gradient(1000px 1000px at 105% 15%, #2e1a45 0, transparent 60%);
-    /* Recorrido */
     --green:#16a34a; --blue:#0ea5e9;
   }
   :root[data-theme="light"]{
@@ -57,11 +56,11 @@
 
   .hero-box{position:relative;height:160px;display:grid;place-items:center;overflow:hidden}
   .cover__faces{position:absolute; inset:0;display:flex;justify-content:center;align-items:flex-end;gap:28px;filter: drop-shadow(0 8px 20px rgba(0,0,0,.45))}
-  .cover__head{width:130px;height:130px;object-fit:contain;transform-origin: bottom center;animation: neck-tilt 3.5s ease-in-out infinite}
+  .cover__head{width:120px;height:120px;object-fit:contain;transform-origin: bottom center;animation: neck-tilt 3.5s ease-in-out infinite}
   .cover__head--lag{ animation-delay:1s }
   @keyframes neck-tilt{0%{transform:rotate(0)}25%{transform:rotate(8deg)}50%{transform:rotate(0)}75%{transform:rotate(-8deg)}100%{transform:rotate(0)}}
   .cover__car{position:absolute; inset:0; display:grid; place-items:center; pointer-events:none}
-  .car-img{max-width:92%; max-height:130px; height:auto; width:auto;filter:drop-shadow(0 16px 24px rgba(0,0,0,.45));animation: car-bob 1.6s ease-in-out infinite, car-sway 2.6s ease-in-out infinite}
+  .car-img{max-width:92%; max-height:120px; height:auto; width:auto;filter:drop-shadow(0 16px 24px rgba(0,0,0,.45));animation: car-bob 1.6s ease-in-out infinite, car-sway 2.6s ease-in-out infinite}
   @keyframes car-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes car-sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
   .car-shadow{position:absolute; bottom:6px; left:50%; transform:translateX(-50%);width:44%; height:14px; background:radial-gradient(ellipse, rgba(0,0,0,.35), rgba(0,0,0,0) 70%);filter:blur(3px); animation: squash 1.6s ease-in-out infinite}
@@ -74,10 +73,10 @@
   /* HEADER */
   .hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;justify-content:center;backdrop-filter: blur(12px);background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 75%, transparent), color-mix(in srgb, var(--bg) 25%, transparent));border-bottom:1px solid var(--stroke)}
   .hdr__in{width:min(100% - 24px, var(--maxw));display:flex;align-items:center;justify-content:flex-end;gap:12px}
-  .segmented{width:min(100% - 24px, 520px); margin:0 auto;position:relative; display:flex; gap:0; padding:4px;border:1px solid var(--stroke); border-radius:999px;background:color-mix(in srgb, var(--card) 70%, transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);overflow:auto; scrollbar-width:none}
+  .segmented{width:min(100% - 24px, 600px); margin:0 auto;position:relative; display:flex; gap:0; padding:4px;border:1px solid var(--stroke); border-radius:999px;background:color-mix(in srgb, var(--card) 70%, transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);overflow:auto; scrollbar-width:none}
   .segmented::-webkit-scrollbar{display:none}
   .seg{position:relative; z-index:1; flex:1 1 auto; white-space:nowrap;padding:8px 16px; border:0; background:transparent; color:var(--muted);font-weight:800; border-radius:999px; transition:color .2s ease;font-size:15px}
-  @media (max-width:420px){.seg{font-size:13px; padding:8px 12px}.cover__head{width:110px;height:110px}.hero-box{height:140px}.car-img{max-height:110px}}
+  @media (max-width:420px){.seg{font-size:13px; padding:8px 12px}.cover__head{width:100px;height:100px}.hero-box{height:140px}.car-img{max-height:100px}}
   .seg[aria-selected="true"]{ color:#081123 }
   :root[data-theme="dark"] .seg[aria-selected="true"]{ color:#061022 }
   .thumb{position:absolute; z-index:0; top:4px; left:4px; height:calc(100% - 8px);width:120px; border-radius:999px;background:linear-gradient(180deg, #fff, color-mix(in srgb,#fff 45%, transparent));box-shadow:0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.65);transition:left .22s cubic-bezier(.22,.9,.2,1), width .22s cubic-bezier(.22,.9,.2,1)}
@@ -140,7 +139,6 @@
     background:var(--green); box-shadow:0 0 6px color-mix(in srgb,var(--green) 70%,transparent); pointer-events:none}
   @media(max-width:540px){ .r-day-line{left:calc(120px + var(--gap) + (var(--center)/2) - (var(--railW)/2))} }
   .r-day.open .r-day-line{opacity:0}
-
   .r-hdr{display:grid;grid-template-columns:140px var(--center) 1fr;column-gap:var(--gap);align-items:center;cursor:pointer;user-select:none;position:relative;z-index:1}
   @media(max-width:540px){.r-hdr{grid-template-columns:120px var(--center) 1fr}}
   .r-date{display:flex;flex-direction:column;gap:2px;color:var(--green);font-weight:900;font-size:13px}
@@ -150,11 +148,9 @@
   .r-city{font-weight:900;font-size:16px;white-space:nowrap}
   .r-chev{margin-left:8px;transition:transform .25s ease}
   .r-day.open .r-chev{transform:rotate(180deg)}
-
   .r-panel{display:none}
   .r-day.open .r-panel{display:block}
   .r-events{position:relative;padding:6px 0;margin-top:2px}
-
   .r-row{display:grid;grid-template-columns:140px var(--center) 1fr;column-gap:var(--gap);align-items:start;margin-bottom:var(--rowGap)}
   @media(max-width:540px){.r-row{grid-template-columns:120px var(--center) 1fr}}
   .r-time{font-weight:900;font-size:12px;color:var(--blue);white-space:nowrap}
@@ -164,14 +160,15 @@
   .r-chip{display:inline-grid;place-items:center;height:18px;padding:0 8px;font-size:10.5px;border-radius:999px;margin-left:8px;border:1px solid color-mix(in srgb,#9db6ff 55%,transparent);color:var(--ink);opacity:.9}
 
   .r-rail{position:absolute;inset:0;pointer-events:none}
-  .r-seg{position:absolute;z-index:0;width:var(--railW);border-radius:4px;left:calc(140px + var(--gap) + (var(--center)/2) - (var(--railW)/2));background:var(--blue)}
+  .r-seg{position:absolute;z-index:0;width:var(--railW);border-radius:4px;left:calc(140px + var(--gap) + (var(--center)/2) - (var(--railW)/2));background:linear-gradient(180deg,var(--blue),color-mix(in srgb,var(--blue) 35%,transparent))}
   .r-seg--green{background:var(--green)}
-  .r-seg--blue{background:linear-gradient(180deg,var(--blue),color-mix(in srgb,var(--blue) 35%,transparent))}
   .r-node{position:absolute;z-index:2;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;left:calc(140px + var(--gap) + (var(--center)/2) - 11px);font-size:11px;line-height:1;box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 25%,transparent);background:var(--blue)}
   .r-node--green{background:var(--green)}
+  .r-label{position:absolute;left:calc(140px + var(--gap) + (var(--center)) + 8px);transform:translateY(-50%);font-size:11px;color:var(--blue);opacity:.9;white-space:nowrap}
   @media(max-width:540px){
     .r-seg{left:calc(120px + var(--gap) + (var(--center)/2) - (var(--railW)/2))}
     .r-node{left:calc(120px + var(--gap) + (var(--center)/2) - 11px)}
+    .r-label{left:calc(120px + var(--gap) + (var(--center)) + 8px)}
   }
 
   /* Views */
@@ -179,7 +176,7 @@
   .view{display:none}
   .view.active{display:block}
 
-  /* ===== RUTA (Mapa + acordeón + viajera animada) ===== */
+  /* ===== RUTA (MAPA) ===== */
   .route-wrap{width:min(100% - 24px, var(--maxw)); margin:16px auto 46px; display:grid; gap:12px}
   .route-title{margin:0 4px; font-weight:900; letter-spacing:.3px}
   .hiker-wrap{display:grid;place-items:center}
@@ -216,27 +213,27 @@
   }
   .btn-float:hover{background:color-mix(in srgb, var(--brand) 10%, var(--card));border-color:color-mix(in srgb, var(--brand) 40%, var(--stroke))}
   .num{background:#1f49ff; color:#fff; border:2px solid #fff; border-radius:999px; width:26px; height:26px; display:grid; place-items:center; font-weight:900; font-size:12px; box-shadow:0 2px 10px rgba(0,0,0,.35)}
-  .locMe{background:#00c2ff;color:#001b2a}
 
-  /* Leaflet theme polish */
-  .leaflet-container{background:transparent}
-  .leaflet-bar a{background:color-mix(in srgb, var(--card) 80%, transparent);color:var(--ink);border-color:var(--stroke)}
-  .leaflet-bar a:hover{background:color-mix(in srgb, var(--brand) 8%, var(--card))}
-  :root[data-theme="dark"] .leaflet-tile{filter:hue-rotate(180deg) invert(90%) saturate(.6) brightness(.9) contrast(.95)}
-  :root[data-theme="light"] .leaflet-tile{filter:none}
+  /* ===== TIPS ===== */
+  .tips{width:min(100% - 24px, var(--maxw)); margin:16px auto 46px; display:grid; gap:16px}
+  .tips-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+  @media(max-width:800px){ .tips-grid{grid-template-columns:1fr} }
+  .tip-card{padding:14px;border:1px solid var(--stroke);border-radius:12px;background:color-mix(in srgb, var(--glass) 65%, transparent);display:grid;gap:8px}
+  .tip-card h4{margin:0;font-size:16px}
+  .tip-card ul{margin:0 0 0 18px; padding:0; display:grid; gap:6px}
+  .tip-card li{line-height:1.35}
 
-  /* Calendario y “ruta antigua” (no usado) */
-  .calendar{width:min(100% - 24px, var(--maxw)); margin:16px auto 40px}
-  .cal-head{display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:6px}
-  .cal-head div{text-align:center;font-weight:800;padding:6px 0;border-radius:8px;background:color-mix(in srgb, var(--glass) 60%, transparent)}
-  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:6px}
-  .cal-cell{min-height:82px;border:1px solid var(--stroke);border-radius:10px;background:color-mix(in srgb, var(--glass) 60%, transparent);padding:8px;display:grid;grid-template-rows:auto 1fr;gap:4px}
-  .cal-day{font-weight:800;font-size:12px}
-  .cal-events{display:grid;gap:4px}
-  .evt{font-size:11px;padding:4px 6px;border-radius:6px;border:1px solid var(--stroke);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .evt.ok{border-color:color-mix(in srgb, var(--ok) 60%, var(--stroke))}
-  .evt.pend{border-color:color-mix(in srgb, var(--warn) 60%, var(--stroke))}
-  .evt.fly{border-color:color-mix(in srgb, var(--danger) 60%, var(--stroke))}
+  .accordion{background:var(--card);border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
+  .accordion details+details{border-top:1px solid var(--stroke)}
+  .accordion summary{list-style:none;cursor:pointer;padding:12px 14px;font-weight:900;display:flex;align-items:center;gap:10px}
+  .accordion summary::-webkit-details-marker{display:none}
+  .accordion .inner{padding:10px 14px 14px 14px; color:var(--muted)}
+  .tip-list{display:grid; gap:10px}
+  .tip-item{display:grid; grid-template-columns:36px 1fr auto; gap:10px; align-items:center; padding:10px; border:1px solid var(--stroke); border-radius:12px; background:color-mix(in srgb, var(--glass) 60%, transparent)}
+  .tip-ico{width:36px; height:36px; border-radius:10px; display:grid; place-items:center; font-size:18px; background:color-mix(in srgb, var(--brand) 20%, transparent); border:1px solid var(--stroke)}
+  .tip-title{font-weight:800}
+  .tip-sub{font-size:12px; color:var(--muted)}
+  .tip-badge{font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid var(--stroke); background:color-mix(in srgb, var(--glass) 60%, transparent)}
 
   @media print{
     .hdr, .filters, .hdr__actions, .segmented{display:none !important}
@@ -250,7 +247,7 @@
 <body>
 
 <section class="cover">
-  <h1 class="cover__title">EUROTRIP ITINERARIO VIAJE MADRID PARÍS</h1>
+  <h1 class="cover__title">EUROTRIP 2025 · Itinerario + Tips</h1>
 
   <div class="hero-box" id="heroBox">
     <div class="cover__faces" id="hero-heads" aria-hidden="false">
@@ -269,8 +266,8 @@
     <div class="thumb" id="thumb"></div>
     <button class="seg" aria-selected="true"  data-tab="itinerario">Itinerario</button>
     <button class="seg" aria-selected="false" data-tab="recorrido">Recorrido</button>
-    <button class="seg" aria-selected="false" data-tab="calendario">Calendario</button>
     <button class="seg" aria-selected="false" data-tab="ruta">Ruta</button>
+    <button class="seg" aria-selected="false" data-tab="tips">Tips</button>
   </nav>
 </section>
 
@@ -311,8 +308,8 @@
       <div class="card summary reveal">
         <div class="row">
           <div>
-            <div style="opacity:.9;font-weight:900;letter-spacing:.3px">Resumen de viaje</div>
-            <div class="muted" style="font-size:13px">Fechas: <b>6–17 nov 2025</b> · Base: <b>Saint-Germain-en-Laye</b></div>
+            <div style="opacity:.9;font-weight:900;letter-spacing:.3px">Itinerario actualizado — EUROTRIP 2025</div>
+            <div class="muted" style="font-size:13px">Fechas: <b>6–17 nov 2025</b> · Rutas: <b>Lima · Madrid · París · Madrid · Lima</b></div>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <span class="kpi" style="display:inline-grid;min-width:160px"><span class="muted" style="font-size:12px">Entradas confirmadas</span><b>6</b></span>
@@ -321,7 +318,7 @@
         </div>
         <div class="kpis">
           <div class="kpi"><span class="muted" style="font-size:12px">Días totales</span><b>12</b></div>
-          <div class="kpi"><span class="muted" style="font-size:12px">Ciudades</span><b>Madrid · París</b></div>
+          <div class="kpi"><span class="muted" style="font-size:12px">Ciudades</span><b>Madrid · París · Toledo</b></div>
           <div class="kpi"><span class="muted" style="font-size:12px">Vuelos planificados</span><b>3</b></div>
         </div>
       </div>
@@ -349,25 +346,15 @@
     <div class="r-days" id="r-days"></div>
   </section>
 
-  <!-- ===== CALENDARIO ===== -->
-  <section id="view-calendario" class="view">
-    <div class="calendar">
-      <div class="cal-head" id="cal-head"></div>
-      <div class="cal-grid" id="cal-grid"></div>
-    </div>
-  </section>
-
   <!-- ===== RUTA (MAPA) ===== -->
   <section id="view-ruta" class="view">
     <div class="route-wrap">
       <h3 class="route-title">Ruta diaria</h3>
 
-      <!-- Viajera animada (más pequeña) -->
       <div class="hiker-wrap">
         <img class="hiker" src="https://lh3.googleusercontent.com/d/11y4gVmkbWpGCjElxOLphi0gtHG1WCQpG=w1000" alt="Viajera">
       </div>
 
-      <!-- Acordeón cerrado por defecto -->
       <details class="route-filter" id="dayFilter">
         <summary>
           <svg class="chev" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -380,6 +367,192 @@
       </details>
 
       <div id="map"></div>
+    </div>
+  </section>
+
+  <!-- ===== TIPS ===== -->
+  <section id="view-tips" class="view">
+    <div class="tips">
+      <div class="tips-grid">
+        <div class="tip-card">
+          <h4>🧾 Transporte y apps útiles</h4>
+          <ul>
+            <li><b>Navigo Easy Pass (París):</b> recargable en máquinas RATP o quioscos; cubre metro + RER + bus.</li>
+            <li><b>Apps:</b> Google Maps / Citymapper (rutas y transporte), Bonjour RATP (metro y RER), Omio / SNCF Connect (trenes), Bolt / Free Now (taxis/VTC), Disneyland Paris App, Versailles App.</li>
+          </ul>
+        </div>
+        <div class="tip-card">
+          <h4>💼 Consejos prácticos</h4>
+          <ul>
+            <li>Power bank ≥ 10 000 mAh, adaptador tipo C europeo, cargadores USB múltiples.</li>
+            <li>Cambiar 50–100 € en efectivo por día (uso ligero).</li>
+            <li>Guardar PDFs/QR en el teléfono y en Drive.</li>
+            <li>Revisar horarios de RER/Metro al volver tarde desde Disney o Trocadéro.</li>
+            <li>Usar tarjeta de viaje internacional (BCP Signature/Black → sin comisión Priority Pass).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion card">
+        <details>
+          <summary>🛍️ Compras recomendadas</summary>
+          <div class="inner tip-list">
+            <!-- Madrid -->
+            <div class="tip-item">
+              <div class="tip-ico">🛒</div>
+              <div>
+                <div class="tip-title">Primark Gran Vía 32</div>
+                <div class="tip-sub">Madrid · ropa económica</div>
+              </div>
+              <div class="tip-badge">9:00–22:00</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">🎁</div>
+              <div>
+                <div class="tip-title">El Corte Inglés Callao</div>
+                <div class="tip-sub">Madrid · regalos y electrónica</div>
+              </div>
+              <div class="tip-badge">Centro</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">🍫</div>
+              <div>
+                <div class="tip-title">Oguis — Mercado San Leopoldo</div>
+                <div class="tip-sub">Madrid · productos gourmet</div>
+              </div>
+              <div class="tip-badge">Gourmet</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">💄</div>
+              <div>
+                <div class="tip-title">Kiko Milano / Sephora Gran Vía</div>
+                <div class="tip-sub">Madrid · skincare y maquillaje</div>
+              </div>
+              <div class="tip-badge">Gran Vía</div>
+            </div>
+            <!-- París -->
+            <div class="tip-item">
+              <div class="tip-ico">🎌</div>
+              <div>
+                <div class="tip-title">Royal Souvenirs — 5 Rue Lagrange</div>
+                <div class="tip-sub">París · souvenirs típicos y auténticos</div>
+              </div>
+              <div class="tip-badge">Latino</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">👜</div>
+              <div>
+                <div class="tip-title">Galeries Lafayette / Printemps</div>
+                <div class="tip-sub">París · moda y cosmética</div>
+              </div>
+              <div class="tip-badge">Haussmann</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">💊</div>
+              <div>
+                <div class="tip-title">CityPharma (Saint‑Germain‑des‑Prés)</div>
+                <div class="tip-sub">París · skincare francés económico</div>
+              </div>
+              <div class="tip-badge">Farmacia</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">📀</div>
+              <div>
+                <div class="tip-title">FNAC Champs‑Élysées</div>
+                <div class="tip-sub">París · tecnología y accesorios</div>
+              </div>
+              <div class="tip-badge">Tech</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">🍏</div>
+              <div>
+                <div class="tip-title">Apple Store Opéra</div>
+                <div class="tip-sub">París · cables, power banks, adaptadores C</div>
+              </div>
+              <div class="tip-badge">Opéra</div>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary>🍽️ Restaurantes y bares</summary>
+          <div class="inner tip-list">
+            <!-- Madrid -->
+            <div class="tip-item">
+              <div class="tip-ico">🍽️</div>
+              <div>
+                <div class="tip-title">Restaurante Puerto Rico</div>
+                <div class="tip-sub">C. Chinchilla 2 · comida casera</div>
+              </div>
+              <div class="tip-badge">Madrid</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">🍺</div>
+              <div>
+                <div class="tip-title">Bar Padrao</div>
+                <div class="tip-sub">Trv. de la Parada 4 · tapas</div>
+              </div>
+              <div class="tip-badge">Madrid</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">🍻</div>
+              <div>
+                <div class="tip-title">Cervecería Sierra Bar de Tapas</div>
+                <div class="tip-sub">C. Galileo 41 · raciones</div>
+              </div>
+              <div class="tip-badge">Madrid</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">🥘</div>
+              <div>
+                <div class="tip-title">La Petisquería</div>
+                <div class="tip-sub">C. Mejía Lequerica 17 · tapas</div>
+              </div>
+              <div class="tip-badge">Madrid</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">🍷</div>
+              <div>
+                <div class="tip-title">Bar Restaurante El Duero</div>
+                <div class="tip-sub">C. Noviciado 2 · cocina castellana</div>
+              </div>
+              <div class="tip-badge">Madrid</div>
+            </div>
+            <!-- París -->
+            <div class="tip-item">
+              <div class="tip-ico">🥖</div>
+              <div>
+                <div class="tip-title">La Petite Hostellerie</div>
+                <div class="tip-sub">35 Rue de la Harpe · francés tradicional</div>
+              </div>
+              <div class="tip-badge">París</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">🍲</div>
+              <div>
+                <div class="tip-title">Bouillon Chartier Montparnasse</div>
+                <div class="tip-sub">Bistró económico clásico</div>
+              </div>
+              <div class="tip-badge">París</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">☕</div>
+              <div>
+                <div class="tip-title">Brasserie Lipp / Café de Flore</div>
+                <div class="tip-sub">Ambiente parisino auténtico</div>
+              </div>
+              <div class="tip-badge">Saint‑Germain</div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-ico">🥞</div>
+              <div>
+                <div class="tip-title">Crêperie Saint‑Michel</div>
+                <div class="tip-sub">Dulce o salada · Barrio Latino</div>
+              </div>
+              <div class="tip-badge">París</div>
+            </div>
+          </div>
+        </details>
+      </div>
     </div>
   </section>
 
@@ -398,44 +571,60 @@ document.getElementById('btnPrint').addEventListener('click',()=>window.print())
 
 /* Íconos */
 const ICONS={"Vuelo":"✈️","Tour":"🏟️","Museo":"🖼️","Monumento":"🏛️","Paseo":"🚶","Parque":"🎢","Crucero":"🚤","Cultura":"📚","Info":"ℹ️"};
-const NODE_SVG={
-  Vuelo:'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M2 12l8 2 2 8 2-2-1-6 7-3 2-2-8 1-6-7-2 2 3 7-6 1z"/></svg>',
-  Tour:'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2l3 7h7l-5.5 4 2 7-6.5-4.5L5.5 20l2-7L2 9h7z"/></svg>',
-  Paseo:'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M13 5a2 2 0 110 4 2 2 0 010-4zm-2 6l3-1 3 3v7h-2v-5l-2-2-2 1-3 6H6l3-7-2-2v-3h2v2l2 1z"/></svg>',
-  Info:'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>'
-};
-const svgFor=t=>NODE_SVG[t]||NODE_SVG.Info;
-const isGreen=t=>t==="Vuelo";
 
-/* ===== Datos (los tuyos) ===== */
+/* ===== Datos (actualizados) ===== */
 const DAYS=[
-  {date:"Jue · 6 nov 2025",city:"Vuelo",state:"Confirmado",items:[{title:"Vuelo Lima → Madrid",when:"23:05 (6 nov) – 18:30 (7 nov) · 11h 30m",where:"LIM → MAD (Barajas)",type:"Vuelo",state:"Confirmado",startISO:"2025-11-06T23:05:00",endISO:"2025-11-07T18:30:00",tz:"Europe/Madrid",details:"Noche en vuelo. Llegada el 7 nov 18:30.",links:[]}]},
-  {date:"Vie · 7 nov 2025",city:"Madrid",state:"Info",items:[{title:"Llegada a Madrid + Check-in",when:"18:30",where:"Gran Vía / Chamberí",type:"Info",state:"Confirmado",startISO:"2025-11-07T18:30:00",endISO:"2025-11-07T20:00:00",tz:"Europe/Madrid",details:"Cena ligera y descanso (jet lag).",links:[{label:"Mapa",url:"https://maps.google.com/?q=Gran+V%C3%ADa+Madrid"}]}]},
+  {date:"Jue · 6 nov 2025",city:"Vuelo",state:"Confirmado",items:[
+    {title:"Vuelo Lima → Madrid",when:"23:05 (6 nov) → 18:30 (7 nov)",where:"LIM → MAD (Barajas)",type:"Vuelo",state:"Confirmado",startISO:"2025-11-06T23:05:00",endISO:"2025-11-07T18:30:00",tz:"Europe/Madrid",details:"Noche en vuelo.",links:[]}
+  ]},
+  {date:"Vie · 7 nov 2025",city:"Madrid",state:"Info",items:[
+    {title:"Llegada y traslado al alojamiento",when:"Tarde",where:"Gran Vía / Chamberí",type:"Info",state:"Confirmado",startISO:"2025-11-07T19:30:00",endISO:"2025-11-07T21:00:00",tz:"Europe/Madrid",details:"Paseo ligero por el barrio, descanso por jet lag. Opcional cena: Restaurante Puerto Rico (C. de Chinchilla 2).",links:[{label:"Mapa",url:"https://maps.google.com/?q=Gran+V%C3%ADa+Madrid"}]}
+  ]},
   {date:"Sáb · 8 nov 2025",city:"Madrid",state:"Confirmado",items:[
-    {title:"Tour Santiago Bernabéu",when:"11:30 (2–3h)",where:"Estadio Santiago Bernabéu",type:"Tour",state:"Confirmado",startISO:"2025-11-08T11:30:00",endISO:"2025-11-08T13:45:00",tz:"Europe/Madrid",details:"Entrada comprada.",links:[{label:"Cómo llegar",url:"https://maps.google.com/?q=Estadio+Santiago+Bernab%C3%A9u"}]},
-    {title:"Centro histórico: Plaza Mayor · Sol · San Miguel",when:"Tarde",where:"Madrid Centro",type:"Paseo",state:"Info",startISO:"2025-11-08T16:00:00",endISO:"2025-11-08T19:00:00",tz:"Europe/Madrid",details:"Atardecer en Templo de Debod opcional.",links:[{label:"Mapa",url:"https://maps.google.com/?q=Plaza+Mayor+Madrid"}]}
+    {title:"Tour Santiago Bernabéu",when:"11:30–13:45",where:"Estadio Santiago Bernabéu",type:"Tour",state:"Confirmado",startISO:"2025-11-08T11:30:00",endISO:"2025-11-08T13:45:00",tz:"Europe/Madrid",details:"Entrada confirmada.",links:[{label:"Cómo llegar",url:"https://maps.google.com/?q=Estadio+Santiago+Bernab%C3%A9u"}]},
+    {title:"Centro histórico",when:"Tarde",where:"Plaza Mayor · Puerta del Sol · Mercado San Miguel",type:"Paseo",state:"Info",startISO:"2025-11-08T16:00:00",endISO:"2025-11-08T19:00:00",tz:"Europe/Madrid",details:"Noche: tapas en Bar Padrao o Cervecería Sierra.",links:[]}
   ]},
-  {date:"Dom · 9 nov 2025",city:"Traslado",state:"Confirmado",items:[{title:"Vuelo Madrid → París (ORY)",when:"16:30 → 18:25 (1h 55m)",where:"MAD → ORY",type:"Vuelo",state:"Confirmado",startISO:"2025-11-09T16:30:00",endISO:"2025-11-09T18:25:00",tz:"Europe/Paris",details:"Economy Lite. Traslado a Saint-Germain-en-Laye (~1h).",links:[{label:"Saint-Germain-en-Laye",url:"https://maps.google.com/?q=Saint-Germain-en-Laye"}]}]},
+  {date:"Dom · 9 nov 2025",city:"Madrid",state:"Pendiente",items:[
+    {title:"Mañana libre (opción A)",when:"Mañana",where:"Centro Madrid",type:"Paseo",state:"Info",startISO:"2025-11-09T09:00:00",endISO:"2025-11-09T11:30:00",tz:"Europe/Madrid",details:"Paseo, compras y brunch.",links:[]},
+    {title:"El Escorial — Real Biblioteca (opción B)",when:"07:00–11:30",where:"San Lorenzo de El Escorial",type:"Cultura",state:"Pendiente",startISO:"2025-11-09T07:00:00",endISO:"2025-11-09T11:30:00",tz:"Europe/Madrid",details:"Visita opcional.",links:[]},
+    {title:"Traslado al aeropuerto",when:"14:30",where:"Atocha/Gran Vía → MAD",type:"Info",state:"Confirmado",startISO:"2025-11-09T14:30:00",endISO:"2025-11-09T15:30:00",tz:"Europe/Madrid"},
+    {title:"Vuelo Madrid → París (ORY)",when:"16:30–18:25",where:"MAD → ORY",type:"Vuelo",state:"Confirmado",startISO:"2025-11-09T16:30:00",endISO:"2025-11-09T18:25:00",tz:"Europe/Paris",details:"Llegada a Saint-Germain-en-Laye y alojamiento.",links:[]}
+  ]},
   {date:"Lun · 10 nov 2025",city:"París",state:"Pendiente",items:[
-    {title:"Arco del Triunfo + Campos Elíseos",when:"Mañana",where:"Charles de Gaulle – Étoile",type:"Paseo",state:"Info",startISO:"2025-11-10T10:00:00",endISO:"2025-11-10T12:00:00",tz:"Europe/Paris",details:"Subida al mirador opcional.",links:[{label:"Entradas",url:"https://www.paris-arc-de-triomphe.fr/"}]},
-    {title:"Torre Eiffel (cima por ascensor)",when:"Ideal 15:30–16:00",where:"Champ de Mars",type:"Monumento",state:"Pendiente",startISO:"2025-11-10T15:30:00",endISO:"2025-11-10T17:30:00",tz:"Europe/Paris",details:"Compra pendiente (web oficial). Atardecer + encendido.",links:[{label:"Comprar (oficial)",url:"https://www.toureiffel.paris/"}]}
+    {title:"Arco del Triunfo y Campos Elíseos",when:"09:30–11:30",where:"Charles de Gaulle – Étoile",type:"Paseo",state:"Info",startISO:"2025-11-10T09:30:00",endISO:"2025-11-10T11:30:00",tz:"Europe/Paris"},
+    {title:"Torre Eiffel (cima por ascensor)",when:"13:00–15:00",where:"Champ de Mars",type:"Monumento",state:"Pendiente",startISO:"2025-11-10T13:00:00",endISO:"2025-11-10T15:00:00",tz:"Europe/Paris",details:"Atardecer + encendido."},
+    {title:"Plaza Trocadéro (mirador)",when:"16:00–17:00",where:"Trocadéro",type:"Paseo",state:"Info",startISO:"2025-11-10T16:00:00",endISO:"2025-11-10T17:00:00",tz:"Europe/Paris"},
+    {title:"Royal Souvenirs",when:"18:00–19:30",where:"5 Rue Lagrange",type:"Info",state:"Info",startISO:"2025-11-10T18:00:00",endISO:"2025-11-10T19:30:00",tz:"Europe/Paris",details:"Souvenirs originales."},
+    {title:"Cena opcional — La Petite Hostellerie",when:"Noche",where:"35 Rue de la Harpe (Barrio Latino)",type:"Cultura",state:"Info",startISO:"2025-11-10T20:00:00",endISO:"2025-11-10T21:30:00",tz:"Europe/Paris"}
   ]},
-  {date:"Mar · 11 nov 2025",city:"Versalles",state:"Confirmado",items:[{title:"Palacio de Versalles (Pasaporte)",when:"09:30 (día completo)",where:"Château de Versailles",type:"Museo",state:"Confirmado",startISO:"2025-11-11T09:30:00",endISO:"2025-11-11T16:30:00",tz:"Europe/Paris",details:"Palacio → Jardines → Grand/Petit Trianon → Aldea de la Reina.",links:[{label:"Entradas",url:"https://billetterie.chateauversailles.fr/"}]}]},
+  {date:"Mar · 11 nov 2025",city:"Versalles",state:"Confirmado",items:[
+    {title:"Palacio y jardines de Versalles",when:"09:30–16:30",where:"Château de Versailles",type:"Museo",state:"Confirmado",startISO:"2025-11-11T09:30:00",endISO:"2025-11-11T16:30:00",tz:"Europe/Paris",details:"Entrada confirmada."}
+  ]},
   {date:"Mié · 12 nov 2025",city:"París",state:"Confirmado",items:[
-    {title:"Museo del Louvre (entrada confirmada)",when:"11:30 → 14:30",where:"Pirámide del Louvre",type:"Museo",state:"Confirmado",startISO:"2025-11-12T11:30:00",endISO:"2025-11-12T14:30:00",tz:"Europe/Paris",details:"Ruta: Mona Lisa · Venus · Samotracia.",links:[{label:"Tus entradas",url:"https://ticket.louvre.fr/en"}]},
-    {title:"Île de la Cité (Notre-Dame) + Sainte-Chapelle",when:"Tarde",where:"Cité",type:"Paseo",state:"Info",startISO:"2025-11-12T15:30:00",endISO:"2025-11-12T17:30:00",tz:"Europe/Paris",details:"Exterior de Notre-Dame, capilla gótica opcional.",links:[{label:"Sainte-Chapelle",url:"https://www.sainte-chapelle.fr/"}]},
-    {title:"Montmartre + Sacré-Cœur",when:"Atardecer / noche",where:"Montmartre",type:"Paseo",state:"Info",startISO:"2025-11-12T18:30:00",endISO:"2025-11-12T20:30:00",tz:"Europe/Paris",details:"Mirador, Place du Tertre, fotos nocturnas.",links:[{label:"Mapa",url:"https://maps.google.com/?q=Montmartre"}]}
+    {title:"Museo del Louvre",when:"11:30–14:30",where:"Pirámide del Louvre",type:"Museo",state:"Confirmado",startISO:"2025-11-12T11:30:00",endISO:"2025-11-12T14:30:00",tz:"Europe/Paris",details:"Entrada confirmada."},
+    {title:"Île de la Cité (Notre-Dame / Sainte-Chapelle)",when:"15:00–16:00",where:"Cité",type:"Paseo",state:"Info",startISO:"2025-11-12T15:00:00",endISO:"2025-11-12T16:00:00",tz:"Europe/Paris"},
+    {title:"Terraza Galeries Lafayette",when:"16:30–17:30",where:"40 Bd Haussmann",type:"Paseo",state:"Info",startISO:"2025-11-12T16:30:00",endISO:"2025-11-12T17:30:00",tz:"Europe/Paris"},
+    {title:"Montmartre + Sacré-Cœur",when:"18:30–20:00",where:"Montmartre",type:"Paseo",state:"Info",startISO:"2025-11-12T18:30:00",endISO:"2025-11-12T20:00:00",tz:"Europe/Paris"}
   ]},
-  {date:"Jue · 13 nov 2025",city:"París",state:"Confirmado",items:[{title:"Disneyland París (entrada confirmada)",when:"8:30 (día completo)",where:"Marne-la-Vallée — Chessy",type:"Parque",state:"Confirmado",startISO:"2025-11-13T08:30:00",endISO:"2025-11-13T20:30:00",tz:"Europe/Paris",details:"Salida 6:45 (RER A ~1h15). Rope drop + show nocturno.",links:[{label:"Cómo llegar",url:"https://maps.google.com/?q=Marne-la-Vall%C3%A9e+Chessy"}]}]},
+  {date:"Jue · 13 nov 2025",city:"París",state:"Confirmado",items:[
+    {title:"Disneyland Paris",when:"08:30–20:00",where:"Marne-la-Vallée — Chessy",type:"Parque",state:"Confirmado",startISO:"2025-11-13T08:30:00",endISO:"2025-11-13T20:00:00",tz:"Europe/Paris",details:"Salida 06:45 con RER A (~1h 15). Entrada confirmada."}
+  ]},
   {date:"Vie · 14 nov 2025",city:"París",state:"Pendiente",items:[
-    {title:"Le Marais + Place des Vosges",when:"09:00 → 11:00",where:"Le Marais",type:"Paseo",state:"Info",startISO:"2025-11-14T09:00:00",endISO:"2025-11-14T11:00:00",tz:"Europe/Paris"},
-    {title:"Museo de Orsay (entrada confirmada)",when:"11:30 → 14:30",where:"Musée d'Orsay",type:"Museo",state:"Confirmado",startISO:"2025-11-14T11:30:00",endISO:"2025-11-14T14:30:00",tz:"Europe/Paris"},
-    {title:"Galeries Lafayette (mirador)",when:"16:00 – 17:30",where:"Boulevard Haussmann",type:"Paseo",state:"Info",startISO:"2025-11-14T16:00:00",endISO:"2025-11-14T17:30:00",tz:"Europe/Paris"},
-    {title:"Crucero por el Sena con cena",when:"19:30–21:00 (recomendado)",where:"Bateaux Mouches / Parisiens",type:"Crucero",state:"Pendiente",startISO:"2025-11-14T19:30:00",endISO:"2025-11-14T21:00:00",tz:"Europe/Paris"}
+    {title:"Le Marais + Place des Vosges",when:"09:00–11:00",where:"Le Marais",type:"Paseo",state:"Info",startISO:"2025-11-14T09:00:00",endISO:"2025-11-14T11:00:00",tz:"Europe/Paris"},
+    {title:"Museo de Orsay",when:"11:30–14:30",where:"Musée d'Orsay",type:"Museo",state:"Confirmado",startISO:"2025-11-14T11:30:00",endISO:"2025-11-14T14:30:00",tz:"Europe/Paris",details:"Entrada confirmada."},
+    {title:"Crucero Sena con cena",when:"19:30–21:00",where:"Bateaux (zona Pont d'Alma)",type:"Crucero",state:"Pendiente",startISO:"2025-11-14T19:30:00",endISO:"2025-11-14T21:00:00",tz:"Europe/Paris"}
   ]},
-  {date:"Sáb · 15 nov 2025",city:"Traslado",state:"Confirmado",items:[{title:"Vuelo París (ORY) → Madrid",when:"17:15 → 19:15 (2h)",where:"ORY → MAD",type:"Vuelo",state:"Confirmado",startISO:"2025-11-15T17:15:00",endISO:"2025-11-15T19:15:00",tz:"Europe/Madrid"}]},
-  {date:"Dom · 16 nov 2025",city:"Madrid",state:"Info",items:[{title:"Madrid libre + Museo (opcional)",when:"Día",where:"Prado o Reina Sofía",type:"Cultura",state:"Info",startISO:"2025-11-16T11:00:00",endISO:"2025-11-16T14:00:00",tz:"Europe/Madrid"}]},
-  {date:"Lun · 17 nov 2025",city:"Vuelo",state:"Confirmado",items:[{title:"Vuelo Madrid → Lima",when:"00:45 (noche del 16)",where:"MAD → LIM",type:"Vuelo",state:"Confirmado",startISO:"2025-11-17T00:45:00",endISO:"2025-11-17T12:45:00",tz:"America/Lima"}]}
+  {date:"Sáb · 15 nov 2025",city:"Traslado",state:"Confirmado",items:[
+    {title:"Vuelo París (ORY) → Madrid",when:"17:15–19:15",where:"ORY → MAD",type:"Vuelo",state:"Confirmado",startISO:"2025-11-15T17:15:00",endISO:"2025-11-15T19:15:00",tz:"Europe/Madrid",details:"Noche libre: paseo/tapas por Gran Vía."}
+  ]},
+  {date:"Dom · 16 nov 2025",city:"Madrid",state:"Info",items:[
+    {title:"Excursión a Toledo (AVE ida y vuelta)",when:"07:30–13:10",where:"Atocha ↔ Toledo",type:"Cultura",state:"Info",startISO:"2025-11-16T07:30:00",endISO:"2025-11-16T13:10:00",tz:"Europe/Madrid"},
+    {title:"Compras Gran Vía",when:"15:00–17:00",where:"Primark Gran Vía 32 y tiendas cercanas",type:"Paseo",state:"Info",startISO:"2025-11-16T15:00:00",endISO:"2025-11-16T17:00:00",tz:"Europe/Madrid"},
+    {title:"Cena recomendada",when:"Noche",where:"La Petisquería / El Duero / Sierra Bar",type:"Cultura",state:"Info",startISO:"2025-11-16T20:00:00",endISO:"2025-11-16T21:30:00",tz:"Europe/Madrid"}
+  ]},
+  {date:"Lun · 17 nov 2025",city:"Vuelo",state:"Confirmado",items:[
+    {title:"Vuelo Madrid → Lima",when:"00:45",where:"MAD → LIM",type:"Vuelo",state:"Confirmado",startISO:"2025-11-17T00:45:00",endISO:"2025-11-17T12:45:00",tz:"America/Lima",details:"Fin del viaje."}
+  ]}
 ];
 
 /* ===== Utils ===== */
@@ -446,7 +635,6 @@ function toGoogleCalendarURL({title,startISO,endISO,tz,where,details}){
   const p=new URLSearchParams({action:"TEMPLATE",text:title,dates:fmt(s)+"/"+fmt(e),details:details||"",location:where||"",ctz:tz||"Europe/Paris"});
   return "https://calendar.google.com/calendar/render?"+p.toString();
 }
-const appleMapsURL=q=>"https://maps.apple.com/?q="+encodeURIComponent(q||"Paris");
 const googleMapsURL=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q||"Paris");
 function el(tag,attrs={},kids=[]){const n=document.createElement(tag);
   Object.entries(attrs).forEach(([k,v])=>{if(k==="class")n.className=v;else if(k==="text")n.textContent=v;else if(k==="html")n.innerHTML=v;else n.setAttribute(k,v);});
@@ -472,22 +660,29 @@ function renderDays(filter="all"){
       const row1=el("div",{class:"ev__row"},[
         el("h4",{},[el("span",{class:"icon"},[el("span",{class:"ico",text:icon})]),document.createTextNode(ev.title)]),
         el("span",{class:"pill "+(ev.state==="Confirmado"?"ok":ev.state==="Pendiente"?"pend":ev.type==="Vuelo"?"fly":""),text:(ev.state==="Confirmado"?"Confirmado":ev.state==="Pendiente"?"Pendiente":ev.type)}),
-        el("span",{class:"pill when",text:"🕒 "+ev.when}),
-        el("span",{class:"pill where",text:"📍 "+ev.where})
+        el("span",{class:"pill when",text:"🕒 "+(fmtTime(ev)||"≈ 10:00")}),
+        el("span",{class:"pill where",text:"📍 "+(ev.where||"")})
       ]);
       const row2=el("div",{class:"ev__row"},[
         el("div",{class:"muted",text:ev.details||""}),
         el("div",{class:"act"},[
           ev.startISO?el("a",{href:toGoogleCalendarURL(ev),target:"_blank",class:"btn-mini",text:"➕ Google Cal"}):null,
-          el("a",{href:googleMapsURL(ev.where),target:"_blank",class:"btn-mini mini-map",text:"🗺️ GMaps"}),
-          el("a",{href:appleMapsURL(ev.where),target:"_blank",class:"btn-mini mini-map",text:"🍎 Maps"})
+          el("a",{href:googleMapsURL(ev.where),target:"_blank",class:"btn-mini mini-map",text:"🗺️ GMaps"})
         ])
       ]);
       evBox.appendChild(el("article",{class:"ev","data-type":ev.type,"data-state":ev.state},[row1,row2]));
     });
     dayCard.append(hdr,evBox); daysBox.appendChild(dayCard);
   });
-  revealObserve();
+}
+function fmtTime(ev){
+  if(ev.startISO){ const d=new Date(ev.startISO); return pad(d.getHours())+":"+pad(d.getMinutes()); }
+  const m=String(ev.when||"").match(/(\d{1,2}:\d{2})/); if(m) return m[1];
+  const t=String(ev.when||"").toLowerCase();
+  if(t.includes("mañana")) return "≈ 10:00";
+  if(t.includes("tarde")) return "≈ 16:00";
+  if(t.includes("noche")) return "≈ 20:00";
+  return null;
 }
 
 /* Filtros Itinerario */
@@ -504,11 +699,11 @@ if(filters){
 
 /* Notas & Checklist */
 const CHECKS=[
-  {id:"eiffel",label:"Comprar Torre Eiffel (10 nov · 15:30–16:00)",url:"https://www.toureiffel.paris/"},
+  {id:"eiffel",label:"Comprar Torre Eiffel (10 nov · 13:00)",url:"https://www.toureiffel.paris/"},
   {id:"sena",label:"Reservar Crucero Sena con cena (14 nov · 19:30)",url:"https://www.bateaux-mouches.fr/es/reservas"},
-  {id:"metro",label:"Cargar Navigo/metro (París)",url:""},
-  {id:"euros",label:"Cambiar euros (efectivo diario)",url:""},
-  {id:"docs",label:"Guardar PDFs/QRs de entradas en el móvil",url:""}
+  {id:"metro",label:"Cargar Navigo/metro (París)"},
+  {id:"euros",label:"Cambiar euros (efectivo diario)"},
+  {id:"docs",label:"Guardar PDFs/QRs de entradas en el móvil"}
 ];
 const notes=document.getElementById('notes'); const saveNotes=document.getElementById('saveNotes'); const checklist=document.getElementById('checklist');
 if(notes){ notes.value=localStorage.getItem('trip.notes')||""; }
@@ -526,24 +721,18 @@ function renderChecklist(){
   });
 }
 
-/* Aparición */
-function revealObserve(){
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}}),{threshold:.15});
-  document.querySelectorAll('.reveal,.day').forEach(n=>io.observe(n));
-}
-
 /* ======== RECORRIDO (acordeón de eventos) ======== */
 const rBox=document.getElementById('r-days');
 function renderRecorrido(){
   rBox.innerHTML="";
-  DAYS.forEach((day,idx)=>{
+  DAYS.forEach((day)=>{
     const items=(day.items||[]).slice().sort((a,b)=> new Date(a.startISO||0)-new Date(b.startISO||0));
-    const cont=el("section",{class:"r-day"+(idx===0?" open":""), "data-city":day.city});
+    const cont=el("section",{class:"r-day", "data-city":day.city});
     const vline=el("div",{class:"r-day-line"}); cont.appendChild(vline);
 
     const hdr=el("div",{class:"r-hdr"},[
       el("div",{class:"r-date",html:`${day.date}<span class="r-meta">${items.length?items.length+" evento(s)":"Sin actividades"}</span>`}),
-      el("div",{class:"r-center"},[el("div",{class:"r-dot",html:NODE_SVG.Vuelo})]),
+      el("div",{class:"r-center"},[el("div",{class:"r-dot",text:"•"})]),
       el("div",{},[el("span",{class:"r-city",text:day.city}),el("span",{class:"r-chev",text:"  ▾"})])
     ]);
     cont.appendChild(hdr);
@@ -562,19 +751,20 @@ function renderRecorrido(){
           el("div",{class:"r-desc",text:"No hay eventos para este día."})
         ])
       ]);
-      anchors.push({el:row.children[1],green:false,type:"Info"});
+      anchors.push({el:row.children[1],green:false,txt:"—"});
       events.appendChild(row);
     }else{
       items.forEach(ev=>{
+        const tt=fmtTime(ev)||"≈ 10:00";
         const row=el("div",{class:"r-row"},[
-          el("div",{class:"r-time",text:(String(ev.when).match(/(\d{1,2}:\d{2})/)||["","—"])[1]}),
+          el("div",{class:"r-time",text:tt}),
           el("div",{class:"r-anchor"}),
           el("div",{},[
             el("div",{class:"r-title",html: `${ev.title}${ev.state?` <span class="r-chip">${ev.state}</span>`:""}`}),
             el("div",{class:"r-desc",text: ev.where?`📍 ${ev.where}`:""})
           ])
         ]);
-        anchors.push({el:row.children[1],green:isGreen(ev.type),type:ev.type});
+        anchors.push({el:row.children[1],green:(ev.type==="Vuelo"),txt:tt});
         events.appendChild(row);
       });
     }
@@ -584,72 +774,48 @@ function renderRecorrido(){
     function toggle(){
       cont.classList.toggle("open");
       if(cont.classList.contains("open")) requestAnimationFrame(()=>layoutRail(events,rail,anchors));
-      else rail.innerHTML="";
+      else { rail.innerHTML=""; }
     }
     hdr.addEventListener("click",toggle);
     rBox.appendChild(cont);
-
-    if(idx===0) requestAnimationFrame(()=>layoutRail(events,rail,anchors));
   });
 }
 function layoutRail(container,rail,anchors){
   rail.innerHTML="";
   const crect=container.getBoundingClientRect();
-  const pts=anchors.map(a=>{const r=a.el.getBoundingClientRect();return{y:r.top-crect.top,green:a.green,type:a.type};});
+  const pts=anchors.map(a=>{const r=a.el.getBoundingClientRect();return{y:r.top-crect.top,green:a.green,txt:a.txt};});
   if(!pts.length) return;
-  if(pts.length===1){ addNode(rail,pts[0].y,pts[0].green,pts[0].type); addSeg(rail,Math.max(pts[0].y-18,0),36,pts[0].green); return; }
+  // First segment from top to first node
+  const makeLabel=(y,txt)=>{
+    const lab=document.createElement("div"); lab.className="r-label"; lab.style.top=`${y}px`; lab.textContent=txt; rail.appendChild(lab);
+  };
+  // Draw nodes and labels, and segments between
+  if(pts.length===1){
+    addNode(rail,pts[0].y,pts[0].green); makeLabel(pts[0].y, pts[0].txt); addSeg(rail,Math.max(pts[0].y-18,0),36,pts[0].green); return;
+  }
   addSeg(rail,0,Math.max(pts[0].y,0),pts[0].green);
   for(let i=0;i<pts.length;i++){
-    addNode(rail,pts[i].y,pts[i].green,pts[i].type);
+    addNode(rail,pts[i].y,pts[i].green);
+    makeLabel(pts[i].y, pts[i].txt);
     const next=pts[i+1]; if(next){ addSeg(rail,pts[i].y,next.y-pts[i].y,pts[i].green); }
   }
   const last=pts[pts.length-1]; addSeg(rail,last.y,Math.max(container.offsetHeight-last.y,12),last.green);
 }
 function addSeg(rail,top,height,green){
   const seg=document.createElement("div");
-  seg.className="r-seg "+(green?"r-seg--green":"r-seg--blue");
+  seg.className="r-seg "+(green?"r-seg--green":"");
   seg.style.top=`${top}px`; seg.style.height=`${height}px`;
   rail.appendChild(seg);
 }
-function addNode(rail,centerY,green,type){
+function addNode(rail,centerY,green){
   const n=document.createElement("div");
   n.className="r-node"+(green?" r-node--green":"");
   n.style.top=`${centerY-11}px`;
-  n.innerHTML=NODE_SVG[type]||NODE_SVG.Info;
+  n.textContent="•";
   rail.appendChild(n);
 }
 
-/* ======== CALENDARIO ======== */
-function renderCalendar(year,monthIdx){
-  const head=document.getElementById('cal-head');
-  const grid=document.getElementById('cal-grid'); if(!head||!grid) return;
-  const labels=['L','M','X','J','V','S','D']; head.innerHTML=''; labels.forEach(l=>head.appendChild(el('div',{text:l})));
-  const mapEvents=new Map();
-  DAYS.forEach(d=>d.items.forEach(i=>{
-    const dd=new Date(i.startISO||Date.now());
-    const y=dd.getFullYear(), m=dd.getMonth(), day=dd.getDate();
-    const key=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-    if(!mapEvents.has(key)) mapEvents.set(key,[]); mapEvents.get(key).push({title:i.title,state:i.state,type:i.type});
-  }));
-  const first=new Date(year,monthIdx,1); const offset=(first.getDay()+6)%7; const daysInMonth=new Date(year,monthIdx+1,0).getDate();
-  grid.innerHTML=''; for(let i=0;i<offset;i++) grid.appendChild(el('div',{class:'cal-cell'}));
-  for(let d=1; d<=daysInMonth; d++){
-    const key=`${year}-${String(monthIdx+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const evs=mapEvents.get(key)||[];
-    const cell=el('div',{class:'cal-cell'},[
-      el('div',{class:'cal-day',text:d}),
-      el('div',{class:'cal-events'}, evs.slice(0,3).map(ev=>{
-        const st=ev.state==="Confirmado"?'ok':(ev.state==="Pendiente"?'pend':(ev.type==="Vuelo"?'fly':'')); 
-        return el('div',{class:`evt ${st}`, title:ev.title, text:(ICONS[ev.type]||'•')+' '+ev.title});
-      }))
-    ]);
-    grid.appendChild(cell);
-  }
-}
-
 /* ======== RUTA (MAPA + filtro) ======== */
-
-/* Puntos clave */
 const P={
   LIM:[-12.0219,-77.1143],
   MAD_BAR:[40.4893,-3.5676],
@@ -662,40 +828,36 @@ const P={
   HOME_SGL:[48.898,2.093],
   ARC:[48.8738,2.2950],
   EIFFEL:[48.8584,2.2945],
+  TROC:[48.8625,2.2871],
   VERS:[48.8049,2.1204],
   LOUVRE:[48.8606,2.3376],
-  SCHAPELLE:[48.8554,2.3450],
   MONTM:[48.8867,2.3431],
   DLP:[48.8708,2.7817],
   MARAIS:[48.8575,2.3622],
   ORSAY:[48.86,2.3266],
-  LAFAY:[48.8738,2.3326],
   CRUISE:[48.8630,2.3115],
-  PRADO:[40.4138,-3.6921],
-  REINA:[40.4086,-3.6946]
+  TOLEDO:[39.8628,-4.0273],
+  ESCORIAL:[40.5909,-4.1470]
 };
-/* Rutas por día */
 const ROUTES=[
-  {id:'2025-11-06', icon:'🛫', label:'Jue · 6 nov · Llegada (LIM)', points:[{c:P.LIM, t:'Jorge Chávez (LIM)'}]},
-  {id:'2025-11-07', icon:'🏙️', label:'Vie · 7 nov · Barajas → Centro', points:[{c:P.MAD_BAR, t:'MAD Barajas'},{c:P.MAD_CEN, t:'Centro Madrid'}]},
-  {id:'2025-11-08', icon:'⚽', label:'Sáb · 8 nov · Madrid', points:[{c:P.MAD_CEN,t:'Centro'},{c:P.BERN,t:'Santiago Bernabéu'},{c:P.PLAZA_MAYOR,t:'Plaza Mayor · Sol · San Miguel'},{c:P.MAD_CEN,t:'Centro'}]},
-  {id:'2025-11-09', icon:'✈️', label:'Dom · 9 nov · Madrid → París', points:[{c:P.MAD_CEN,t:'Centro Madrid'},{c:P.MAD_BAR,t:'MAD Barajas'},{c:P.ORY,t:'ORY París'},{c:P.HOME_SGL,t:'15 Rue de la Vieille Butte'}]},
-  {id:'2025-11-10', icon:'🗼', label:'Lun · 10 nov · París (Arc + Eiffel)', points:[{c:P.HOME_SGL,t:'Hospedaje'},{c:P.ARC,t:'Arco del Triunfo'},{c:P.EIFFEL,t:'Torre Eiffel'},{c:P.HOME_SGL,t:'Hospedaje'}]},
+  {id:'2025-11-06', icon:'🛫', label:'Jue · 6 nov · Lima → Madrid', points:[{c:P.LIM, t:'LIM'}]},
+  {id:'2025-11-07', icon:'🏙️', label:'Vie · 7 nov · Llegada', points:[{c:P.MAD_BAR, t:'MAD Barajas'},{c:P.MAD_CEN, t:'Centro Madrid'}]},
+  {id:'2025-11-08', icon:'⚽', label:'Sáb · 8 nov · Madrid', points:[{c:P.MAD_CEN,t:'Centro'},{c:P.BERN,t:'Bernabéu'},{c:P.PLAZA_MAYOR,t:'Plaza Mayor / Sol / San Miguel'},{c:P.MAD_CEN,t:'Centro'}]},
+  {id:'2025-11-09', icon:'✈️', label:'Dom · 9 nov · Madrid → París', points:[{c:P.MAD_CEN,t:'Centro'},{c:P.ESCORIAL,t:'El Escorial (opcional)'},{c:P.MAD_BAR,t:'MAD'},{c:P.ORY,t:'ORY'},{c:P.HOME_SGL,t:'Saint-Germain-en-Laye'}]},
+  {id:'2025-11-10', icon:'🗼', label:'Lun · 10 nov · París clásico', points:[{c:P.HOME_SGL,t:'Hospedaje'},{c:P.ARC,t:'Arco del Triunfo'},{c:P.EIFFEL,t:'Torre Eiffel'},{c:P.TROC,t:'Trocadéro'},{c:P.HOME_SGL,t:'Hospedaje'}]},
   {id:'2025-11-11', icon:'👑', label:'Mar · 11 nov · Versalles', points:[{c:P.HOME_SGL,t:'Hospedaje'},{c:P.VERS,t:'Versalles'},{c:P.HOME_SGL,t:'Hospedaje'}]},
-  {id:'2025-11-12', icon:'🖼️', label:'Mié · 12 nov · París clásico', points:[{c:P.HOME_SGL,t:'Hospedaje'},{c:P.LOUVRE,t:'Louvre'},{c:P.SCHAPELLE,t:'Sainte-Chapelle / Île de la Cité'},{c:P.MONTM,t:'Montmartre'},{c:P.HOME_SGL,t:'Hospedaje'}]},
+  {id:'2025-11-12', icon:'🖼️', label:'Mié · 12 nov · París cultural', points:[{c:P.HOME_SGL,t:'Hospedaje'},{c:P.LOUVRE,t:'Louvre'},{c:P.MONTM,t:'Montmartre'},{c:P.HOME_SGL,t:'Hospedaje'}]},
   {id:'2025-11-13', icon:'🎢', label:'Jue · 13 nov · Disneyland', points:[{c:P.HOME_SGL,t:'Hospedaje'},{c:P.DLP,t:'Disneyland Paris'},{c:P.HOME_SGL,t:'Hospedaje'}]},
-  {id:'2025-11-14', icon:'🚤', label:'Vie · 14 nov · Marais · Orsay · Sena', points:[{c:P.HOME_SGL,t:'Hospedaje'},{c:P.MARAIS,t:'Le Marais'},{c:P.ORSAY,t:'Musée d\'Orsay'},{c:P.LAFAY,t:'Galeries Lafayette'},{c:P.CRUISE,t:'Crucero Sena'},{c:P.HOME_SGL,t:'Hospedaje'}]},
+  {id:'2025-11-14', icon:'🚤', label:'Vie · 14 nov · Marais · Orsay · Sena', points:[{c:P.HOME_SGL,t:'Hospedaje'},{c:P.MARAIS,t:'Le Marais'},{c:P.ORSAY,t:'Orsay'},{c:P.CRUISE,t:'Crucero Sena'},{c:P.HOME_SGL,t:'Hospedaje'}]},
   {id:'2025-11-15', icon:'✈️', label:'Sáb · 15 nov · París → Madrid', points:[{c:P.HOME_SGL,t:'Hospedaje'},{c:P.ORY,t:'ORY'},{c:P.MAD_BAR,t:'MAD'},{c:P.MAD_CEN,t:'Centro Madrid'}]},
-  {id:'2025-11-16', icon:'🏛️', label:'Dom · 16 nov · Madrid libre', points:[{c:P.MAD_CEN,t:'Centro'},{c:P.PRADO,t:'Museo del Prado'},{c:P.REINA,t:'Reina Sofía'},{c:P.MAD_CEN,t:'Centro'}]},
+  {id:'2025-11-16', icon:'🏰', label:'Dom · 16 nov · Toledo', points:[{c:P.MAD_CEN,t:'Madrid'},{c:P.TOLEDO,t:'Toledo'},{c:P.MAD_CEN,t:'Madrid'}]},
   {id:'2025-11-17', icon:'🛬', label:'Lun · 17 nov · Regreso', points:[{c:P.MAD_CEN,t:'Centro Madrid'},{c:P.MAD_BAR,t:'MAD'},{c:P.LIM,t:'LIM'}]}
 ];
 
-/* Ruta UI */
-let map, routeLayer, markersLayer, locWatchId=null, locMarker=null, locCircle=null, rutaInited=false;
+let map, routeLayer, markersLayer, rutaInited=false;
 const dayList = document.getElementById('dayList');
 const curLabel = document.getElementById('currentLabel');
 const acc = document.getElementById('dayFilter');
-
 const WEEK = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const MONTH = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 function fmtDateES(iso){ const [y,m,d]=iso.split('-').map(Number); const f=new Date(y,m-1,d); return `${WEEK[f.getDay()]} · ${d} ${MONTH[m-1]} ${y}`; }
@@ -713,22 +875,14 @@ function ensureMap(){
   map.setView([44,2],5);
   routeLayer=L.layerGroup().addTo(map);
   markersLayer=L.layerGroup().addTo(map);
-
-  // Controles flotantes
   const ctr=document.createElement('div'); ctr.className='controls';
   ctr.innerHTML=`
-    <button class="btn-float" id="btnLocate" title="Mi ubicación">📍 Mi ubicación</button>
     <button class="btn-float" id="btnFit" title="Centrar ruta">🎯 Centrar</button>
     <button class="btn-float" id="btnReset" title="Reset">↻ Reset</button>
   `;
   document.getElementById('map').appendChild(ctr);
   document.getElementById('btnFit').addEventListener('click',fitRoute);
   document.getElementById('btnReset').addEventListener('click',resetRoute);
-  document.getElementById('btnLocate').addEventListener('click',()=>{
-    if(locWatchId==null) startLocate(); else stopLocate();
-  });
-
-  // Lista de días
   dayList.innerHTML='';
   ROUTES.forEach(d=>{
     const row=document.createElement('button');
@@ -750,19 +904,13 @@ function ensureMap(){
     });
     dayList.appendChild(row);
   });
-
-  // Mostrar primera ruta
-  const d0=ROUTES[0]; drawDay(d0);
-  curLabel.textContent = `${fmtDateES(d0.id)} · ${headline(d0.points)} · ${d0.points.length} paradas`;
-
   rutaInited=true;
 }
-
 function clearLayers(){ routeLayer.clearLayers(); markersLayer.clearLayers(); }
 function drawDay(day){
   clearLayers();
   const latlngs = day.points.map(p=>p.c);
-  const poly = L.polyline(latlngs,{color:'#2f70ff',weight:6,opacity:.9}).addTo(routeLayer);
+  L.polyline(latlngs,{color:'#2f70ff',weight:6,opacity:.9}).addTo(routeLayer);
   day.points.forEach((p,i)=>{
     const div = L.divIcon({className:'num', html:String(i+1), iconSize:[26,26], iconAnchor:[13,13]});
     L.marker(p.c,{icon:div,title:p.t}).addTo(markersLayer).bindPopup(`<b>${i+1}. ${p.t}</b>`);
@@ -779,26 +927,6 @@ function resetRoute(){
   map.setView([44,2],5);
   acc.setAttribute('open','');
 }
-function startLocate(){
-  if(!('geolocation' in navigator)){ alert('Tu navegador no soporta geolocalización.'); return; }
-  document.getElementById('btnLocate').textContent='⏹︎ Detener ubicación';
-  locWatchId = navigator.geolocation.watchPosition(pos=>{
-    const {latitude, longitude, accuracy} = pos.coords;
-    const ll=[latitude,longitude];
-    if(!locMarker){
-      locMarker=L.marker(ll,{icon:L.divIcon({className:'num locMe',html:'•',iconSize:[20,20],iconAnchor:[10,10]})}).addTo(map);
-      locCircle=L.circle(ll,{radius:accuracy,color:'#00c2ff',fillColor:'#00c2ff',fillOpacity:.15,weight:1}).addTo(map);
-    }else{
-      locMarker.setLatLng(ll); locCircle.setLatLng(ll).setRadius(accuracy);
-    }
-  },err=>{ stopLocate(); alert('No se pudo obtener tu ubicación: '+(err.message||'Permiso denegado.')); },{enableHighAccuracy:true, maximumAge:8000, timeout:15000});
-}
-function stopLocate(){
-  if(locWatchId!=null){ navigator.geolocation.clearWatch(locWatchId); locWatchId=null; }
-  if(locMarker){ map.removeLayer(locMarker); locMarker=null; }
-  if(locCircle){ map.removeLayer(locCircle); locCircle=null; }
-  document.getElementById('btnLocate').textContent='📍 Mi ubicación';
-}
 
 /* ===== Pestañas + hero ===== */
 const segmented=document.getElementById('segmented');
@@ -807,8 +935,8 @@ const tabs=Array.from(segmented.querySelectorAll('.seg'));
 const views={
   itinerario:document.getElementById('view-itinerario'),
   recorrido:document.getElementById('view-recorrido'),
-  calendario:document.getElementById('view-calendario'),
-  ruta:document.getElementById('view-ruta')
+  ruta:document.getElementById('view-ruta'),
+  tips:document.getElementById('view-tips')
 };
 const heroHeads=document.getElementById('hero-heads');
 const heroCar=document.getElementById('hero-car');
@@ -820,11 +948,15 @@ function moveThumbTo(el){
   thumb.style.left=(left - wrapLeft + segmented.scrollLeft)+'px';
 }
 function setHeroFor(key){
-  const showHeads=(key==='itinerario');
+  const showHeads=(key==='itinerario' || key==='tips');
   heroHeads.style.display= showHeads ? 'flex' : 'none';
   heroHeads.setAttribute('aria-hidden', String(!showHeads));
   heroCar.style.display  = showHeads ? 'none' : 'grid';
   heroCar.setAttribute('aria-hidden', String(showHeads));
+}
+function revealObserve(){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target);}}),{threshold:.15});
+  document.querySelectorAll('.reveal,.day').forEach(n=>io.observe(n));
 }
 
 tabs.forEach(t=>{
@@ -834,9 +966,9 @@ tabs.forEach(t=>{
     const key=t.dataset.tab;
     Object.entries(views).forEach(([k,elv])=>elv.classList.toggle('active',k===key));
     if(key==='recorrido') renderRecorrido();
-    if(key==='calendario') renderCalendar(2025,10);
     if(key==='ruta') { ensureMap(); setTimeout(()=>map.invalidateSize(), 50); }
-    if(key==='itinerario') { renderDays('all'); revealObserve(); }
+    if(key==='itinerario') { renderDays('all'); }
+    if(key==='tips') { /* static */ }
     setHeroFor(key); moveThumbTo(t);
     window.scrollTo({top:document.querySelector('.views').offsetTop-60,behavior:'smooth'});
   });
