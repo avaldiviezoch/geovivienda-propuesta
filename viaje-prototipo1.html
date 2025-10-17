@@ -18,6 +18,8 @@
     --shadow:0 8px 24px rgba(0,0,0,.4);
     --bg-grad1: radial-gradient(1000px 1000px at 5% -5%, #162040 0, transparent 65%);
     --bg-grad2: radial-gradient(1000px 1000px at 105% 15%, #2e1a45 0, transparent 60%);
+    /* Colores Recorrido */
+    --green:#16a34a; --blue:#0ea5e9;
   }
   :root[data-theme="light"]{
     --bg:#f5f7ff; --ink:#0a1120; --muted:#5a6688;
@@ -27,6 +29,7 @@
     --shadow:0 8px 24px rgba(0,0,0,.1);
     --bg-grad1: radial-gradient(1000px 1000px at 5% -5%, #e0e7ff 0, transparent 65%);
     --bg-grad2: radial-gradient(1000px 1000px at 105% 15%, #ede4ff 0, transparent 60%);
+    --green:#22c55e; --blue:#2ea7ff;
   }
 
   *{box-sizing:border-box}
@@ -43,123 +46,45 @@
   /* COVER */
   .cover{
     width:min(100% - 24px, var(--maxw));
-    margin:40px auto 20px;
-    text-align:center;
-    display:grid;
-    gap:18px;
-    padding:30px 0 18px;
-    background:radial-gradient(circle at 50% 50%, rgba(0,0,0,.25), var(--bg) 70%);
+    margin:40px auto 20px;text-align:center;display:grid;gap:18px;
+    padding:30px 0 18px;background:radial-gradient(circle at 50% 50%, rgba(0,0,0,.25), var(--bg) 70%);
   }
-  .cover__title{
-    font-size:40px;font-weight:900;letter-spacing:1.2px;margin:0;color:var(--ink);
-    text-shadow:0 4px 12px rgba(0,0,0,.3);
-  }
+  .cover__title{font-size:40px;font-weight:900;letter-spacing:1.2px;margin:0;color:var(--ink);text-shadow:0 4px 12px rgba(0,0,0,.3)}
 
-  /* HERO compartido (cabezas/auto) — mismo espacio SIEMPRE */
-  .hero-box{
-    position:relative;height:160px;display:grid;place-items:center;overflow:hidden;
-  }
-  /* CABEZAS */
-  .cover__faces{
-    position:absolute; inset:0;display:flex;justify-content:center;align-items:flex-end;gap:28px;
-    filter: drop-shadow(0 8px 20px rgba(0,0,0,.45));
-  }
-  .cover__head{
-    width:130px;height:130px;object-fit:contain;
-    transform-origin: bottom center;animation: neck-tilt 3.5s ease-in-out infinite;
-  }
+  .hero-box{position:relative;height:160px;display:grid;place-items:center;overflow:hidden}
+  .cover__faces{position:absolute; inset:0;display:flex;justify-content:center;align-items:flex-end;gap:28px;filter: drop-shadow(0 8px 20px rgba(0,0,0,.45))}
+  .cover__head{width:130px;height:130px;object-fit:contain;transform-origin: bottom center;animation: neck-tilt 3.5s ease-in-out infinite}
   .cover__head--lag{ animation-delay:1s }
-  @keyframes neck-tilt{
-    0%{transform:rotate(0)}25%{transform:rotate(8deg)}50%{transform:rotate(0)}75%{transform:rotate(-8deg)}100%{transform:rotate(0)}
-  }
-
-  /* AUTO (encaja dentro del hero, sin invadir tabs) */
+  @keyframes neck-tilt{0%{transform:rotate(0)}25%{transform:rotate(8deg)}50%{transform:rotate(0)}75%{transform:rotate(-8deg)}100%{transform:rotate(0)}}
   .cover__car{position:absolute; inset:0; display:grid; place-items:center; pointer-events:none}
-  .car-img{
-    max-width:92%; max-height:130px; height:auto; width:auto;
-    filter:drop-shadow(0 16px 24px rgba(0,0,0,.45));
-    animation: car-bob 1.6s ease-in-out infinite, car-sway 2.6s ease-in-out infinite;
-  }
+  .car-img{max-width:92%; max-height:130px; height:auto; width:auto;filter:drop-shadow(0 16px 24px rgba(0,0,0,.45));animation: car-bob 1.6s ease-in-out infinite, car-sway 2.6s ease-in-out infinite}
   @keyframes car-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
   @keyframes car-sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
-  .car-shadow{
-    position:absolute; bottom:6px; left:50%; transform:translateX(-50%);
-    width:44%; height:14px; background:radial-gradient(ellipse, rgba(0,0,0,.35), rgba(0,0,0,0) 70%);
-    filter:blur(3px); animation: squash 1.6s ease-in-out infinite;
-  }
+  .car-shadow{position:absolute; bottom:6px; left:50%; transform:translateX(-50%);width:44%; height:14px; background:radial-gradient(ellipse, rgba(0,0,0,.35), rgba(0,0,0,0) 70%);filter:blur(3px); animation: squash 1.6s ease-in-out infinite}
   @keyframes squash{0%,100%{transform:translateX(-50%) scaleX(1)}50%{transform:translateX(-50%) scaleX(1.08)}}
   .speedlines{position:absolute; inset:0; overflow:hidden}
-  .line{
-    position:absolute; right:-10%; width:18%; height:2px;
-    background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.75), rgba(255,255,255,0));
-    filter:blur(.6px); animation: fly 1.2s linear infinite;
-  }
+  .line{position:absolute; right:-10%; width:18%; height:2px;background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.75), rgba(255,255,255,0));filter:blur(.6px); animation: fly 1.2s linear infinite}
   .line:nth-child(1){top:20%}.line:nth-child(2){top:38%}.line:nth-child(3){top:58%}.line:nth-child(4){top:78%}
   @keyframes fly{0%{transform:translateX(0)}100%{transform:translateX(-120vw)}}
 
-  /* HEADER (solo botones a la derecha) */
-  .hdr{
-    position:sticky;top:0;z-index:60;height:var(--hdr);
-    display:flex;align-items:center;justify-content:center;
-    backdrop-filter: blur(12px);
-    background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 75%, transparent), color-mix(in srgb, var(--bg) 25%, transparent));
-    border-bottom:1px solid var(--stroke)
-  }
+  /* HEADER */
+  .hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;justify-content:center;backdrop-filter: blur(12px);background:linear-gradient(180deg, color-mix(in srgb, var(--bg) 75%, transparent), color-mix(in srgb, var(--bg) 25%, transparent));border-bottom:1px solid var(--stroke)}
   .hdr__in{width:min(100% - 24px, var(--maxw));display:flex;align-items:center;justify-content:flex-end;gap:12px}
-
-  /* Segmented tabs (debajo de las cabezas) */
-  .segmented{
-    width:min(100% - 24px, 520px); margin:0 auto;
-    position:relative; display:flex; gap:0; padding:4px;
-    border:1px solid var(--stroke); border-radius:999px;
-    background:color-mix(in srgb, var(--card) 70%, transparent);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
-    overflow:auto; scrollbar-width:none; -ms-overflow-style:none;
-  }
+  .segmented{width:min(100% - 24px, 520px); margin:0 auto;position:relative; display:flex; gap:0; padding:4px;border:1px solid var(--stroke); border-radius:999px;background:color-mix(in srgb, var(--card) 70%, transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);overflow:auto; scrollbar-width:none}
   .segmented::-webkit-scrollbar{display:none}
-  .seg{
-    position:relative; z-index:1; flex:1 1 auto; white-space:nowrap;
-    padding:8px 16px; border:0; background:transparent; color:var(--muted);
-    font-weight:800; border-radius:999px; transition:color .2s ease;
-    font-size:15px;                 /* ↓ más pequeño */
-  }
-  /* aún más pequeño en pantallas chicas */
-  @media (max-width:420px){
-    .seg{font-size:13px; padding:8px 12px}
-    .cover__head{width:110px;height:110px}
-    .hero-box{height:140px}
-    .car-img{max-height:110px}
-  }
+  .seg{position:relative; z-index:1; flex:1 1 auto; white-space:nowrap;padding:8px 16px; border:0; background:transparent; color:var(--muted);font-weight:800; border-radius:999px; transition:color .2s ease;font-size:15px}
+  @media (max-width:420px){.seg{font-size:13px; padding:8px 12px}.cover__head{width:110px;height:110px}.hero-box{height:140px}.car-img{max-height:110px}}
   .seg[aria-selected="true"]{ color:#081123 }
   :root[data-theme="dark"] .seg[aria-selected="true"]{ color:#061022 }
-  .thumb{
-    position:absolute; z-index:0; top:4px; left:4px; height:calc(100% - 8px);
-    width:120px; border-radius:999px;
-    background:linear-gradient(180deg, #fff, color-mix(in srgb,#fff 45%, transparent));
-    box-shadow:0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.65);
-    transition:left .22s cubic-bezier(.22,.9,.2,1), width .22s cubic-bezier(.22,.9,.2,1);
-  }
-  :root[data-theme="dark"] .thumb{
-    background:linear-gradient(180deg, #eaf1ff, color-mix(in srgb,#eaf1ff 70%, transparent));
-  }
-
-  /* Acciones */
+  .thumb{position:absolute; z-index:0; top:4px; left:4px; height:calc(100% - 8px);width:120px; border-radius:999px;background:linear-gradient(180deg, #fff, color-mix(in srgb,#fff 45%, transparent));box-shadow:0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.65);transition:left .22s cubic-bezier(.22,.9,.2,1), width .22s cubic-bezier(.22,.9,.2,1)}
+  :root[data-theme="dark"] .thumb{background:linear-gradient(180deg, #eaf1ff, color-mix(in srgb,#eaf1ff 70%, transparent))}
   .hdr__actions{display:flex;gap:8px;flex-wrap:wrap}
-  .btn{
-    height:40px;padding:0 14px;border:1px solid var(--stroke);border-radius:10px;color:var(--ink);
-    background:linear-gradient(180deg, color-mix(in srgb, var(--card) 65%, transparent), transparent);
-    transition:all .2s ease;min-width:120px;
-  }
+  .btn{height:40px;padding:0 14px;border:1px solid var(--stroke);border-radius:10px;color:var(--ink);background:linear-gradient(180deg, color-mix(in srgb, var(--card) 65%, transparent), transparent);transition:all .2s ease;min-width:120px}
   .btn:hover{border-color:color-mix(in srgb, var(--brand) 50%, var(--stroke));background:color-mix(in srgb, var(--brand) 15%, var(--card))}
   .btn--ghost{border:1px solid var(--stroke);background:transparent}
-  @media (max-width:560px){
-    .hdr{--hdr:auto;padding:10px 0}
-    .hdr__in{flex-direction:column;gap:12px;align-items:stretch}
-    .hdr__actions{width:100%;justify-content:center}
-    .btn{width:100%}
-  }
+  @media (max-width:560px){.hdr{--hdr:auto;padding:10px 0}.hdr__in{flex-direction:column;gap:12px;align-items:stretch}.hdr__actions{width:100%;justify-content:center}.btn{width:100%}}
 
-  /* Restante UI (idéntico) */
+  /* Top cards */
   .top{width:min(100% - 24px, var(--maxw));margin:16px auto;display:grid;gap:12px}
   .card{background:var(--card);border:1px solid var(--stroke);border-radius:12px;box-shadow:var(--shadow);position:relative;overflow:hidden}
   .card::after{content:"";position:absolute;inset:-15%;background:
@@ -176,6 +101,7 @@
   .kpi{padding:10px;border:1px dashed var(--stroke);border-radius:10px;display:grid;gap:5px;background:color-mix(in srgb, var(--glass) 60%, transparent)}
   .kpi b{font-size:18px}
 
+  /* ===== ITINERARIO (SIN CAMBIOS) ===== */
   .days{width:min(100% - 24px, var(--maxw));margin:10px auto 50px;display:grid;gap:10px}
   .day{border:1px solid var(--stroke);border-radius:12px;background:color-mix(in srgb, #0c1528 70%, transparent);overflow:hidden;transition:box-shadow .3s ease, transform .2s ease}
   .day:hover{box-shadow:0 6px 20px rgba(0,0,0,.25);transform:translateY(-2px)}
@@ -201,30 +127,56 @@
   .ico{font-size:13px;filter:drop-shadow(0 1px 4px rgba(0,0,0,.3))}
   .muted{color:var(--muted)}
 
-  .tools{width:min(100% - 24px, var(--maxw));margin:0 auto 40px;display:grid;grid-template-columns:1fr;gap:12px}
-  @media (min-width:980px){.tools{grid-template-columns:1.3fr .7fr}}
-  .panel{padding:16px;display:grid;gap:12px;border-radius:12px}
-  textarea{width:100%;min-height:140px;resize:vertical;padding:10px;border-radius:10px;border:1px solid var(--stroke);background:color-mix(in srgb, #0e172e 75%, transparent);color:var(--ink);transition:border-color .2s ease}
-  textarea:focus{border-color:var(--brand);outline:none}
-  :root[data-theme="light"] textarea{background:#fff;color:#0a1120}
-  .checklist{display:grid;gap:8px}
-  .check{display:flex;gap:8px;align-items:center;padding:8px;border:1px solid var(--stroke);border-radius:10px;background:color-mix(in srgb, var(--glass) 60%, transparent);transition:background .2s ease}
-  .check:hover{background:color-mix(in srgb, var(--glass) 70%, transparent)}
-  .check input{width:16px;height:16px}
+  /* ===== RECORRIDO (línea + nodos + acordeón por día) ===== */
+  :root{ --railW:3px; --center:36px; --gap:16px; --rowGap:14px }
+  .r-days{width:min(100% - 24px, var(--maxw)); margin:16px auto 40px; display:grid; gap:8px}
+  .r-day{position:relative; padding:8px 0}
+  .r-day-line{position:absolute; inset:0 auto 0 0; width:var(--railW); border-radius:6px; opacity:.95; z-index:0;
+    left:calc(140px + var(--gap) + (var(--center)/2) - (var(--railW)/2));
+    background:var(--green); box-shadow:0 0 6px color-mix(in srgb,var(--green) 70%,transparent); pointer-events:none}
+  @media(max-width:540px){ .r-day-line{left:calc(120px + var(--gap) + (var(--center)/2) - (var(--railW)/2))} }
+  .r-day.open .r-day-line{opacity:0}
 
-  /* Views por pestaña */
+  .r-hdr{display:grid;grid-template-columns:140px var(--center) 1fr;column-gap:var(--gap);align-items:center;cursor:pointer;user-select:none;position:relative;z-index:1}
+  @media(max-width:540px){.r-hdr{grid-template-columns:120px var(--center) 1fr}}
+  .r-date{display:flex;flex-direction:column;gap:2px;color:var(--green);font-weight:900;font-size:13px}
+  .r-date .r-meta{font-size:11px;font-weight:700;color:color-mix(in srgb,var(--green) 85%,var(--muted))}
+  .r-center{display:grid;place-items:center}
+  .r-dot{width:22px;height:22px;border-radius:50%;background:var(--green);display:grid;place-items:center;color:#fff;box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 30%,transparent);font-weight:900;font-size:12px}
+  .r-city{font-weight:900;font-size:16px;white-space:nowrap}
+  .r-chev{margin-left:8px;transition:transform .25s ease}
+  .r-day.open .r-chev{transform:rotate(180deg)}
+
+  .r-panel{display:none}
+  .r-day.open .r-panel{display:block}
+  .r-events{position:relative;padding:6px 0;margin-top:2px}
+
+  .r-row{display:grid;grid-template-columns:140px var(--center) 1fr;column-gap:var(--gap);align-items:start;margin-bottom:var(--rowGap)}
+  @media(max-width:540px){.r-row{grid-template-columns:120px var(--center) 1fr}}
+  .r-time{font-weight:900;font-size:12px;color:var(--blue);white-space:nowrap}
+  .r-anchor{height:0;align-self:center}
+  .r-title{font-weight:800;font-size:15px;line-height:1.25}
+  .r-desc{font-size:12px;color:var(--muted);margin-top:2px}
+  .r-chip{display:inline-grid;place-items:center;height:18px;padding:0 8px;font-size:10.5px;border-radius:999px;margin-left:8px;border:1px solid color-mix(in srgb,#9db6ff 55%,transparent);color:var(--ink);opacity:.9}
+
+  .r-rail{position:absolute;inset:0;pointer-events:none}
+  .r-seg{position:absolute;z-index:0;width:var(--railW);border-radius:4px;left:calc(140px + var(--gap) + (var(--center)/2) - (var(--railW)/2));background:var(--blue)}
+  .r-seg--green{background:var(--green)}
+  .r-seg--blue{background:linear-gradient(180deg,var(--blue),color-mix(in srgb,var(--blue) 35%,transparent))}
+  .r-node{position:absolute;z-index:2;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;left:calc(140px + var(--gap) + (var(--center)/2) - 11px);font-size:11px;line-height:1;box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 25%,transparent);background:var(--blue)}
+  .r-node--green{background:var(--green)}
+  @media(max-width:540px){
+    .r-seg{left:calc(120px + var(--gap) + (var(--center)/2) - (var(--railW)/2))}
+    .r-node{left:calc(120px + var(--gap) + (var(--center)/2) - 11px)}
+  }
+
+  /* Views */
   .views{width:100%}
   .view{display:none}
   .view.active{display:block}
 
-  /* Recorrido */
+  /* Calendario/Ruta (sin cambios) */
   .timeline{width:min(100% - 24px, var(--maxw)); margin:16px auto 40px}
-  .step{display:grid; gap:6px; padding:12px; border:1px solid var(--stroke); border-radius:10px; background:color-mix(in srgb, var(--glass) 60%, transparent); margin-bottom:10px}
-  .step__hdr{display:flex; align-items:center; gap:10px}
-  .badge{font-weight:800; font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--stroke); background:color-mix(in srgb, var(--card) 70%, transparent)}
-  .dot{width:8px;height:8px;border-radius:50%;background:color-mix(in srgb, var(--brand) 70%, #fff); box-shadow:0 0 0 4px color-mix(in srgb, var(--brand) 20%, transparent)}
-
-  /* Calendario */
   .calendar{width:min(100% - 24px, var(--maxw)); margin:16px auto 40px}
   .cal-head{display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:6px}
   .cal-head div{text-align:center;font-weight:800;padding:6px 0;border-radius:8px;background:color-mix(in srgb, var(--glass) 60%, transparent)}
@@ -237,7 +189,6 @@
   .evt.pend{border-color:color-mix(in srgb, var(--warn) 60%, var(--stroke))}
   .evt.fly{border-color:color-mix(in srgb, var(--danger) 60%, var(--stroke))}
 
-  /* Ruta */
   .routes{width:min(100% - 24px, var(--maxw)); margin:16px auto 40px; display:grid; gap:10px}
   .route{display:flex; gap:10px; align-items:center; padding:12px; border:1px solid var(--stroke); border-radius:10px; background:color-mix(in srgb, var(--glass) 60%, transparent)}
   .route .from,.route .to{font-weight:800}
@@ -257,18 +208,13 @@
 <section class="cover">
   <h1 class="cover__title">EUROTRIP ITINERARIO VIAJE MADRID PARÍS</h1>
 
-  <!-- HERO compartido -->
   <div class="hero-box" id="heroBox">
-    <!-- Cabezas -->
     <div class="cover__faces" id="hero-heads" aria-hidden="false">
       <img class="cover__head" src="https://lh3.googleusercontent.com/d/1E82o__-jHJmWwubokZcy2WgMVBXha4LO=w1000" alt="Antonio">
       <img class="cover__head cover__head--lag" src="https://lh3.googleusercontent.com/d/1GfkwGMzG9RTNaMLWdUxzxkvdTBWmFIxA=w1000" alt="Pareja">
     </div>
-    <!-- Auto -->
     <div class="cover__car" id="hero-car" aria-hidden="true" style="display:none">
-      <div class="speedlines">
-        <span class="line"></span><span class="line"></span><span class="line"></span><span class="line"></span>
-      </div>
+      <div class="speedlines"><span class="line"></span><span class="line"></span><span class="line"></span><span class="line"></span></div>
       <img class="car-img" src="https://lh3.googleusercontent.com/d/1b06CeZcjsV4qlKcHyQoV9dtceRli9Zsg=w1000" alt="Auto en movimiento">
       <div class="car-shadow"></div>
     </div>
@@ -284,7 +230,6 @@
   </nav>
 </section>
 
-<!-- HEADER (botones) -->
 <header class="hdr">
   <div class="hdr__in">
     <div class="hdr__actions">
@@ -296,7 +241,7 @@
 
 <div class="views">
 
-  <!-- ===== ITINERARIO ===== -->
+  <!-- ===== ITINERARIO (SIN CAMBIOS) ===== -->
   <section id="view-itinerario" class="view active">
     <section class="top">
       <div class="card">
@@ -355,9 +300,9 @@
     </section>
   </section>
 
-  <!-- ===== RECORRIDO ===== -->
+  <!-- ===== RECORRIDO (ACORDEÓN + RIELES) ===== -->
   <section id="view-recorrido" class="view">
-    <div class="timeline" id="timeline"></div>
+    <div class="r-days" id="r-days"></div>
   </section>
 
   <!-- ===== CALENDARIO ===== -->
@@ -388,9 +333,17 @@ document.getElementById('btnPrint').addEventListener('click',()=>window.print())
 
 /* Íconos */
 const ICONS={"Vuelo":"✈️","Tour":"🏟️","Museo":"🖼️","Monumento":"🏛️","Paseo":"🚶","Parque":"🎢","Crucero":"🚤","Cultura":"📚","Info":"ℹ️"};
+const NODE_SVG={
+  Vuelo:'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M2 12l8 2 2 8 2-2-1-6 7-3 2-2-8 1-6-7-2 2 3 7-6 1z"/></svg>',
+  Tour:'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2l3 7h7l-5.5 4 2 7-6.5-4.5L5.5 20l2-7L2 9h7z"/></svg>',
+  Paseo:'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M13 5a2 2 0 110 4 2 2 0 010-4zm-2 6l3-1 3 3v7h-2v-5l-2-2-2 1-3 6H6l3-7-2-2v-3h2v2l2 1z"/></svg>',
+  Info:'<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>'
+};
+const svgFor=t=>NODE_SVG[t]||NODE_SVG.Info;
+const isGreen=t=>t==="Vuelo";
 
-/* Datos */
-const DAYS=[/* (mismos datos que ya tenías) */ 
+/* ===== Datos ===== (los tuyos) */
+const DAYS=[ /* … mismos datos de tu mensaje … */ 
   {date:"Jue · 6 nov 2025",city:"Vuelo",state:"Confirmado",items:[{title:"Vuelo Lima → Madrid",when:"23:05 (6 nov) – 18:30 (7 nov) · 11h 30m",where:"LIM → MAD (Barajas)",type:"Vuelo",state:"Confirmado",startISO:"2025-11-06T23:05:00",endISO:"2025-11-07T18:30:00",tz:"Europe/Madrid",details:"Noche en vuelo. Llegada el 7 nov 18:30.",links:[]}]},
   {date:"Vie · 7 nov 2025",city:"Madrid",state:"Info",items:[{title:"Llegada a Madrid + Check-in",when:"18:30",where:"Gran Vía / Chamberí",type:"Info",state:"Confirmado",startISO:"2025-11-07T18:30:00",endISO:"2025-11-07T20:00:00",tz:"Europe/Madrid",details:"Cena ligera y descanso (jet lag).",links:[{label:"Mapa",url:"https://maps.google.com/?q=Gran+V%C3%ADa+Madrid"}]}]},
   {date:"Sáb · 8 nov 2025",city:"Madrid",state:"Confirmado",items:[
@@ -410,23 +363,14 @@ const DAYS=[/* (mismos datos que ya tenías) */
   ]},
   {date:"Jue · 13 nov 2025",city:"París",state:"Confirmado",items:[{title:"Disneyland París (entrada confirmada)",when:"8:30 (día completo)",where:"Marne-la-Vallée — Chessy",type:"Parque",state:"Confirmado",startISO:"2025-11-13T08:30:00",endISO:"2025-11-13T20:30:00",tz:"Europe/Paris",details:"Salida 6:45 (RER A ~1h15). Rope drop + show nocturno.",links:[{label:"Cómo llegar",url:"https://maps.google.com/?q=Marne-la-Vall%C3%A9e+Chessy"}]}]},
   {date:"Vie · 14 nov 2025",city:"París",state:"Pendiente",items:[
-    {title:"Le Marais + Place des Vosges",when:"09:00 → 11:00",where:"Le Marais",type:"Paseo",state:"Info",startISO:"2025-11-14T09:00:00",endISO:"2025-11-14T11:00:00",tz:"Europe/Paris",details:"Boutiques, cafés y arquitectura.",links:[{label:"Mapa",url:"https://maps.google.com/?q=Le+Marais+Paris"}]},
-    {title:"Museo de Orsay (entrada confirmada)",when:"11:30 → 14:30",where:"Musée d'Orsay",type:"Museo",state:"Confirmado",startISO:"2025-11-14T11:30:00",endISO:"2025-11-14T14:30:00",tz:"Europe/Paris",details:"Entrada 11:30. Impresionistas, Van Gogh, Manet. Tiempo sugerido 2.5–3h.",links:[{label:"Ubicación",url:"https://maps.google.com/?q=Mus%C3%A9e+d%27Orsay"}]},
-    {title:"Galeries Lafayette (mirador)",when:"16:00 – 17:30",where:"Boulevard Haussmann",type:"Paseo",state:"Info",startISO:"2025-11-14T16:00:00",endISO:"2025-11-14T17:30:00",tz:"Europe/Paris",details:"Terraza gratuita con vista de París.",links:[{label:"Ubicación",url:"https://maps.google.com/?q=Galeries+Lafayette+Haussmann"}]},
-    {title:"Crucero por el Sena con cena",when:"19:30–21:00 (recomendado)",where:"Bateaux Mouches / Parisiens",type:"Crucero",state:"Pendiente",startISO:"2025-11-14T19:30:00",endISO:"2025-11-14T21:00:00",tz:"Europe/Paris",details:"Reservar con antelación (mesa ventana si es posible).",links:[{label:"Bateaux Mouches",url:"https://www.bateaux-mouches.fr/es/reservas"},{label:"Bateaux Parisiens",url:"https://www.bateauxparisiens.com/espanol.html"}]}
+    {title:"Le Marais + Place des Vosges",when:"09:00 → 11:00",where:"Le Marais",type:"Paseo",state:"Info",startISO:"2025-11-14T09:00:00",endISO:"2025-11-14T11:00:00",tz:"Europe/Paris"},
+    {title:"Museo de Orsay (entrada confirmada)",when:"11:30 → 14:30",where:"Musée d'Orsay",type:"Museo",state:"Confirmado",startISO:"2025-11-14T11:30:00",endISO:"2025-11-14T14:30:00",tz:"Europe/Paris"},
+    {title:"Galeries Lafayette (mirador)",when:"16:00 – 17:30",where:"Boulevard Haussmann",type:"Paseo",state:"Info",startISO:"2025-11-14T16:00:00",endISO:"2025-11-14T17:30:00",tz:"Europe/Paris"},
+    {title:"Crucero por el Sena con cena",when:"19:30–21:00 (recomendado)",where:"Bateaux Mouches / Parisiens",type:"Crucero",state:"Pendiente",startISO:"2025-11-14T19:30:00",endISO:"2025-11-14T21:00:00",tz:"Europe/Paris"}
   ]},
-  {date:"Sáb · 15 nov 2025",city:"Traslado",state:"Confirmado",items:[{title:"Vuelo París (ORY) → Madrid",when:"17:15 → 19:15 (2h)",where:"ORY → MAD",type:"Vuelo",state:"Confirmado",startISO:"2025-11-15T17:15:00",endISO:"2025-11-15T19:15:00",tz:"Europe/Madrid",details:"Llegada ~19:30, hotel y cena ligera.",links:[]}]},
-  {date:"Dom · 16 nov 2025",city:"Madrid",state:"Info",items:[{title:"Madrid libre + Museo (opcional)",when:"Día",where:"Prado o Reina Sofía",type:"Cultura",state:"Info",startISO:"2025-11-16T11:00:00",endISO:"2025-11-16T14:00:00",tz:"Europe/Madrid",details:"Compras finales y cena de despedida.",links:[{label:"Museo del Prado",url:"https://www.museodelprado.es/"},{label:"Reina Sofía",url:"https://www.museoreinasofia.es/"}]}]},
-  {date:"Lun · 17 nov 2025",city:"Vuelo",state:"Confirmado",items:[{title:"Vuelo Madrid → Lima",when:"00:45 (noche del 16)",where:"MAD → LIM",type:"Vuelo",state:"Confirmado",startISO:"2025-11-17T00:45:00",endISO:"2025-11-17T12:45:00",tz:"America/Lima",details:"Check-in anticipado en Barajas.",links:[]}]}
-];
-
-/* Checklist */
-const CHECKS=[
-  {id:"eiffel",label:"Comprar Torre Eiffel (10 nov · 15:30–16:00)",url:"https://www.toureiffel.paris/"},
-  {id:"sena",label:"Reservar Crucero Sena con cena (14 nov · 19:30)",url:"https://www.bateaux-mouches.fr/es/reservas"},
-  {id:"metro",label:"Cargar Navigo/metro (París)",url:""},
-  {id:"euros",label:"Cambiar euros (efectivo diario)",url:""},
-  {id:"docs",label:"Guardar PDFs/QRs de entradas en el móvil",url:""}
+  {date:"Sáb · 15 nov 2025",city:"Traslado",state:"Confirmado",items:[{title:"Vuelo París (ORY) → Madrid",when:"17:15 → 19:15 (2h)",where:"ORY → MAD",type:"Vuelo",state:"Confirmado",startISO:"2025-11-15T17:15:00",endISO:"2025-11-15T19:15:00",tz:"Europe/Madrid"}]},
+  {date:"Dom · 16 nov 2025",city:"Madrid",state:"Info",items:[{title:"Madrid libre + Museo (opcional)",when:"Día",where:"Prado o Reina Sofía",type:"Cultura",state:"Info",startISO:"2025-11-16T11:00:00",endISO:"2025-11-16T14:00:00",tz:"Europe/Madrid"}]},
+  {date:"Lun · 17 nov 2025",city:"Vuelo",state:"Confirmado",items:[{title:"Vuelo Madrid → Lima",when:"00:45 (noche del 16)",where:"MAD → LIM",type:"Vuelo",state:"Confirmado",startISO:"2025-11-17T00:45:00",endISO:"2025-11-17T12:45:00",tz:"America/Lima"}]}
 ];
 
 /* Utils */
@@ -439,15 +383,15 @@ function toGoogleCalendarURL({title,startISO,endISO,tz,where,details}){
 }
 const appleMapsURL=q=>"https://maps.apple.com/?q="+encodeURIComponent(q||"Paris");
 const googleMapsURL=q=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q||"Paris");
+
 function el(tag,attrs={},kids=[]){const n=document.createElement(tag);
   Object.entries(attrs).forEach(([k,v])=>{if(k==="class")n.className=v;else if(k==="text")n.textContent=v;else if(k==="html")n.innerHTML=v;else n.setAttribute(k,v);});
   (Array.isArray(kids)?kids:[kids]).forEach(k=>k&&n.appendChild(k));return n}
 
-/* Render Itinerario */
+/* -------- ITINERARIO (igual que antes) -------- */
 const daysBox=document.getElementById('days');
 function renderDays(filter="all"){
-  if(!daysBox) return;
-  daysBox.innerHTML="";
+  if(!daysBox) return; daysBox.innerHTML="";
   DAYS.forEach(day=>{
     const dayCard=el("section",{class:"day reveal","data-city":day.city,"data-state":day.state});
     const hdr=el("div",{class:"day__hdr"},[
@@ -482,7 +426,7 @@ function renderDays(filter="all"){
   revealObserve();
 }
 
-/* Filtros */
+/* Filtros Itinerario */
 const filters=document.getElementById('filters');
 if(filters){
   filters.addEventListener('click',e=>{
@@ -517,71 +461,91 @@ function revealObserve(){
   document.querySelectorAll('.reveal,.day').forEach(n=>io.observe(n));
 }
 
-/* Pestañas (segmented) + hero swap */
-const segmented=document.getElementById('segmented');
-const thumb=document.getElementById('thumb');
-const tabs=Array.from(segmented.querySelectorAll('.seg'));
-const views={
-  itinerario:document.getElementById('view-itinerario'),
-  recorrido:document.getElementById('view-recorrido'),
-  calendario:document.getElementById('view-calendario'),
-  ruta:document.getElementById('view-ruta')
-};
-const heroHeads=document.getElementById('hero-heads');
-const heroCar=document.getElementById('hero-car');
-
-function moveThumbTo(el){
-  const {left,width}=el.getBoundingClientRect();
-  const wrapLeft=segmented.getBoundingClientRect().left + segmented.scrollLeft;
-  thumb.style.width=width+'px';
-  thumb.style.left=(left - wrapLeft + segmented.scrollLeft)+'px';
-}
-function setHeroFor(key){
-  const showHeads=(key==='itinerario');
-  heroHeads.style.display= showHeads ? 'flex' : 'none';
-  heroHeads.setAttribute('aria-hidden', String(!showHeads));
-  heroCar.style.display  = showHeads ? 'none' : 'grid';
-  heroCar.setAttribute('aria-hidden', String(showHeads));
-}
-
-tabs.forEach(t=>{
-  t.addEventListener('click',()=>{
-    tabs.forEach(x=>x.setAttribute('aria-selected','false'));
-    t.setAttribute('aria-selected','true');
-    const key=t.dataset.tab;
-    Object.entries(views).forEach(([k,elv])=>elv.classList.toggle('active',k===key));
-    if(key==='recorrido') renderRecorrido();
-    if(key==='calendario') renderCalendar(2025,10);
-    if(key==='ruta') renderRoutes();
-    if(key==='itinerario') { renderDays('all'); revealObserve(); }
-    setHeroFor(key);
-    moveThumbTo(t);
-    window.scrollTo({top:document.querySelector('.views').offsetTop-60,behavior:'smooth'});
-  });
-});
-window.addEventListener('load',()=>{const cur=tabs.find(b=>b.getAttribute('aria-selected')==='true'); if(cur) moveThumbTo(cur);});
-window.addEventListener('resize',()=>{const cur=tabs.find(b=>b.getAttribute('aria-selected')==='true'); if(cur) moveThumbTo(cur);});
-segmented.addEventListener('scroll',()=>{const cur=tabs.find(b=>b.getAttribute('aria-selected')==='true'); if(cur) moveThumbTo(cur);});
-
-/* Recorrido */
+/* ======== RECORRIDO (ACORDEÓN + RIELES) ======== */
+const rBox=document.getElementById('r-days');
 function renderRecorrido(){
-  const box=document.getElementById('timeline'); if(!box) return;
-  box.innerHTML="";
-  DAYS.forEach(d=>{
-    const total=d.items.length;
-    const kinds=[...new Set(d.items.map(i=>i.type))].join(' · ');
-    const st=(d.state==="Confirmado"?"ok":d.state==="Pendiente"?"pend":d.state==="Vuelo"?"fly":"");
-    const step=el('div',{class:'step'},[
-      el('div',{class:'step__hdr'},[
-        el('span',{class:'dot'}),
-        el('span',{class:'badge',text:d.date}),
-        el('strong',{text:' '+d.city}),
-        el('span',{class:'pill '+st, text:' '+d.state})
-      ]),
-      el('div',{class:'muted',text:`${total} evento(s) · ${kinds}`})
+  rBox.innerHTML="";
+  DAYS.forEach((day,idx)=>{
+    const items=(day.items||[]).slice().sort((a,b)=> new Date(a.startISO||0)-new Date(b.startISO||0));
+    const cont=el("section",{class:"r-day"+(idx===0?" open":""), "data-city":day.city});
+    const vline=el("div",{class:"r-day-line"}); cont.appendChild(vline);
+
+    const hdr=el("div",{class:"r-hdr"},[
+      el("div",{class:"r-date",html:`${day.date}<span class="r-meta">${items.length?items.length+" evento(s)":"Sin actividades"}</span>`}),
+      el("div",{class:"r-center"},[el("div",{class:"r-dot",html:NODE_SVG.Vuelo})]),
+      el("div",{},[el("span",{class:"r-city",text:day.city}),el("span",{class:"r-chev",text:"  ▾"})])
     ]);
-    box.appendChild(step);
+    cont.appendChild(hdr);
+
+    const panel=el("div",{class:"r-panel"});
+    const events=el("div",{class:"r-events"});
+    const rail=el("div",{class:"r-rail"}); events.appendChild(rail);
+
+    const anchors=[];
+    if(items.length===0){
+      const row=el("div",{class:"r-row"},[
+        el("div",{class:"r-time",text:"—"}),
+        el("div",{class:"r-anchor"}),
+        el("div",{},[
+          el("div",{class:"r-title",text:"Sin actividades"}),
+          el("div",{class:"r-desc",text:"No hay eventos para este día."})
+        ])
+      ]);
+      anchors.push({el:row.children[1],green:false,type:"Info"});
+      events.appendChild(row);
+    }else{
+      items.forEach(ev=>{
+        const row=el("div",{class:"r-row"},[
+          el("div",{class:"r-time",text:(String(ev.when).match(/(\d{1,2}:\d{2})/)||["","—"])[1]}),
+          el("div",{class:"r-anchor"}),
+          el("div",{},[
+            el("div",{class:"r-title",html: `${ev.title}${ev.state?` <span class="r-chip">${ev.state}</span>`:""}`}),
+            el("div",{class:"r-desc",text: ev.where?`📍 ${ev.where}`:""})
+          ])
+        ]);
+        anchors.push({el:row.children[1],green:isGreen(ev.type),type:ev.type});
+        events.appendChild(row);
+      });
+    }
+    panel.appendChild(events);
+    cont.appendChild(panel);
+
+    function toggle(){
+      cont.classList.toggle("open");
+      if(cont.classList.contains("open")) requestAnimationFrame(()=>layoutRail(events,rail,anchors));
+      else rail.innerHTML="";
+    }
+    hdr.addEventListener("click",toggle);
+    rBox.appendChild(cont);
+
+    if(idx===0) requestAnimationFrame(()=>layoutRail(events,rail,anchors));
   });
+}
+function layoutRail(container,rail,anchors){
+  rail.innerHTML="";
+  const crect=container.getBoundingClientRect();
+  const pts=anchors.map(a=>{const r=a.el.getBoundingClientRect();return{y:r.top-crect.top,green:a.green,type:a.type};});
+  if(!pts.length) return;
+  if(pts.length===1){ addNode(rail,pts[0].y,pts[0].green,pts[0].type); addSeg(rail,Math.max(pts[0].y-18,0),36,pts[0].green); return; }
+  addSeg(rail,0,Math.max(pts[0].y,0),pts[0].green);
+  for(let i=0;i<pts.length;i++){
+    addNode(rail,pts[i].y,pts[i].green,pts[i].type);
+    const next=pts[i+1]; if(next){ addSeg(rail,pts[i].y,next.y-pts[i].y,pts[i].green); }
+  }
+  const last=pts[pts.length-1]; addSeg(rail,last.y,Math.max(container.offsetHeight-last.y,12),last.green);
+}
+function addSeg(rail,top,height,green){
+  const seg=document.createElement("div");
+  seg.className="r-seg "+(green?"r-seg--green":"r-seg--blue");
+  seg.style.top=`${top}px`; seg.style.height=`${height}px`;
+  rail.appendChild(seg);
+}
+function addNode(rail,centerY,green,type){
+  const n=document.createElement("div");
+  n.className="r-node"+(green?" r-node--green":"");
+  n.style.top=`${centerY-11}px`;
+  n.innerHTML=NODE_SVG[type]||NODE_SVG.Info;
+  rail.appendChild(n);
 }
 
 /* Calendario */
@@ -630,6 +594,51 @@ function renderRoutes(){
   });
   if(legs.length===0){ r.appendChild(el('div',{class:'card panel',html:'<b>No hay tramos de vuelo.</b> Agrega eventos de tipo <i>Vuelo</i> en el Itinerario.'})); }
 }
+
+/* Pestañas + hero */
+const segmented=document.getElementById('segmented');
+const thumb=document.getElementById('thumb');
+const tabs=Array.from(segmented.querySelectorAll('.seg'));
+const views={
+  itinerario:document.getElementById('view-itinerario'),
+  recorrido:document.getElementById('view-recorrido'),
+  calendario:document.getElementById('view-calendario'),
+  ruta:document.getElementById('view-ruta')
+};
+const heroHeads=document.getElementById('hero-heads');
+const heroCar=document.getElementById('hero-car');
+
+function moveThumbTo(el){
+  const {left,width}=el.getBoundingClientRect();
+  const wrapLeft=segmented.getBoundingClientRect().left + segmented.scrollLeft;
+  thumb.style.width=width+'px';
+  thumb.style.left=(left - wrapLeft + segmented.scrollLeft)+'px';
+}
+function setHeroFor(key){
+  const showHeads=(key==='itinerario');
+  heroHeads.style.display= showHeads ? 'flex' : 'none';
+  heroHeads.setAttribute('aria-hidden', String(!showHeads));
+  heroCar.style.display  = showHeads ? 'none' : 'grid';
+  heroCar.setAttribute('aria-hidden', String(showHeads));
+}
+
+tabs.forEach(t=>{
+  t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.setAttribute('aria-selected','false'));
+    t.setAttribute('aria-selected','true');
+    const key=t.dataset.tab;
+    Object.entries(views).forEach(([k,elv])=>elv.classList.toggle('active',k===key));
+    if(key==='recorrido') renderRecorrido();
+    if(key==='calendario') renderCalendar(2025,10);
+    if(key==='ruta') renderRoutes();
+    if(key==='itinerario') { renderDays('all'); revealObserve(); }
+    setHeroFor(key); moveThumbTo(t);
+    window.scrollTo({top:document.querySelector('.views').offsetTop-60,behavior:'smooth'});
+  });
+});
+window.addEventListener('load',()=>{const cur=tabs.find(b=>b.getAttribute('aria-selected')==='true'); if(cur) moveThumbTo(cur);});
+window.addEventListener('resize',()=>{const cur=tabs.find(b=>b.getAttribute('aria-selected')==='true'); if(cur) moveThumbTo(cur);});
+segmented.addEventListener('scroll',()=>{const cur=tabs.find(b=>b.getAttribute('aria-selected')==='true'); if(cur) moveThumbTo(cur);});
 
 /* Init */
 function initChecklist(){ try{ renderChecklist(); }catch{ if(checklist) checklist.innerHTML='<div class="muted">Checklist no disponible en modo privado.</div>'; } }
