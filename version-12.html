@@ -12,146 +12,111 @@
       --brand:#c62a4b; --brand-ink:#fff; --glass: color-mix(in srgb, #ffffff 65%, transparent);
       --maxw: 1200px;
       --rojo:#e85564; --rojo2:#ff847c;
-      --card-h:260px; --hdr-h:72px; --gap:24px; --radius:12px;
+      --card-h:260px; --hdr-h:82px; --gap:24px; --radius:12px;
       --elev0:0 4px 8px rgba(0,0,0,.10); --elev1:0 10px 18px rgba(0,0,0,.18);
-      --header-h: 82px;
       --page-bg: #F6E1DE;
+      --pill-h: 170px;
+      --pill-badge: 60px;
+      --pill-badge-offset: -22px;
     }
 
     *{box-sizing:border-box}
     html,body{margin:0;height:100%;scroll-behavior:smooth}
-    html{scroll-padding-top:var(--header-h)}
+    html{scroll-padding-top:var(--hdr-h)}
 
     body{
       font-family:"Nunito Sans",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background:var(--page-bg); color:var(--ink); padding-top:var(--header-h);
+      background:var(--page-bg); color:var(--ink);
     }
 
-    /* ===== HEADER fijo ===== */
+    /* ===== BANNER ===== */
+    .banner{width:100%;margin:0;line-height:0;overflow:hidden;aspect-ratio:1920/464;background:#0000000d}
+    .banner img{width:100%;height:100%;object-fit:cover;display:block}
+    @supports not (aspect-ratio: 1){.banner img{width:100%;height:auto}}
+
+    /* ===== HEADER sticky ===== */
     header.site{
-      position:fixed; inset:0 0 auto 0; z-index:1000; height:var(--header-h);
+      position:sticky; top:0; z-index:1000; height:var(--hdr-h);
       backdrop-filter:saturate(140%) blur(8px);
       background:var(--glass); border-bottom:1px solid var(--stroke);
       box-shadow:0 2px 8px rgba(0,0,0,.05);
       transition:box-shadow .25s ease, background-color .25s ease, border-color .25s ease;
+      touch-action: pan-y;
     }
-    header.site.scrolled{
-      box-shadow:0 8px 24px rgba(0,0,0,.12);
-      background:color-mix(in srgb,#ffffff 78%,transparent);
-      border-color:color-mix(in srgb,var(--stroke) 80%, #000 20%);
-    }
+    header.site.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.12);background:color-mix(in srgb,#ffffff 78%,transparent);border-color:color-mix(in srgb,var(--stroke) 80%, #000 20%)}
+    header.site.fixed{position:fixed;top:0;left:0;right:0;background:color-mix(in srgb,#ffffff 84%,transparent);box-shadow:0 10px 24px rgba(0,0,0,.12);border-color:color-mix(in srgb,var(--stroke) 80%, #000 20%)}
+    body.has-fixed{padding-top:var(--hdr-h)}
 
-    .navwrap{
-      max-width:var(--maxw); margin-inline:auto;
-      padding:clamp(8px,2.4vw,14px) clamp(12px,3.6vw,24px);
-      display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:14px; height:100%;
-    }
-    .logo{display:flex; align-items:center; gap:.6rem; text-decoration:none; color:inherit; transition:transform .3s}
+    .navwrap{max-width:var(--maxw);margin-inline:auto;padding:clamp(8px,2.4vw,14px) clamp(12px,3.6vw,24px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;height:100%}
+    .logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:inherit;transition:transform .3s}
     .logo:hover{transform:scale(1.05)}
     .logo img{height:36px;width:auto;border-radius:10px;border:1px solid var(--stroke);background:#fff;transition:box-shadow .3s}
     .logo:hover img{box-shadow:0 0 12px rgba(198,42,75,.3)}
-    .logo span{font-weight:800}
 
     nav{justify-self:center}
-    nav ul{list-style:none; display:flex; gap:clamp(8px,1.8vw,14px); margin:0; padding:0; flex-wrap:wrap; align-items:center; justify-content:center}
-    nav a{
-      --pad-x:.9rem; --pad-y:.5rem;
-      text-decoration:none; color:inherit; font-weight:800; letter-spacing:.2px; opacity:.95;
-      padding:var(--pad-y) var(--pad-x); border-radius:999px; position:relative; transition:all .22s;
-      outline-offset:3px;
-    }
-    nav a:hover{ background:#fff8; transform:translateY(-1px); box-shadow:0 4px 12px rgba(198,42,75,.16) }
-    nav a:focus-visible{ outline:3px solid color-mix(in srgb, var(--rojo) 35%, #000 0%) }
-    nav a.active{ background:var(--rojo); color:#fff; box-shadow:0 10px 24px rgba(232,85,100,.30) }
-    nav a.active::after{
-      content:""; position:absolute; inset:-4px; border-radius:999px; pointer-events:none;
-      box-shadow:0 0 0 0 rgba(232,85,100,.45); animation:ringPulse 1.4s ease-out forwards;
-    }
-    @keyframes ringPulse{ 0%{box-shadow:0 0 0 0 rgba(232,85,100,.45);opacity:1} 100%{box-shadow:0 0 0 22px rgba(232,85,100,0);opacity:0} }
+    nav ul{list-style:none;display:flex;gap:clamp(8px,1.8vw,14px);margin:0;padding:0;flex-wrap:wrap;align-items:center;justify-content:center}
+    nav a{--pad-x:.9rem;--pad-y:.5rem;text-decoration:none;color:inherit;font-weight:800;letter-spacing:.2px;opacity:.95;padding:var(--pad-y) var(--pad-x);border-radius:999px;position:relative;transition:all .22s;outline-offset:3px}
+    nav a:hover{background:#fff8;transform:translateY(-1px);box-shadow:0 4px 12px rgba(198,42,75,.16)}
+    nav a:focus-visible{outline:3px solid color-mix(in srgb, var(--rojo) 35%, #000 0%)}
+    nav a.active{background:var(--rojo);color:#fff;box-shadow:0 10px 24px rgba(232,85,100,.30)}
+    nav a.active::after{content:"";position:absolute;inset:-4px;border-radius:999px;pointer-events:none;box-shadow:0 0 0 0 rgba(232,85,100,.45);animation:ringPulse 1.4s ease-out forwards}
+    @keyframes ringPulse{0%{box-shadow:0 0 0 0 rgba(232,85,100,.45);opacity:1}100%{box-shadow:0 0 0 22px rgba(232,85,100,0);opacity:0}}
 
-    .btn{
-      display:inline-flex; align-items:center; gap:.5rem; font-weight:700;
-      padding:.6rem 1rem; border-radius:999px; border:1px solid var(--brand);
-      background:var(--brand); color:var(--brand-ink); text-decoration:none;
-      box-shadow:0 8px 20px rgba(198,42,75,.18); transition:all .3s; animation:pulse 2s ease-in-out infinite;
-    }
-    .btn:hover{ transform:scale(1.05); box-shadow:0 10px 24px rgba(198,42,75,.3) }
+    .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:700;padding:.6rem 1rem;border-radius:999px;border:1px solid var(--brand);background:var(--brand);color:var(--brand-ink);text-decoration:none;box-shadow:0 8px 20px rgba(198,42,75,.18);transition:all .3s;animation:pulse 2s ease-in-out infinite}
+    .btn:hover{transform:scale(1.05);box-shadow:0 10px 24px rgba(198,42,75,.3)}
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
 
     /* ===== COVER ===== */
-    .cover{ position:relative; min-height:clamp(580px,90dvh,880px); background:var(--page-bg);
-      overflow:visible; border-bottom:1px solid var(--stroke) }
-    .cover .container{
-      max-width:var(--maxw); margin-inline:auto;
-      padding:clamp(20px,5vw,40px) clamp(12px,3.6vw,24px);
-      display:grid; align-items:center; gap:clamp(16px,4vw,28px);
-      grid-template-columns:1.2fr .9fr;
-    }
-    @media (max-width:980px){ .cover .container{ grid-template-columns:1fr } }
+    .cover{position:relative;min-height:clamp(580px,90dvh,880px);background:var(--page-bg);overflow:visible;border-bottom:1px solid var(--stroke)}
+    .cover .container{max-width:var(--maxw);margin-inline:auto;padding:clamp(20px,5vw,40px) clamp(12px,3.6vw,24px);display:grid;align-items:center;gap:clamp(16px,4vw,28px);grid-template-columns:1.2fr .9fr}
+    @media (max-width:980px){.cover .container{grid-template-columns:1fr}}
 
-    /* Título con espacios (gap) */
-    .title{
-      display:flex; flex-wrap:wrap; gap:.35ch;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      font-size:clamp(28px,5vw,64px); line-height:1.04; margin:.2rem 0 .6rem; font-weight:800;
-      opacity:0; animation:fadeInUp 1s ease forwards;
-    }
-    .title span{ display:inline-block; opacity:0; transform:translateY(20px); animation:letterPop .6s ease forwards; animation-delay:calc(.05s * var(--i)); }
+    .title{display:flex;flex-wrap:wrap;gap:.35ch;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;font-size:clamp(28px,5vw,64px);line-height:1.04;margin:.2rem 0 .6rem;font-weight:800;opacity:0;animation:fadeInUp 1s ease forwards}
+    .title span{display:inline-block;opacity:0;transform:translateY(20px);animation:letterPop .6s ease forwards;animation-delay:calc(.05s * var(--i))}
     @keyframes fadeInUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
     @keyframes letterPop{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
 
-    .subtitle{ color:var(--muted); font-size:clamp(14px,1.3vw,18px); max-width:68ch; opacity:0; animation:fadeInUp 1s ease forwards .5s }
-    .actions{ display:flex; gap:.6rem; flex-wrap:wrap; margin-top:12px }
-    .btn.ghost{ background:#fff; color:var(--ink); border-color:var(--stroke); animation:none }
-    .btn.ghost:hover{ background:color-mix(in srgb,var(--brand) 10%, #fff); transform:scale(1.05) }
-    .art{ position:relative; text-align:center }
-    .art img{ width:100%; max-width:520px; height:auto; display:block; margin:auto; opacity:0; transform:scale(.82) rotate(-5deg); animation:artPop 1.2s ease forwards .6s, floaty 6s ease-in-out infinite 1.8s; position:relative; z-index:1 }
+    .subtitle{color:var(--muted);font-size:clamp(14px,1.3vw,18px);max-width:68ch;opacity:0;animation:fadeInUp 1s ease forwards .5s}
+    .actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:12px}
+    .btn.ghost{background:#fff;color:var(--ink);border-color:var(--stroke);animation:none}
+    .btn.ghost:hover{background:color-mix(in srgb,var(--brand) 10%, #fff);transform:scale(1.05)}
+    .art{position:relative;text-align:center}
+    .art img{width:100%;max-width:520px;height:auto;display:block;margin:auto;opacity:0;transform:scale(.82) rotate(-5deg);animation:artPop 1.2s ease forwards .6s, floaty 6s ease-in-out infinite 1.8s;position:relative;z-index:1}
     @keyframes artPop{0%{opacity:0;transform:scale(.82) rotate(-5deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
     @keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-12px) rotate(1deg)}}
-    .cover::before{ content:""; position:absolute; inset:0; background:radial-gradient(circle at 70% 20%, rgba(198,42,75,.2) 0%, transparent 50%); opacity:0; animation:particleBurst 2s ease-out forwards 1s; pointer-events:none; z-index:0; }
+    .cover::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 20%, rgba(198,42,75,.2) 0%, transparent 50%);opacity:0;animation:particleBurst 2s ease-out forwards 1s;pointer-events:none;z-index:0}
     @keyframes particleBurst{0%{opacity:0;transform:scale(.5)}50%{opacity:.4}100%{opacity:0;transform:scale(1.5)}}
 
-    .info-apartado{
-      max-width:var(--maxw); margin-inline:auto; padding:clamp(18px,4vw,34px) clamp(12px,3.6vw,24px);
-      background:linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
-      text-align:center; font-size:clamp(14px,1.6vw,18px); line-height:1.6; color:color-mix(in srgb, var(--muted) 90%, #000 10%);
-      text-shadow:0 1px 0 rgba(255,255,255,.6); opacity:0; transform:translateY(10px); animation:fadeSlideUp 1s ease forwards 1.0s;
-    }
+    .info-apartado{max-width:var(--maxw);margin-inline:auto;padding:clamp(18px,4vw,34px) clamp(12px,3.6vw,24px);background:linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);text-align:center;font-size:clamp(14px,1.6vw,18px);line-height:1.6;color:color-mix(in srgb, var(--muted) 90%, #000 10%);text-shadow:0 1px 0 rgba(255,255,255,.6);opacity:0;transform:translateY(10px);animation:fadeSlideUp 1s ease forwards 1.0s}
     @keyframes fadeSlideUp{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
 
     /* ===== Cifras ===== */
-    .stats{
-      background:linear-gradient(to bottom,var(--rojo) 0%,var(--brand) 100%); color:var(--brand-ink);
-      padding:clamp(42px,7vw,88px) clamp(18px,5vw,42px); text-align:center;
-      opacity:0; transform:translateY(30px); animation:fadeSlideUp 1s ease forwards 1.5s;
-    }
-    .stats .wrap{ max-width:var(--maxw); margin:0 auto }
-    .stats h2{ margin:0 0 clamp(26px,3.8vw,44px); font-size:clamp(22px,3.4vw,40px); font-weight:800; letter-spacing:.2px }
-    .kpis{ display:grid; grid-template-columns:1fr auto 1fr auto 1fr auto 1fr; gap:clamp(14px,3.4vw,34px); align-items:center }
-    .kpi-sep{ display:flex; align-items:center; justify-content:center; font-size:clamp(22px,3.2vw,34px); line-height:1; user-select:none }
-    @media (max-width:900px){ .kpis{grid-template-columns:1fr} .kpi-sep{display:none} }
-    .counter{ display:flex; flex-direction:column; align-items:center; gap:10px }
-    .slot{ display:inline-flex; align-items:baseline; line-height:1; gap:.26em }
-    .digit{ font-variant-numeric:tabular-nums; font-weight:800; font-size:clamp(28px,5vw,48px); letter-spacing:.01em; min-width:.60em; text-align:center; text-shadow:0 1px 2px rgba(0,0,0,.12) }
-    .sep{ font-weight:800; font-size:clamp(28px,5vw,48px); margin:0 .14em; line-height:1; display:inline-flex; align-items:center; justify-content:center; text-shadow:0 1px 2px rgba(0,0,0,.12) }
-    .label{ font-size:clamp(12px,1.6vw,15px); opacity:.95 } .footnote{ margin-top:clamp(18px,3vw,26px); font-size:11px; opacity:.9 }
+    .stats{background:linear-gradient(to bottom,var(--rojo) 0%,var(--brand) 100%);color:var(--brand-ink);padding:clamp(42px,7vw,88px) clamp(18px,5vw,42px);text-align:center;opacity:0;transform:translateY(30px);animation:fadeSlideUp 1s ease forwards 1.5s}
+    .stats .wrap{max-width:var(--maxw);margin:0 auto}
+    .stats h2{margin:0 0 clamp(26px,3.8vw,44px);font-size:clamp(22px,3.4vw,40px);font-weight:800;letter-spacing:.2px}
+    .kpis{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:clamp(14px,3.4vw,34px);align-items:center}
+    .kpi-sep{display:flex;align-items:center;justify-content:center;font-size:clamp(22px,3.2vw,34px);line-height:1;user-select:none}
+    @media (max-width:900px){.kpis{grid-template-columns:1fr}.kpi-sep{display:none}}
+    .counter{display:flex;flex-direction:column;align-items:center;gap:10px}
+    .slot{display:inline-flex;align-items:baseline;line-height:1;gap:.26em}
+    .digit{font-variant-numeric:tabular-nums;font-weight:800;font-size:clamp(28px,5vw,48px);letter-spacing:.01em;min-width:.60em;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.12)}
+    .sep{font-weight:800;font-size:clamp(28px,5vw,48px);margin:0 .14em;line-height:1;display:inline-flex;align-items:center;justify-content:center;text-shadow:0 1px 2px rgba(0,0,0,.12)}
+    .label{font-size:clamp(12px,1.6vw,15px);opacity:.95}.footnote{margin-top:clamp(18px,3vw,26px);font-size:11px;opacity:.9}
 
-    /* ===== Bloque con imágenes conectadas ===== */
+    /* ===== Conector azul (se mantiene) ===== */
     .conector{width:720px;margin:40px auto 32px;position:relative;isolation:isolate;z-index:0}
     .fila{display:flex;justify-content:space-between;position:relative}
-    .nodo{ position:relative;width:210px;height:210px;border-radius:16px;border:2px solid #e0e0e0;
-      background:linear-gradient(to bottom,#fff,color-mix(in srgb,#fff 80%,var(--rojo) 20%));
-      display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1);z-index:1 }
+    .nodo{position:relative;width:210px;height:210px;border-radius:16px;border:2px solid #e0e0e0;background:linear-gradient(to bottom,#fff,color-mix(in srgb,#fff 80%,var(--accent) 20%));display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1);z-index:1}
     .nodo img{width:100%;height:100%;object-fit:cover;object-position:center;border-radius:14px}
-    .fila.superior::before,.fila.superior::after{ content:"";position:absolute;top:50%;height:4px;background:linear-gradient(to right,transparent,var(--rojo),transparent);transform:scaleX(0);z-index:-1 }
+    .fila.superior::before,.fila.superior::after{content:"";position:absolute;top:50%;height:4px;background:linear-gradient(to right,transparent,var(--accent),transparent);transform:scaleX(0);z-index:-1}
     .conector.visible .fila.superior::before{left:210px;width:150px;transform-origin:left;animation:dibujarLineaSupIzq 2s ease-out forwards}
     .conector.visible .fila.superior::after{left:360px;width:150px;transform-origin:right;animation:dibujarLineaSupDer 2s ease-out forwards}
-    .nodo.rama::after{ content:"";position:absolute;top:100%;left:50%;width:4px;height:100px;background:linear-gradient(to bottom,var(--rojo),transparent);transform-origin:top center;transform:scaleY(0);z-index:-1 }
+    .nodo.rama::after{content:"";position:absolute;top:100%;left:50%;width:4px;height:100px;background:linear-gradient(to bottom,var(--accent),transparent);transform-origin:top center;transform:scaleY(0);z-index:-1}
     .conector.visible .nodo.rama::after{animation:dibujarRama 1.2s ease-out forwards 2s}
     .fila.inferior{margin-top:100px;justify-content:space-between;overflow:visible;position:relative}
-    .fila.inferior::after{ content:"";position:absolute;top:50%;left:50%;width:6px;height:100px;background:linear-gradient(to bottom,var(--rojo),var(--rojo2),transparent);transform-origin:top;transform:scaleY(0);z-index:-1;box-shadow:0 0 10px rgba(232,85,100,.5) }
+    .fila.inferior::after{content:"";position:absolute;top:50%;left:50%;width:6px;height:100px;background:linear-gradient(to bottom,var(--accent),var(--accent-2),transparent);transform-origin:top;transform:scaleY(0);z-index:-1;box-shadow:0 0 10px rgba(30,110,182,.5)}
     .conector.visible .fila.inferior::after{animation:dibujarLineaAbajo 1.6s ease-out forwards 3.2s}
-    .nodo.join-left::after,.nodo.join-right::after{ content:"";position:absolute;top:50%;height:4px;background:linear-gradient(to right,transparent,var(--rojo),transparent);width:150px;transform:scaleX(0);z-index:-2 }
+    .nodo.join-left::after,.nodo.join-right::after{content:"";position:absolute;top:50%;height:4px;background:linear-gradient(to right,transparent,var(--accent),transparent);width:150px;transform:scaleX(0);z-index:-2}
     .conector.visible .nodo.join-left::after{left:100%;transform-origin:left;animation:dibujarLineaIzq 2.4s ease-out forwards 2.2s}
     .conector.visible .nodo.join-right::after{right:100%;transform-origin:right;animation:dibujarLineaDer 2.4s ease-out forwards 2.2s}
     @keyframes dibujarLineaSupIzq {to{transform:scaleX(1)}} @keyframes dibujarLineaSupDer {to{transform:scaleX(1)}}
@@ -164,112 +129,177 @@
     .section-title{text-align:center;font-size:28px;font-weight:800;color:var(--rojo);margin:8px 0 20px}
     .divider{height:2px;background:var(--rojo);opacity:.6;margin:28px 0}
 
-    .cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--gap)}
-    .cards-row.cols-3{grid-template-columns:repeat(3,minmax(280px,1fr))}
-    .cards-row.cols-3 .card:first-child{grid-column:2;justify-self:center}
-    @media (max-width:900px){ .cards-row.cols-3{grid-template-columns:repeat(2,minmax(260px,1fr))} .cards-row.cols-3 .card:first-child{grid-column:1 / -1} }
-    @media (max-width:560px){.cards-row.cols-3{grid-template-columns:1fr}}
+    .cards-row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:var(--gap);
+      align-items:stretch;
+    }
 
-    .card{ position:relative;height:var(--card-h);background:#fff;border-radius:var(--radius);
-      border:1px solid #efe9e9;overflow:hidden;display:flex;flex-direction:column;
-      box-shadow:var(--elev0);transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;
-      transform-style:preserve-3d;opacity:0;transform:translateZ(-300px) scale(.7) }
-    .card:hover{box-shadow:var(--elev1);transform:scale(1.03)}
+    #geovisor .cards-row,
+    #mvcs .cards-row{
+      grid-template-columns:repeat(auto-fit, minmax(280px, 360px));
+      justify-content:center;
+    }
+
+    /* ===== Tarjeta PILL ===== */
+    .card{
+      display:block;
+      position:relative;background:#fff;border-radius:16px;border:1px solid #efe9e9;box-shadow:var(--elev0);
+      transition:box-shadow .25s ease,transform .6s ease,opacity .6s ease;opacity:0;transform:translateZ(-300px) scale(.7);
+      height:100%; color:inherit; text-decoration:none;
+    }
     .card.in{opacity:1;transform:translateZ(0) scale(1)}
+    .card:hover{box-shadow:var(--elev1);transform:scale(1.02)}
 
-    .card-header{ height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;
-      padding:0 16px;background:var(--rojo);color:#fff;font-weight:800;letter-spacing:.2px }
-    .card-header:hover{background:linear-gradient(90deg,var(--rojo) 0%,var(--rojo2) 100%)}
-    .card-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#fff}
-    .card-icon svg{width:100%;height:100%;fill:currentColor}
-    .card-body{ flex:1;padding:12px 16px 16px;font-size:14px;line-height:1.45;color:#2f3845;
-      overflow:hidden;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical }
-
-    /* ===== COOPERANTES ===== */
-    .partners{ margin-top:18px }
-    .partners .section-title{ color:var(--rojo); font-weight:900 }
-
-    .partners-grid{
-      display:grid; grid-template-columns:repeat(4, minmax(160px,1fr));
-      gap:22px; align-items:stretch;
+    .card.pill{
+      display:flex;flex-direction:column;justify-content:flex-start;
+      padding:22px 16px 16px;
+      min-height:var(--pill-h);
     }
-    @media (max-width:980px){ .partners-grid{grid-template-columns:repeat(3, minmax(140px,1fr));} }
-    @media (max-width:640px){ .partners-grid{grid-template-columns:repeat(2, minmax(130px,1fr));} }
-
-    .coop-card{
-      position:relative; background:#fff; border:1px solid #efe9e9; border-radius:16px;
-      box-shadow:0 6px 14px rgba(0,0,0,.08);
-      display:flex; align-items:center; justify-content:center; padding:22px;
-      height:170px; overflow:hidden;
-      opacity:0; transform:translateY(26px) scale(.92) rotate(var(--rot,0deg));
-      filter:blur(6px);
-      transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--delay,0ms),
-                 transform .7s cubic-bezier(.2,.7,.2,1) var(--delay,0ms),
-                 filter .7s cubic-bezier(.2,.7,.2,1) var(--delay,0ms),
-                 box-shadow .3s ease;
+    .card.pill .icon-circle{
+      --tone:#1E6EB6;
+      position:absolute;top:var(--pill-badge-offset);left:16px;
+      width:var(--pill-badge);height:var(--pill-badge);border-radius:999px;background:var(--tone);
+      display:grid;place-items:center;
+      box-shadow:0 10px 22px color-mix(in srgb,var(--tone) 35%, transparent), 0 0 0 4px #fff;
     }
-    .coop-card.show{ opacity:1; transform:translateY(0) scale(1) rotate(0deg); filter:blur(0) }
-    .coop-card:hover{ transform:translateY(-4px) scale(1.03); box-shadow:0 12px 26px rgba(0,0,0,.12) }
-    .coop-card img{ width:100%; height:100%; object-fit:contain; object-position:center; user-select:none; pointer-events:none }
+    .card.pill .icon-circle img{width:58%;height:58%;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15))}
+    .card.pill .pill-title{margin:26px 0 6px;font-weight:900;letter-spacing:.2px}
+    .card.pill .pill-desc{margin:0;color:#2f3845;font-size:14px;line-height:1.45}
 
-    .coop-card::after{
-      content:""; position:absolute; top:-120%; left:-120%;
-      width:240%; height:240%;
-      background:linear-gradient(60deg, transparent 45%, rgba(255,255,255,.6) 50%, transparent 55%);
-      transform:translateX(-60%) rotate(10deg); opacity:0; pointer-events:none;
-    }
-    .coop-card.shine::after{ animation:shine 900ms ease-out forwards }
-    .coop-card:hover::after{ animation:shine 900ms ease-out forwards }
-    @keyframes shine{ 0%{opacity:0; transform:translateX(-70%) rotate(10deg)} 20%{opacity:.6} 100%{opacity:0; transform:translateX(60%) rotate(10deg)} }
+    /* ===== PARTNERS: carrusel en una fila ===== */
+    .partners{margin-top:18px}
+    .partners .section-title{color:var(--rojo);font-weight:900}
 
-    /* ===== PLANCHA ===== */
-    .plancha{
-      background:#fff; border:1px solid #efe9e9; border-radius:16px;
-      padding:14px; box-shadow:0 10px 22px rgba(0,0,0,.10);
-      max-width:1100px; margin:0 auto;
-      opacity:0; transform:translateY(20px) scale(.98);
-      transition:opacity .6s ease, transform .6s ease;
+    .partner-carousel{max-width:var(--maxw);margin:0 auto;position:relative;padding:8px 40px}
+    .pc-viewport{overflow:hidden;width:100%}
+    .pc-track{display:flex;align-items:center;gap:clamp(26px,3.6vw,44px);will-change:transform}
+    .pc-item{
+      flex:0 0 clamp(160px, 22vw, 260px);
+      display:flex;align-items:center;justify-content:center;
+      min-height:clamp(200px,24vw,300px);
     }
-    .plancha.show{ opacity:1; transform:translateY(0) scale(1) }
-    .plancha img{ width:100%; height:auto; display:block; border-radius:12px }
+    .pc-item img{
+      max-height:clamp(160px,22vw,260px);
+      max-width:100%;object-fit:contain;
+      filter:drop-shadow(0 10px 26px rgba(0,0,0,.18));
+      transition:transform .25s ease;
+    }
+    .pc-item img:hover{transform:scale(1.03)}
+
+    .pc-arrow{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:28px;height:28px;border-radius:999px;border:1px solid #e6e0de;
+      display:grid;place-items:center;background:#fff;color:#334155;
+      box-shadow:0 4px 10px rgba(0,0,0,.10);
+      cursor:pointer;opacity:.9;
+      transition:transform .15s,box-shadow .2s,opacity .2s;
+      z-index:2;
+    }
+    .pc-arrow:hover{transform:translateY(-50%) scale(1.06);box-shadow:0 8px 16px rgba(0,0,0,.14)}
+    .pc-arrow.left{left:8px}
+    .pc-arrow.right{right:8px}
+    .pc-arrow svg{width:16px;height:16px}
+
+    /* ===== RIBBON (Reconocimiento) sin título ===== */
+    .ribbon{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(22px,3vw,38px);align-items:center}
+    @media (max-width:880px){.ribbon{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.ribbon{grid-template-columns:1fr}}
+    .r-item{display:flex;align-items:center;justify-content:center;min-height:clamp(160px,18vw,220px);transform:translateY(40px);opacity:0;filter:blur(10px);transition:transform .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),opacity .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms),filter .9s cubic-bezier(.2,.8,.2,1) var(--delay,0ms)}
+    .r-item.show{transform:translateY(0);opacity:1;filter:blur(0)}
+    .r-item img{max-width:96%;max-height:clamp(120px,16vw,200px);object-fit:contain;filter:drop-shadow(0 8px 22px rgba(0,0,0,.14))}
+    .r-item:first-child img{transform:scale(1.12)}
 
     /* ===== FOOTER ===== */
-    footer{ border-top:1px solid var(--stroke); background:#fff; padding:28px 16px 36px; }
-    .footer-wrap{max-width:var(--maxw); margin:0 auto; text-align:center; color:var(--muted)}
-    /* (Se dejan las clases .chips/.chip por compatibilidad, pero no se usan) */
-    .chips{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:14px}
-    .chip{padding:6px 10px; border:1px solid #e6e0de; border-radius:999px; font-weight:700; font-size:13px; background:#fff; color:#6b7280}
-    .social{display:flex; gap:12px; justify-content:center; margin:8px 0 12px}
+    footer{border-top:1px solid var(--stroke);background:#fff;padding:28px 16px 36px}
+    .footer-wrap{max-width:var(--maxw);margin:0 auto;text-align:center;color:var(--muted)}
+    .social{display:flex;gap:12px;justify-content:center;margin:8px 0 12px}
     .social a{width:36px;height:36px;border-radius:999px;border:1px solid #e6e0de;display:grid;place-items:center;background:#fff;color:#334155;text-decoration:none;transition:transform .15s ease, box-shadow .2s}
-    .social a:hover{transform:translateY(-2px); box-shadow:0 8px 18px rgba(0,0,0,.12)}
-    .copy{font-size:13px; line-height:1.5}
-    .copy a{color:#0ea5e9; text-decoration:none}
-    .copy a:hover{ text-decoration:underline }
+    .social a:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.12)}
+    .copy{font-size:13px;line-height:1.5}
+    .copy a{color:#0ea5e9;text-decoration:none}
+    .copy a:hover{text-decoration:underline}
 
     @media (prefers-reduced-motion:reduce){
-      *{animation:none!important; transform:none!important; opacity:1!important; filter:none!important}
+      *{animation:none!important;transform:none!important;opacity:1!important;filter:none!important}
+      .pc-track{will-change:auto}
     }
+
     @media (max-width:640px){
       :root{--card-h:280px;--hdr-h:70px;--gap:18px}
       .section-title{font-size:24px}
       .art img{max-width:440px}
+      .card.pill{min-height:calc(var(--pill-h) + 6px)}
     }
+
+    /* ===== THEME INSTITUCIONAL ===== */
+    body.theme-institucional{
+      --page-bg: color-mix(in srgb, #5EBAD6 10%, #ffffff);
+      --ink:#474747;
+      --muted: color-mix(in srgb, #474747 75%, #5EBAD6 5%);
+      --stroke: color-mix(in srgb, #1E6EB6 12%, #e6e0de);
+      --glass: color-mix(in srgb, #ffffff 78%, transparent);
+
+      --brand:#E30613; --brand-ink:#fff;
+      --accent:#1E6EB6;
+      --accent-2:#5EBAD6;
+      --accent-ink:#fff;
+
+      --elev0:0 4px 10px rgba(30,110,182,.10);
+      --elev1:0 12px 24px rgba(30,110,182,.18);
+    }
+    body.theme-institucional header.site.scrolled{background:color-mix(in srgb,#ffffff 84%, #5EBAD6 6%);border-color:color-mix(in srgb,var(--stroke) 70%, #1E6EB6 10%);box-shadow:0 12px 26px rgba(30,110,182,.18)}
+    body.theme-institucional nav a:hover{background:color-mix(in srgb,#5EBAD6 12%, #fff);box-shadow:0 6px 16px rgba(30,110,182,.18)}
+    body.theme-institucional nav a.active{background:var(--accent);color:var(--accent-ink);box-shadow:0 10px 24px rgba(30,110,182,.30)}
+    body.theme-institucional nav a.active::after{box-shadow:0 0 0 0 rgba(30,110,182,.45)}
+    body.theme-institucional .stats{background:linear-gradient(to bottom, var(--accent) 0%, var(--accent-2) 100%);color:#fff}
+    body.theme-institucional .section-title{color:var(--accent)}
+    body.theme-institucional .divider{background:var(--accent);opacity:.35}
+
+    /* ===== COLORES POR APARTADO ===== */
+    #geovisor .section-title{color:#e30713}
+    #geovisor .card.pill .pill-title{color:#e30713}
+    #geovisor .card.pill .icon-circle{background:#e30713;box-shadow:0 10px 22px rgba(227,7,19,.35), 0 0 0 4px #fff}
+
+    #mvcs .section-title{color:#1E6EB6}
+    #mvcs .card.pill .pill-title{color:#1E6EB6}
+    #mvcs .card.pill .icon-circle{background:#1E6EB6;box-shadow:0 10px 22px rgba(30,110,182,.35), 0 0 0 4px #fff}
+
+    #vmvu .section-title{color:#8fba22}
+    #vmvu .card.pill .pill-title{color:#8fba22}
+    #vmvu .card.pill .icon-circle{background:#8fba22;box-shadow:0 10px 22px rgba(143,186,34,.35), 0 0 0 4px #fff}
+
+    #sg .section-title{color:#b31c7d}
+    #sg .card.pill .pill-title{color:#b31c7d}
+    #sg .card.pill .icon-circle{background:#b31c7d;box-shadow:0 10px 22px rgba(179,28,125,.35), 0 0 0 4px #fff}
+
+    #analisis .section-title{color:#faae00}
+    #analisis .card.pill .pill-title{color:#faae00}
+    #analisis .card.pill .icon-circle{background:#faae00;box-shadow:0 10px 22px rgba(250,174,0,.35), 0 0 0 4px #fff}
   </style>
 </head>
-<body>
+<body class="theme-institucional">
 
-  <!-- Header fijo -->
+  <!-- ===== BANNER ===== -->
+  <div class="banner">
+    <img src="https://lh3.googleusercontent.com/d/19XqvFTVM5LclbniAOdJjU5768OXRMwIE=w1920-h464" alt="Banner superior GeoVivienda">
+  </div>
+
+  <!-- Header sticky -->
   <header class="site" role="banner">
     <div class="navwrap">
       <a class="logo" href="#inicio" aria-label="Ir al inicio">
-        <img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/109rN8IqcM3AyWK6NRWNhouL-tqI03QXR=w1000" alt="Logo GeoVivienda">
-        <span>GeoVivienda</span>
+        <img loading="lazy" decoding="async"
+             src="https://lh3.googleusercontent.com/d/1N0kJmgJc1pqYhZPqo6EPCjFz3L0-eYH4=w1000"
+             alt="Logo institucional">
       </a>
+
       <nav aria-label="Principal">
         <ul>
           <li><a class="active" href="#inicio">Inicio</a></li>
           <li><a href="#geovisor">Geovisor</a></li>
-          <li><a href="#mvcs">MVCS</a></li>
+          <li><a href="#mvcs">VMCS</a></li>
           <li><a href="#vmvu">VMVU</a></li>
           <li><a href="#sg">Riesgos</a></li>
           <li><a href="#analisis">Análisis SIG</a></li>
@@ -284,26 +314,20 @@
     <div class="container">
       <div>
         <h1 class="title" aria-label="Plataforma GIS del Ministerio de Vivienda, Construcción y Saneamiento">
-          <span style="--i:1">Plataforma</span>
-          <span style="--i:2">GIS</span>
-          <span style="--i:3">del</span>
-          <span style="--i:4">Ministerio</span>
-          <span style="--i:5">de</span>
-          <span style="--i:6">Vivienda,</span>
-          <span style="--i:7">Construcción</span>
-          <span style="--i:8">y</span>
-          <span style="--i:9">Saneamiento</span>
+          <span style="--i:1">Plataforma</span><span style="--i:2">GIS</span><span style="--i:3">del</span>
+          <span style="--i:4">Ministerio</span><span style="--i:5">de</span><span style="--i:6">Vivienda,</span>
+          <span style="--i:7">Construcción</span><span style="--i:8">y</span><span style="--i:9">Saneamiento</span>
         </h1>
 
         <p class="subtitle">Accede a datos geográficos y estadísticos actualizados sobre vivienda, agua, saneamiento, titulación y planificación urbana. Una herramienta del MVCS al servicio de la ciudadanía y los gobiernos locales.</p>
         <div class="actions">
-          <a class="btn" href="#geovisor">Geovisor</a>
+          <!-- Botón Geovisor eliminado -->
           <a class="btn ghost" href="#datos">Datos abiertos</a>
         </div>
       </div>
 
       <div class="art">
-        <img class="floaty" loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1yMPY_3miMHPYv6qXHp3013u3QHHf-0Ec=w1000" alt="Mapa Perú decorativo" />
+        <img class="floaty" loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1zkN8SbqXmM7twXgyJFUElp1xr5-w_Tg_=w1000" alt="Mapa Perú decorativo" />
       </div>
     </div>
 
@@ -320,7 +344,7 @@
           <div class="kpi-sep">·</div>
           <div class="counter" data-value="14426"><div class="slot" aria-label="Proyectos Culminados"></div><div class="label">Proyectos Culminados</div></div>
           <div class="kpi-sep">·</div>
-          <div class="counter" data-value="427311"><div class="slot" aria-label="Conexiones de agua nuevas"></div><div class="label">Conexiones de agua nuevas</div></div>
+          <div class="counter" data-value="427311"><div class="slot" aria-label="Conexiones de agua nuevas"></div><div class="label">Conexiones de Agua nuevas</div></div>
           <div class="kpi-sep">·</div>
           <div class="counter" data-value="157499"><div class="slot" aria-label="Conexiones de Alcantarillado"></div><div class="label">Conexiones de Alcantarillado</div></div>
         </div>
@@ -330,32 +354,33 @@
 
     <div class="conector" aria-hidden="true">
       <div class="fila superior">
-        <div class="nodo rama"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1i8CwW-eOf-Pd2ANa6o7X6yaFOcP5KpC7=w1000" alt=""></div>
-        <div class="nodo"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1Ht4cpFniu4yNOJ-M3A003PSEmo89fsVk=w1000" alt=""></div>
-        <div class="nodo rama"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/16PFDGwh-xesWMdmsq_SpXgwwqwUiKfBk=w1000" alt=""></div>
+        <div class="nodo rama"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/10CRT6M3jTLm7bTJ_JipCrIfg2m4eiJ93=w1000" alt=""></div>
+        <div class="nodo"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1aU_69AAzGiTt8WemV67La2tJtxLWQdeu=w1000" alt=""></div>
+        <div class="nodo rama"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/14I8LlN0hR92_jadip-COoeYrj5CsrgJE=w1000" alt=""></div>
       </div>
       <div class="fila inferior">
-        <div class="nodo join-left"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1Yg8K4w6hDMz_EZ8n6otQNAmFIPB16xCG=w1000" alt=""></div>
-        <div class="nodo join-right"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1y0YcBuWlZGH7ulNQEzgyGqvIk9IxH34a=w1000" alt=""></div>
+        <div class="nodo join-left"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1TAm9a4puv37Dw616wLSWrVcvuoN8x9Nt=w1000" alt=""></div>
+        <div class="nodo join-right"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1cwtIdtR_rJVIj4tFtofa_kBy0qRxaQuZ=w1000" alt=""></div>
       </div>
     </div>
   </section>
 
   <!-- CONTENIDO PRINCIPAL -->
   <div class="wrapper">
+
     <!-- GEOVISOR -->
     <div class="section geovisor-stage" id="geovisor">
       <h2 class="section-title">Geovisor</h2>
-      <div class="cards-row cols-3">
-        <div class="card" id="visor">
-          <div class="card-header">
-            <span>Visor Cartográfico</span>
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z" fill="#fff"/></svg>
-            </div>
+      <div class="cards-row">
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/geovisor.html" target="_blank" rel="noopener noreferrer" style="--tone:#E30613">
+          <div class="icon-circle" aria-hidden="true">
+            <img src="https://lh3.googleusercontent.com/d/1tpUjkorjJO7ZTWyIWgQWH1YkdgDebU5Q=w1000" alt="">
           </div>
-          <div class="card-body">Síntesis de brechas e intervenciones en vivienda, titulación, acceso a servicios básicos y acceso a infraestructura y equipamiento urbano.</div>
-        </div>
+          <div>
+            <div class="pill-title">Visor Cartográfico</div>
+            <p class="pill-desc">Síntesis de brechas e intervenciones en vivienda, titulación, acceso a servicios básicos y equipamiento urbano.</p>
+          </div>
+        </a>
       </div>
     </div>
 
@@ -365,9 +390,21 @@
     <div class="section" id="mvcs">
       <h2 class="section-title">Construcción y Saneamiento</h2>
       <div class="cards-row">
-        <div class="card"><div class="card-header"><span>Geovivienda Verde</span><div class="card-icon">🌿</div></div><div class="card-body">Plataforma integral diseñada para visualizar y gestionar información espacial relacionada con la gestión ambiental.</div></div>
-        <div class="card"><div class="card-header"><span>Visor de mapas DATASS</span><div class="card-icon">🗺️</div></div><div class="card-body">Información georreferenciada sobre abastecimiento de agua y saneamiento en el ámbito rural y otra información institucional.</div></div>
-        <div class="card"><div class="card-header"><span>Tablero de control DATASS</span><div class="card-icon">📊</div></div><div class="card-body">Cuadros y gráficos dinámicos sobre acceso a servicios de saneamiento, prestadores y sistemas de agua.</div></div>
+        <a class="card pill" href="https://geoviviendaverde.vivienda.gob.pe/" target="_blank" rel="noopener noreferrer" style="--tone:#1E6EB6">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1tpUjkorjJO7ZTWyIWgQWH1YkdgDebU5Q=w1000" alt="Icono Geovivienda Verde"></div>
+          <div>
+            <div class="pill-title">Geovivienda Verde</div>
+            <p class="pill-desc">Plataforma para visualizar y gestionar información espacial vinculada a la gestión ambiental.</p>
+          </div>
+        </a>
+
+        <a class="card pill" href="https://app.powerbi.com/view?r=eyJrIjoiNjVhODE5NGUtZGI2ZS00YjlhLTk0YWQtNDQxNzkyYWZhN2E5IiwidCI6IjhhZmMxYzZhLThjOWYtNDA5My1iMDU1LWU0MTdiMjA5M2IwYyIsImMiOjR9" target="_blank" rel="noopener noreferrer" style="--tone:#1E6EB6">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1n_kcvVkTy1BxIdnIQGwq9SsJx2qi_2BU=w1000" alt="Icono DATASS"></div>
+          <div>
+            <div class="pill-title">Información DATASS</div>
+            <p class="pill-desc">Información georreferenciada sobre abastecimiento de agua y saneamiento en el ámbito rural e información institucional.</p>
+          </div>
+        </a>
       </div>
     </div>
 
@@ -377,11 +414,45 @@
     <div class="section" id="vmvu">
       <h2 class="section-title">Vivienda y Urbanismo</h2>
       <div class="cards-row">
-        <div class="card"><div class="card-header"><span>Soluciones de vivienda</span><div class="card-icon">🏠</div></div><div class="card-body">Promueve el acceso a viviendas dignas y sostenibles para familias y comunidades.</div></div>
-        <div class="card"><div class="card-header"><span>Títulos inscritos</span><div class="card-icon">📬</div></div><div class="card-body">Información de los asuntos inscritos en el registro de catastro, titulación y registro inmobiliario.</div></div>
-        <div class="card"><div class="card-header"><span>Geoplan</span><div class="card-icon">🧭</div></div><div class="card-body">Instrumento que impulsa la planificación territorial con enfoques de desarrollo sostenible y prevención del riesgo de desastres.</div></div>
-        <div class="card"><div class="card-header"><span>Visor SICCEP</span><div class="card-icon">🗂️</div></div><div class="card-body">Información georreferenciada de proyectos de inversión en vivienda.</div></div>
-        <div class="card"><div class="card-header"><span>Bono familiar habitacional</span><div class="card-icon">🏡</div></div><div class="card-body">Subsidio que permite a las familias adquirir, construir o mejorar su vivienda.</div></div>
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/solucionesvivienda.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1fJdv8Kqc6XM0hCuL0mS0cD6pqtjhbkiy=w1000" alt="Icono Soluciones de vivienda"></div>
+          <div>
+            <div class="pill-title">Soluciones de vivienda</div>
+            <p class="pill-desc">Promueve el acceso a viviendas dignas y sostenibles para familias y comunidades.</p>
+          </div>
+        </a>
+
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/titulos.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1U9BPYR6uzU8s7Tf_GHS1dy3AgLPxu_lr=w1000" alt="Icono Títulos inscritos"></div>
+          <div>
+            <div class="pill-title">Títulos inscritos</div>
+            <p class="pill-desc">Información de asuntos inscritos en el registro de catastro, titulación y registro inmobiliario.</p>
+          </div>
+        </a>
+
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/tablero_bfh.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1H-x3Niq8uOAvwpI6MQvf9-yKPdndj4pu=w1000" alt="Icono Bono habitacional familiar"></div>
+          <div>
+            <div class="pill-title">Bono familiar habitacional</div>
+            <p class="pill-desc">Subsidio que permite a las familias adquirir, construir o mejorar su vivienda.</p>
+          </div>
+        </a>
+
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/geoplan.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1Msd2Bv3UjO_XuM28qG2WjNAhjLZR4GBN=w1000" alt="Icono Geoplan"></div>
+          <div>
+            <div class="pill-title">Geoplan</div>
+            <p class="pill-desc">Instrumento para la planificación territorial con enfoque de desarrollo sostenible y gestión del riesgo.</p>
+          </div>
+        </a>
+
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/siccep.html" target="_blank" rel="noopener noreferrer" style="--tone:#4CAF50">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/18XQx5RMP-7nM1kHU2KR5fauL9hB93Ysi=w1000" alt="Icono Visor SICCEP"></div>
+          <div>
+            <div class="pill-title">Visor SICCEP</div>
+            <p class="pill-desc">Información georreferenciada de proyectos de inversión en vivienda.</p>
+          </div>
+        </a>
       </div>
     </div>
 
@@ -391,9 +462,29 @@
     <div class="section" id="sg">
       <h2 class="section-title">Gestión del Riesgo de Desastres</h2>
       <div class="cards-row">
-        <div class="card"><div class="card-header"><span>Zonas expuestas a peligro</span><div class="card-icon">⚠️</div></div><div class="card-body">Áreas expuestas a peligros naturales o ambientales mediante análisis geográficos e históricos.</div></div>
-        <div class="card"><div class="card-header"><span>Microzonificación sísmica</span><div class="card-icon">🌐</div></div><div class="card-body">Estudios geotécnicos y sismológicos que evalúan la respuesta del suelo ante eventos sísmicos.</div></div>
-        <div class="card"><div class="card-header"><span>Visor Georiesgo</span><div class="card-icon">🧱</div></div><div class="card-body">Visualiza y evalúa riesgos geológicos, deslizamientos y movimientos sísmicos.</div></div>
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/tablero_zep.html" target="_blank" rel="noopener noreferrer" style="--tone:#A23FA8">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/10FnoESqvFKC-Svy70nFpHYGw54t8yjTM=w1000" alt="Icono Zonas expuestas a peligro"></div>
+          <div>
+            <div class="pill-title">Zonas expuestas a peligro</div>
+            <p class="pill-desc">Áreas expuestas a peligros naturales o ambientales mediante análisis geográficos e históricos.</p>
+          </div>
+        </a>
+
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/tablero_sismico.html" target="_blank" rel="noopener noreferrer" style="--tone:#A23FA8">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1vLiJXw7KNenJuHCSDSzrcEnnll36qmf_=w1000" alt="Icono Microzonificación sísmica"></div>
+          <div>
+            <div class="pill-title">Microzonificación sísmica</div>
+            <p class="pill-desc">Estudios geotécnicos y sismológicos para evaluar la respuesta del suelo ante eventos sísmicos.</p>
+          </div>
+        </a>
+
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/georiesgo.html" target="_blank" rel="noopener noreferrer" style="--tone:#A23FA8">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1MeWc8dRbIz7cxUvrEbMBcRHW1clkf9oh=w1000" alt="Icono Visor Georiesgo"></div>
+          <div>
+            <div class="pill-title">Visor Georiesgo</div>
+            <p class="pill-desc">Visualiza y evalúa riesgos geológicos, deslizamientos y movimientos sísmicos.</p>
+          </div>
+        </a>
       </div>
     </div>
 
@@ -403,55 +494,79 @@
     <div class="section" id="analisis">
       <h2 class="section-title">Análisis SIG</h2>
       <div class="cards-row">
-        <div class="card">
-          <div class="card-header"><span>Capas temáticas</span><div class="card-icon">🗺️</div></div>
-          <div class="card-body">Conjunto de capas integradas para análisis territorial: usos de suelo, cobertura vegetal, pendientes y restricciones.</div>
-        </div>
-        <div class="card">
-          <div class="card-header"><span>Indicadores territoriales</span><div class="card-icon">📈</div></div>
-          <div class="card-body">Cálculo de indicadores por provincia/distrito: densidad, accesibilidad, equipamientos y brechas de servicios.</div>
-        </div>
-        <div class="card">
-          <div class="card-header"><span>Descarga de datos</span><div class="card-icon">⬇️</div></div>
-          <div class="card-body">Exporta resultados en formatos GeoJSON, SHP y CSV para uso en otros sistemas.</div>
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/visor_proyecto.html" target="_blank" rel="noopener noreferrer" style="--tone:#F59E0B">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1-DIPJk0r3bAgZrsRAvFsv-xSEkF9Ik9l=w1000" alt="Icono Monitoreo de proyectos"></div>
+          <div>
+            <div class="pill-title">Monitoreo de proyectos</div>
+            <p class="pill-desc">Seguimiento geográfico de iniciativas de inversión y su estado de avance.</p>
+          </div>
+        </a>
+
+        <a class="card pill" href="https://geo2.vivienda.gob.pe/enlaces/proyectoseinversion.html" target="_blank" rel="noopener noreferrer" style="--tone:#F59E0B">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1Q5eA6ue2SGhYP8Io7NUOgtAvZfUCMrde=w1000" alt="Icono Proyectos de inversión"></div>
+          <div>
+            <div class="pill-title">Proyectos de inversión</div>
+            <p class="pill-desc">Explora la cartera de proyectos priorizados y su localización territorial.</p>
+          </div>
+        </a>
+
+        <!-- Transferencias: sin enlace -->
+        <div class="card pill" style="--tone:#F59E0B">
+          <div class="icon-circle"><img src="https://lh3.googleusercontent.com/d/1Et1gkn2UsykadRl9vAAHF0vrGS8fbFPD=w1000" alt="Icono Transferencias"></div>
+          <div>
+            <div class="pill-title">Transferencias</div>
+            <p class="pill-desc">Consulta transferencias y asignaciones vinculadas a intervenciones territoriales.</p>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- COOPERANTES -->
+    <!-- COOPERANTES (carrusel en una sola fila) -->
     <div class="section partners" id="cooperantes" aria-labelledby="titulo-cooperantes">
       <h2 class="section-title" id="titulo-cooperantes">Herramientas de instituciones adscritas y cooperantes</h2>
 
-      <div class="partners-grid" role="list" aria-label="Logos de instituciones cooperantes">
-        <div class="coop-card" role="listitem" style="--rot:-1.8deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1fSDP-b8qaQ_6JVjs4PFrez0HEW0eLhTd=w1000" alt="GOTASS - Visor Cartográfico Institucional"></div>
-        <div class="coop-card" role="listitem" style="--rot:1.2deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1cRMQs2IMc4EW0vQCfXAhfHgejW14IhoX=w1000" alt="GEO LLAQTA - Plataforma Única de Catastro Multipropósito"></div>
-        <div class="coop-card" role="listitem" style="--rot:-2.2deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1WNAspmCFqXlMZXHZacjCWl4kMBSYaDMT=w1000" alt="GeoSunass"></div>
-        <div class="coop-card" role="listitem" style="--rot:1.6deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1VC2TX6hvIUL5FixemMytckiK0DDFMzRY=w1000" alt="CENEPRED"></div>
-        <div class="coop-card" role="listitem" style="--rot:-1.4deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1SltYpzkaggYfKVecNevf81RH5eXnPEG-=w1000" alt="Geo Perú"></div>
-        <div class="coop-card" role="listitem" style="--rot:2.0deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1d9oBbYYTHV1WEBH7Mj6V30d-SfCb_MBE=w1000" alt="IDEP - Infraestructura de Datos Espaciales del Perú"></div>
-        <div class="coop-card" role="listitem" style="--rot:-1.1deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1IUCSUXtH0cjZeSsaJ5qx_icc6CW8iPVM=w1000" alt="Agencia Espacial del Perú - CONIDA"></div>
-        <div class="coop-card" role="listitem" style="--rot:1.9deg"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1rJr76UvCOTt5zxRcSv0kpMA0RmENrqeJ=w1000" alt="Fuerza Aérea del Perú - CEVAN"></div>
+      <div class="partner-carousel" role="region" aria-label="Logos de instituciones cooperantes">
+        <button class="pc-arrow left" aria-label="Desplazar a la izquierda">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+
+        <div class="pc-viewport" id="pcViewport" tabindex="0">
+          <div class="pc-track" id="pcTrack">
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1fSDP-b8qaQ_6JVjs4PFrez0HEW0eLhTd=w1000" alt="GOTASS"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1WNAspmCFqXlMZXHZacjCWl4kMBSYaDMT=w1000" alt="GeoSunass"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1SltYpzkaggYfKVecNevf81RH5eXnPEG-=w1000" alt="Geo Perú"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1cRMQs2IMc4EW0vQCfXAhfHgejW14IhoX=w1000" alt="GEO LLAQTA"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1VC2TX6hvIUL5FixemMytckiK0DDFMzRY=w1000" alt="CENEPRED"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1d9oBbYYTHV1WEBH7Mj6V30d-SfCb_MBE=w1000" alt="IDEP"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1IUCSUXtH0cjZeSsaJ5qx_icc6CW8iPVM=w1000" alt="Agencia Espacial del Perú - CONIDA"></figure>
+            <figure class="pc-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1rJr76UvCOTt5zxRcSv0kpMA0RmENrqeJ=w1000" alt="FAP - CEVAN"></figure>
+          </div>
+        </div>
+
+        <button class="pc-arrow right" aria-label="Desplazar a la derecha">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m10 6 1.41 1.41L8.83 10H20v2H8.83l2.58 2.59L10 16l-6-6z"/></svg>
+        </button>
       </div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- PLANCHA COMPLETA -->
-    <div class="section" id="alianzas">
-      <h2 class="section-title">Reconocimiento</h2>
-      <div class="plancha">
-        <img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1N0kJmgJc1pqYhZPqo6EPCjFz3L0-eYH4=w1000" alt="Plancha de aliados: GeoVivienda, MVCS, Bicentenario Perú y cooperantes">
+    <!-- RECONOCIMIENTO (sin título) -->
+    <div class="section" id="alianzas" aria-label="Instituciones que respaldan la plataforma">
+      <div class="ribbon">
+        <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1EWbpli3V4J5vPgA09DyrAEt4-uiTEw_b=w1000" alt="GeoVivienda"></div>
+        <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1N0kJmgJc1pqYhZPqo6EPCjFz3L0-eYH4=w1000" alt="MVCS"></div>
+        <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1zs32a4h9D8xzs0PGGeFljx0j4Z9kRxbd=w1000" alt="Proyecto Bicentenario"></div>
+        <div class="r-item"><img loading="lazy" decoding="async" src="https://lh3.googleusercontent.com/d/1k10xz-9uW2Qf160FjjnA1xZLvHwKjWaF=w1000" alt="COSUDE"></div>
       </div>
     </div>
-  </div><!-- /wrapper -->
+  </div>
 
   <!-- ===== FOOTER ===== -->
   <footer>
     <div class="footer-wrap">
-      <!-- Eliminado el bloque de chips -->
-
       <div class="social" aria-label="Redes sociales del MVCS">
         <a href="https://www.facebook.com/viviendaperu" target="_blank" rel="noopener noreferrer" aria-label="Facebook MVCS">
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M22 12.07C22 6.48 17.52 2 11.93 2S1.86 6.48 1.86 12.07c0 4.99 3.64 9.13 8.4 9.93v-7.02H7.9v-2.9h2.36V9.41c0-2.33 1.39-3.62 3.52-3.62 1.02 0 2.1.18 2.1.18v2.31h-1.18c-1.16 0-1.52.72-1.52 1.46v1.76h2.59l-.41 2.9h-2.18V22c4.76-.8 8.4-4.94 8.4-9.93Z"/></svg>
@@ -463,7 +578,7 @@
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M23 12s0-3.53-.45-5.2a3.12 3.12 0 0 0-2.16-2.16C18.72 4.2 12 4.2 12 4.2s-6.72 0-8.39.44A3.12 3.12 0 0 0 1.45 6.8C1 8.47 1 12 1 12s0 3.53.45 5.2a3.12 3.12 0 0 0 2.16 2.16C5.28 19.8 12 19.8 12 19.8s6.72 0 8.39-.44a3.12 3.12 0 0 0 2.16-2.16C23 15.53 23 12 23 12ZM9.8 15.6V8.4L15.8 12l-6 3.6Z"/></svg>
         </a>
         <a href="https://www.instagram.com/viviendagobpe" target="_blank" rel="noopener noreferrer" aria-label="Instagram MVCS">
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 7.3A4.7 4.7 0 1 0 16.7 12 4.71 4.71 0 0 0 12 7.3Zm0 7.7A3 3 0 1 1 15 12a3 3 0 0 1-3 3Zm4.85-8.73a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1ZM12 2.2c-3.25 0-3.66 0-4.94.07a6.8 6.8 0 0 0-2.23.43 4.54 4.54 0 0 0-2.6 2.6 6.8 6.8 0 0 0-.43 2.23C1.73 9.81 1.73 10.22 1.73 13.47s0 3.66.07 4.94a6.8 6.8 0 0 0 .43 2.23 4.54 4.54 0 0 0 2.6 2.6 6.8 6.8 0 0 0 2.23.43c1.28.07 1.69.07 4.94.07s3.66 0 4.94-.07a6.8 6.8 0 0 0 2.23-.43 4.54 4.54 0 0 0 2.6-2.6 6.8 6.8 0 0 0 .43-2.23c.07-1.28.07-1.69.07-4.94s0-3.66-.07-4.94a6.8 6.8 0 0 0-.43-2.23 4.54 4.54 0 0 0-2.6-2.6 6.8 6.8 0 0 0-2.23-.43C15.66 2.2 15.25 2.2 12 2.2Z"/></svg>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 7.3A4.7 4.7 0 1 0 16.7 12 4.71 4.71 0 0 0 12 7.3Zm0 7.7A3 3 0 1 1 15 12a3 3 0 0 1-3 3Zm4.85-8.73a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1ZM12 2.2c-3.25 0-3.66 0-4.94.07a6.8 6.8 0  0 0-2.23.43 4.54 4.54 0 0 0-2.6 2.6 6.8 6.8 0 0 0-.43 2.23C1.73 9.81 1.73 10.22 1.73 13.47s0 3.66.07 4.94a6.8 6.8 0 0 0 .43 2.23 4.54 4.54 0  0 0 2.6 2.6 6.8 6.8 0 0 0 2.23.43c1.28.07 1.69.07 4.94.07s3.66 0 4.94-.07a6.8 6.8 0 0 0 2.23-.43 4.54 4.54 0 0 0 2.6-2.6 6.8 6.8 0 0 0 2.23-.43C15.66 2.2 15.25 2.2 12 2.2Z"/></svg>
         </a>
       </div>
 
@@ -478,7 +593,6 @@
   </footer>
 
   <script>
-  /* ===== Contadores – franja "Nuestras Cifras" ===== */
   (function(){
     const SEP='.'; const duration=1400; const extraSpin=6; const easeOut=t=>1-Math.pow(1-t,3);
     const counters=document.querySelectorAll('.stats .counter');
@@ -506,7 +620,6 @@
     if(stats) io.observe(stats);
   })();
 
-  /* ===== Animación de tarjetas ===== */
   window.addEventListener('DOMContentLoaded', () => {
     const stage = document.querySelector('.geovisor-stage');
     const visor = document.getElementById('visor');
@@ -519,16 +632,19 @@
       }, {threshold:0.15});
       cards.forEach(c => io.observe(c));
     }
-    setTimeout(() => { stage?.classList.add('active'); visor.classList.add('glow'); setTimeout(() => visor.classList.remove('glow'), 2000); }, 4000);
+    if(stage && visor){ setTimeout(() => { stage?.classList.add('active'); visor?.classList?.add('glow'); setTimeout(() => visor?.classList?.remove('glow'), 2000); }, 4000); }
   });
 
-  /* ===== Menú activo preciso ===== */
   (function(){
     const header = document.querySelector('header.site');
-    const HEADER_H = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || header.offsetHeight || 80;
     const ids = ['inicio','geovisor','mvcs','vmvu','sg','analisis'];
     const sections = ids.map(id => document.getElementById(id)).filter(Boolean);
     const links = Array.from(document.querySelectorAll('nav a'));
+
+    const getHeaderH = () => {
+      const v = getComputedStyle(document.documentElement).getPropertyValue('--hdr-h').trim();
+      return parseInt(v || '0') || header.offsetHeight || 80;
+    };
 
     const setActive = (id)=>{
       links.forEach(a=>{
@@ -549,27 +665,29 @@
         for(const id of ids){ const r = visible.get(id) || 0; if(r > bestRatio){ bestRatio = r; bestId = id; } }
         if(bestRatio < 0.55){
           let closestId = ids[0], bestDelta = Infinity;
+          const H = getHeaderH();
           for(const id of ids){
             const el = document.getElementById(id); if(!el) continue;
             const top = el.getBoundingClientRect().top;
-            const delta = Math.abs(top - HEADER_H - 8);
+            const delta = Math.abs(top - H - 8);
             if(delta < bestDelta) { bestDelta = delta; closestId = id; }
           }
           bestId = closestId;
         }
         setActive(bestId);
       },{
-        root:null, rootMargin:`-${HEADER_H+6}px 0px -60% 0px`,
+        root:null, rootMargin:`-${getHeaderH()+6}px 0px -60% 0px`,
         threshold:[0,0.25,0.5,0.75,1]
       });
       sections.forEach(s=>io.observe(s));
     }else{
       const onScroll = ()=>{
         let closestId = ids[0], bestDelta = Infinity;
+        const H = getHeaderH();
         for(const id of ids){
           const el = document.getElementById(id); if(!el) continue;
           const top = el.getBoundingClientRect().top;
-          const delta = Math.abs(top - HEADER_H - 8);
+          const delta = Math.abs(top - H - 8);
           if(delta < bestDelta) { bestDelta = delta; closestId = id; }
         }
         setActive(closestId);
@@ -577,10 +695,33 @@
       onScroll();
       window.addEventListener('scroll', onScroll, {passive:true});
     }
+
     links.forEach(a=> a.addEventListener('click', ()=>{ const id = a.getAttribute('href').slice(1); setActive(id); }));
+    setActive('inicio');
   })();
 
-  /* ===== Ramificación visible ===== */
+  (function(){
+    const header = document.querySelector('header.site');
+    if(!header) return;
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden','true');
+    sentinel.style.cssText = 'position:relative;height:1px;margin:0;padding:0;';
+    header.parentNode.insertBefore(sentinel, header);
+
+    const makeFixed = (on)=>{ header.classList.toggle('fixed', on); document.body.classList.toggle('has-fixed', on); };
+
+    if('IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries)=>{
+        const e = entries[0];
+        const stuck = e.intersectionRatio === 0 && e.boundingClientRect.top < 0;
+        makeFixed(stuck);
+      }, {threshold:[0,1]});
+      io.observe(sentinel);
+    }else{
+      makeFixed(true);
+    }
+  })();
+
   window.addEventListener('DOMContentLoaded', () => {
     const conector = document.querySelector('.conector');
     if (!conector) return;
@@ -594,40 +735,118 @@
     }
   });
 
-  /* ===== Cooperantes: entrada + brillo en cascada ===== */
   (function(){
-    const items = Array.from(document.querySelectorAll('.coop-card'));
+    const items = [...document.querySelectorAll('.sticker'), ...document.querySelectorAll('.r-item')];
     if(!items.length) return;
-    items.forEach((el, i)=>{ el.style.setProperty('--delay', (i*90)+'ms'); });
+    items.forEach((el, i)=> el.style.setProperty('--delay', (i*110)+'ms'));
     if('IntersectionObserver' in window){
       const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){
-            e.target.classList.add('show');
-            e.target.classList.add('shine');
-            setTimeout(()=> e.target.classList.remove('shine'), 1000);
-            io.unobserve(e.target);
-          }
-        });
-      }, {threshold:.25});
-      items.forEach(el=>io.observe(el));
+        entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
+      }, {threshold:.2});
+      items.forEach(el=> io.observe(el));
     }else{
-      items.forEach(el=>el.classList.add('show'));
+      items.forEach(el=> el.classList.add('show'));
     }
   })();
 
-  /* ===== Plancha: fade-in ===== */
+  /* ===== Carrusel cooperantes: movimiento constante en bucle (hacia la DERECHA), pausa al hover, flechas aceleran ===== */
   (function(){
-    const el = document.querySelector('.plancha');
-    if(!el) return;
-    if('IntersectionObserver' in window){
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{ if(e.isIntersecting){ el.classList.add('show'); io.unobserve(el); } });
-      }, {threshold:.2});
-      io.observe(el);
-    }else{
-      el.classList.add('show');
+    const region = document.querySelector('.partner-carousel');
+    const viewport = document.getElementById('pcViewport');
+    const track = document.getElementById('pcTrack');
+    if(!region || !viewport || !track) return;
+
+    // Duplicamos el contenido para permitir bucle continuo
+    track.innerHTML = track.innerHTML + track.innerHTML;
+
+    // Estado
+    const baseSpeed = 56;           // << Doble de 28 px/seg (más rápido por defecto)
+    const accelSpeed = 180;         // px/seg con flechas
+    let vx = +baseSpeed;            // POSITIVO = hacia la derecha
+    let x = 0;                      // posición actual
+    let paused = false;
+    let hover = false;
+    let pressing = false;
+
+    // Posición inicial cerca de -half para evitar "salto" inmediato al iniciar hacia la derecha
+    function setInitialX(){
+      const half = track.scrollWidth / 2;
+      x = -half + 1;
+      track.style.transform = `translateX(${x}px)`;
     }
+    setInitialX();
+
+    // Bucle rAF con delta time
+    function loop(ts){
+      if(!loop.prev) loop.prev = ts;
+      const dt = Math.min(50, ts - loop.prev) / 1000; // seg
+      loop.prev = ts;
+
+      const half = track.scrollWidth / 2;
+
+      if(!paused){
+        x += vx * dt;
+
+        // Mantener x en [-half, 0] para transiciones sin salto
+        if(x <= -half) x += half;
+        if(x > 0) x -= half;
+
+        track.style.transform = `translateX(${x}px)`;
+      }
+
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    // Hover: pausa sólo cuando el cursor esté encima
+    function setHover(on){
+      hover = on;
+      if(hover){
+        paused = true;
+      }else{
+        paused = false;
+        if(!pressing) vx = +baseSpeed; // retomar hacia la derecha
+      }
+    }
+    region.addEventListener('mouseenter', ()=>setHover(true));
+    region.addEventListener('mouseleave', ()=>setHover(false));
+    region.addEventListener('touchstart', ()=>setHover(true), {passive:true});
+    region.addEventListener('touchend', ()=>setHover(false));
+
+    // Flechas: acelerar en la dirección correspondiente
+    const leftBtn = region.querySelector('.pc-arrow.left');
+    const rightBtn = region.querySelector('.pc-arrow.right');
+
+    function pressLeft(){
+      pressing = true; paused = false; vx = -accelSpeed;  // mover hacia la IZQUIERDA
+    }
+    function pressRight(){
+      pressing = true; paused = false; vx = +accelSpeed;  // mover hacia la DERECHA
+    }
+    function release(){
+      pressing = false;
+      if(hover){ paused = true; }
+      else { paused = false; vx = +baseSpeed; } // retomar derecha
+    }
+
+    ['pointerdown','mousedown','touchstart'].forEach(ev=>{
+      leftBtn.addEventListener(ev, pressLeft);
+      rightBtn.addEventListener(ev, pressRight);
+    });
+    ['pointerup','pointercancel','mouseup','mouseleave','touchend'].forEach(ev=>{
+      leftBtn.addEventListener(ev, release);
+      rightBtn.addEventListener(ev, release);
+    });
+
+    // Accesible por teclado cuando el viewport tiene foco
+    viewport.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowRight'){ pressRight(); }
+      if(e.key === 'ArrowLeft'){ pressLeft(); }
+    });
+    viewport.addEventListener('keyup', release);
+
+    // Reposicionar al redimensionar para mantener continuidad
+    window.addEventListener('resize', setInitialX);
   })();
   </script>
 </body>
